@@ -2,38 +2,8 @@ import Head from 'next/head'
 import products from '../ProductData/products.json'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
 export default function Home() {
-  // const product=products;
-  // console.log(products);
-
-
-//   import Head from 'next/head'
-// // import products from '../ProductData/products.json'
-// import Image from 'next/image'
-// import Link from 'next/link'
-// import { useEffect, useState } from 'react'
-// export default function Home() {
-//   // const product=products;
-//   // console.log(products);
-//   const [products, setproducts] = useState([]);
-//   useEffect(async () =>  {
-//     const data=await fetch('https://fakestoreapi.com/products')
-//     .then(res=>res.json())
-//     // .then(json=>console.log(json))
-//             // }).then((parsed)=>{
-
-//             //   console.log(parsed);        
-//             //   setproducts(parsed)    
-//             //   console.log(products);        
-//             // })
-//             console.log(data);
-//             setproducts(data);
-//   }, [])
-
-
-
-  let star;
+  
   return (
     <div className=''>
       <Head>
@@ -49,10 +19,10 @@ export default function Home() {
             return (
               <div key={i} className="relative max-w-sm min-w-[340px] bg-white shadow-md rounded-3xl p-2 mx-1 my-3 cursor-pointer">
                 <div className="overflow-x-hidden rounded-2xl relative">
-                  <Link href={"product/"+product.title}><Image src={"/images/"+product.filename} width={330} height={350} /></Link>
+                  <Link href={"product/"+product.title} passHref><Image src={"/images/"+product.filename} width={330} height={350} alt="" /></Link>
                   <p className="absolute right-2 top-2 bg-white rounded-full p-2 cursor-pointer group">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 group-hover:opacity-50 opacity-70" fill="none" viewBox="0 0 24 24" stroke="black">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
                   </p>
                 </div>
