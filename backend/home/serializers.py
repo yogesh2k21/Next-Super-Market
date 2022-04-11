@@ -1,7 +1,9 @@
+from email.policy import default
 from .models import Product
 from rest_framework import serializers
 
 class ProductSerializer(serializers.Serializer):
+    id=serializers.IntegerField(default=0)
     title=serializers.CharField(max_length=50)
     type=serializers.CharField(max_length=50)
     description=serializers.CharField(max_length=50)

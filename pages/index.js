@@ -1,5 +1,4 @@
 import Head from "next/head";
-// import products from "../ProductData/products.json";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -21,7 +20,7 @@ const Home = (props) => {
         <div key={i}
           className="relative max-w-sm min-w-[340px] bg-white shadow-md rounded-3xl p-2 mx-1 my-3 cursor-pointer">
           <div className="overflow-x-hidden rounded-2xl relative">
-            <Link href={"product/" + product.title} passHref>
+            <Link href={"product/" + product.id} passHref>
             <Image src={`http://localhost:8000${product.image}`} width={330} height={420} alt="" />
             </Link>
             <p className="absolute right-2 top-2 bg-white rounded-full p-2 cursor-pointer group">
