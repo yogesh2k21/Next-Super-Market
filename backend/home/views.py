@@ -1,16 +1,19 @@
-from itertools import product
 from django.http import JsonResponse
-from .serializers import ProductSerializer
-from .models import Product
+from product.serializers import ProductSerializer
+from product.models import Product
+from .models import Banner
+from .serializers import BannerSerializer
 
 # Create your views here.
 
 def home(request):
+    print('home')
     products=Product.objects.filter().order_by('id')
     serialized=ProductSerializer(products,many=True)
     return JsonResponse(serialized.data,safe=False)
 
-def getItem(request,pk):
-    product=Product.objects.get(id=pk)
-    serialized=ProductSerializer(product,many=False)
+def banner(request):
+    print('banner')
+    banners=Banner.objects.filter()
+    serialized=BannerSerializer(banners,many=True)
     return JsonResponse(serialized.data,safe=False)

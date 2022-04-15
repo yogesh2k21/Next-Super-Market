@@ -103,7 +103,6 @@ return (
 
 export async function getServerSideProps(context) {
 const { slug } = context.query;
-console.log(slug);
 let data = await fetch(`http://127.0.0.1:8000/product/${slug}`);
 let product = await data.json();
 return {

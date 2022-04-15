@@ -2,9 +2,9 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import Banner from "./Banner";
 const Home = (props) => {
-  const [products, setproducts] = useState(props);
-  console.log(products.product);
+  const [products, setproducts] = useState(props.product);
   return (
     <div className="">
       <Head>
@@ -13,40 +13,41 @@ const Home = (props) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
+        <Banner banners={props.banner}/>
         <div className="bg-gray-100 flex flex-col justify-center py-10">
           <div className="relative m-3 flex flex-wrap mx-auto justify-center">
-            {products.product.map((product, i) => {
+            {products.map((product, i) => {
         return (
-        <div key={i}
-          className="relative max-w-sm min-w-[340px] bg-white shadow-md rounded-3xl p-2 mx-1 my-3 cursor-pointer">
-          <div className="overflow-x-hidden rounded-2xl relative">
-            <Link href={"product/" + product.id} passHref>
-            <Image src={`http://localhost:8000${product.image}`} width={330} height={420} alt="" />
-            </Link>
-            <p className="absolute right-2 top-2 bg-white rounded-full p-2 cursor-pointer group">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 group-hover:opacity-50 opacity-70" fill="none"
-                viewBox="0 0 24 24" stroke="black">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5"
-                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-            </p>
-          </div>
-          <div className="mt-4 pl-2 mb-2 ">
-            <p className="text-lg font-semibold text-gray-900 mb-0">
-              {product.title}
-            </p>
-            <div className="flex justify-between">
-              <p className="text-md text-gray-800 mt-2 -mb-4">
-                ${product.price}
-              </p>
-              <div></div>
+          <Link href={"product/" + product.id} passHref>
+            <div key={i}
+              className="relative max-w-sm min-w-[340px] bg-white shadow-md rounded-3xl p-2 mx-1 my-3 cursor-pointer">
+              <div className="overflow-x-hidden rounded-2xl relative">
+                <Image src={`http://localhost:8000${product.image}`} width={330} height={420} alt="" />
+                <p className="absolute right-2 top-2 bg-white rounded-full p-2 cursor-pointer group">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 group-hover:opacity-50 opacity-70" fill="none"
+                    viewBox="0 0 24 24" stroke="black">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5"
+                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </p>
+              </div>
+              <div className="mt-4 pl-2 mb-2 ">
+                <p className="text-lg font-semibold text-gray-900 mb-0">
+                  {product.title}
+                </p>
+                <div className="flex justify-between">
+                  <p className="text-md text-gray-800 mt-2 -mb-4">
+                    ${product.price}
+                  </p>
+                  <div></div>
+                </div>
+                <div className="flex flex-col-reverse mb-1 mr-4 group cursor-pointer">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 group-hover:opacity-70" fill="none"
+                    viewBox="0 0 24 24" stroke="gray"></svg>
+                </div>
+              </div>
             </div>
-            <div className="flex flex-col-reverse mb-1 mr-4 group cursor-pointer">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 group-hover:opacity-70" fill="none"
-                viewBox="0 0 24 24" stroke="gray"></svg>
-            </div>
-          </div>
-        </div>
+          </Link>
         );
         })}
           </div>
@@ -57,20 +58,12 @@ const Home = (props) => {
 };
 
 export async function getServerSideProps(context) {
-  // const {slug}=context.query;
-  // console.log(context);
-  //   let product=null;
-  //   for (let index = 0; index < products.length; index++)
-  //   { if(products[index]['title']==slug){
-  //     product=products[index];
-  //   break; }
-  //  }
-  let data = await fetch("http://127.0.0.1:8000/");
-  // console.log(data);
-  // const product = await JSON.parse(JSON.stringify(data));
-  let product = await data.json()
+  let products = await fetch("http://127.0.0.1:8000/"); //fetching products
+  let product = await products.json()
+  let banners = await fetch("http://127.0.0.1:8000/banner") //fetching banners
+  let banner = await banners.json()
   return {
-    props: { product }, // will be passed to the page component as props
+    props: { product,banner }, // will be passed to the page component as props
   };
 }
 
