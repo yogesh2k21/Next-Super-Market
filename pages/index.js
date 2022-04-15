@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import Banner from "./Banner";
+import Statistic from "./Statistic";
 const Home = (props) => {
   const [products, setproducts] = useState(props.product);
   return (
@@ -52,6 +53,8 @@ const Home = (props) => {
         })}
           </div>
         </div>
+        <Statistic/>
+        <hr />
       </main>
     </div>
   );
