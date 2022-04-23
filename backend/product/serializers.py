@@ -9,3 +9,7 @@ class ProductSerializer(serializers.Serializer):
     image=serializers.ImageField()
     price=serializers.FloatField(default=0)
     rating=serializers.IntegerField(default=1)
+
+class CategorySerializer(serializers.Serializer):
+    id=serializers.IntegerField(default=0)
+    title=serializers.CharField(max_length=50)
