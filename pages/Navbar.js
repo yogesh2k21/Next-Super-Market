@@ -13,7 +13,7 @@ const Navbar = () => {
                     <div className="text-gray-500 order-3 w-full md:w-auto md:order-2">
                         <ul className="flex font-semibold justify-between">
                             <li className="md:px-4 md:py-2 text-indigo-500"><Link href="/"><a> Home</a></Link></li>
-                            <li className="md:px-4 md:py-2 hover:text-indigo-400"><Link href="#"><a> Explore</a></Link></li>
+                            <li className="md:px-4 md:py-2 hover:text-indigo-400"><Link href="/explore"><a> Explore</a></Link></li>
                             <li className="md:px-4 md:py-2 hover:text-indigo-400"><Link href="/about"><a> About</a></Link></li>
                             <li className="md:px-4 md:py-2 hover:text-indigo-400"><Link href="/contact"><a> Contact</a></Link></li>
                         </ul>
