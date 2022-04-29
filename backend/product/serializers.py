@@ -13,3 +13,5 @@ class ProductSerializer(serializers.Serializer):
 class CategorySerializer(serializers.Serializer):
     id=serializers.IntegerField(default=0)
     title=serializers.CharField(max_length=50)
+    description=serializers.CharField(max_length=150)
+    url=serializers.CharField(max_length=1000)
