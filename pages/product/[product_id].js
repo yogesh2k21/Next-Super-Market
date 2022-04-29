@@ -104,7 +104,6 @@ return (
 export async function getServerSideProps(context) {
 const { product_id } = context.query;
 let data = await fetch(`http://127.0.0.1:8000/product/${product_id}`);
-// console.log(data.json());
 let product = await data.json();
 return {
 props: { product }, // will be passed to the page component as props

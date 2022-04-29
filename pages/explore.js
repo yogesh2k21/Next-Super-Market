@@ -5,7 +5,6 @@ import Image from "next/image";
 
 const Explore = ({ category }) => {
   const [items, setitems] = useState(category);
-  console.log(items);
   return (
     <>
       <section class="text-gray-600 body-font">
@@ -38,7 +37,6 @@ const Explore = ({ category }) => {
 export async function getServerSideProps(context) {
   let data = await fetch(`http://127.0.0.1:8000/product/category`);
   let category = await data.json();
-//   console.log(category);
   return {
     props: { category }, // will be passed to the page component as props
   };

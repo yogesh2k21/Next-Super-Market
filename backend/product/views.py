@@ -10,7 +10,10 @@ def getItem(request,pk):
 
 def category(request):
     category=Category.objects.filter().values()
-    # print(category)
     serialized=CategorySerializer(category,many=True)
-    # print(serialized)
+    return JsonResponse(serialized.data,safe=False)
+
+def getProductCategoryWise(request,id):
+    product=Product.objects.filter(category=id)
+    serialized=ProductSerializer(product,many=True)
     return JsonResponse(serialized.data,safe=False)
