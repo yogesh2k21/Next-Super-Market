@@ -7,3 +7,8 @@ class Banner(models.Model):
     active=models.BooleanField(default=True)
     def __str__(self):
         return f'{self.id} - {self.title} - {self.active}'
+
+class Pincode(models.Model):
+    pin=models.IntegerField(default=100000)
+    def __str__(self):
+        return f'{self.pin}'
