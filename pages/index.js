@@ -22,9 +22,9 @@ return (
           <div className="mt- grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
             {products.map((product, i) => {
             return (
-            <Link href={"product/" + product.id} passHref>
+            <Link key={i} href={"product/" + product.id} passHref>
             <a>
-              <div key={i} className="group relative">
+              <div className="group relative">
                 <div
                   className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
                   <Image src={`http://localhost:8000${product.image}`} width={350} height={450} alt={product.description} />

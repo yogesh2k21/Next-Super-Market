@@ -31,7 +31,7 @@ const Banner = (props) => {
     >
       {banners.map((banner,i)=>{
         return (
-          <SwiperSlide>
+          <SwiperSlide key={i}>
             <Image src={`http://localhost:8000${banner.image}`} width={10000} height={4510} alt={`${banner.title}`} />
           </SwiperSlide>
         )
