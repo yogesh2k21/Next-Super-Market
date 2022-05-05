@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'home',
-    'product'
+    'product',
+    'account'
 ]
 
 MIDDLEWARE = [
@@ -128,7 +129,20 @@ MEDIA_URL = '/media/'
 
 STATIC_URL = 'static/'
 
-CORS_ALLOW_ALL_ORIGINS=True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000"
+]
+
+CORS_EXPOSE_HEADERS = ['Content-Type','X-CSRFToken']
+CORS_ALLOW_CREDENTIALS = True    #if False than your sessionID will not set in browser
+
+SESSION_COOKIE_SAMESITE = "Lax"
+SESSION_COOKIE_SAMESITE = "Lax"
+
+CSRF_COOKIE_HTTPONLY = True
+CSRF_COOKIE_HTTPONLY = True
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
