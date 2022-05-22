@@ -54,7 +54,7 @@ const Navbar = () => {
                                 <Link href="/MyOrder"><a className="text-sm py-2 px-4 font-normal block w-full bg-transparent text-gray-700 hover:bg-gray-100"><i className='fa fa-reorder'></i> My Orders</a></Link>
                                 <Link href="/Wishlist"><a className="text-sm py-2 px-4 font-normal block w-full bg-transparent text-gray-700 hover:bg-gray-100"><i className="fa fa-heart"></i> Wishlist</a></Link>
                                 <Link href="/Review"><a className="text-sm py-2 px-4 font-normal block w-full bg-transparent text-gray-700 hover:bg-gray-100"><i className="fa fa-comments"></i> My Reviews</a></Link>
-                                <a className="text-sm py-2 px-4 font-normal block w-full bg-transparent text-gray-700 hover:bg-gray-100">Login & Logout <i className="fa fa-sign-out"></i></a>
+                                <Link href="/Login"><a className="text-sm py-2 px-4 font-normal block w-full bg-transparent text-gray-700 hover:bg-gray-100">Login & Logout <i className="fa fa-sign-out"></i></a></Link>
                                 <hr/>
                                 <Link href="/contact"><a className="text-sm py-2 px-4 font-normal block w-full bg-transparent text-gray-700 hover:bg-gray-100"><i className="mt-1 p-1 fa fa-headphones"></i> 24x7 Customer Care</a></Link>
                             </li>
