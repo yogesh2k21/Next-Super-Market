@@ -1,6 +1,7 @@
 from django.db import models
+from account.models import Customer
 
-# Create your models here.
+
 class Category(models.Model):
     title=models.CharField(max_length=50)
     description=models.CharField(max_length=150,blank=True,null=True)
@@ -18,3 +19,41 @@ class Product(models.Model):
     rating=models.IntegerField(default=1)
     def __str__(self):
         return f'{self.id} - {self.title} - {self.type}'
+
+class ProductOrder(models.Model):
+    customer = models.ForeignKey(Customer,on_delete=models.CASCADE)
+    ordered = models.BooleanField(default=False)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
+
+    def __str__(self):
+        return f"{self.quantity} of {self.item.item_name}"
+
+    def get_total_product_price(self):
+        return self.quantity * self.product.price
+
+class BillingAddress(models.Model):
+    address = models.CharField(max_length=150)
+    city = models.CharField(max_length=50)
+    state = models.CharField(max_length=50)
+    postal_code = models.CharField(max_length=10)
+
+    def __str__(self):
+        return f'{self.id} {self.address} {self.city} {self.state} {self.postal_code}'
+
+class Order(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    products = models.ManyToManyField(ProductOrder)
+    start_date = models.DateTimeField(auto_now_add=True)
+    ordered_date = models.DateTimeField()
+    ordered = models.BooleanField(default=False)
+    address=models.ForeignKey(BillingAddress, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'Order no. - {self.id} | Email - {self.customer.email}'
+    
+    def get_total_order_price(self):
+        total = 0
+        for product_order in self.products.all():
+            total += product_order.get_total_product_price()
+        return total

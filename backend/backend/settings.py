@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'account'
 ]
 
+# AUTH_USER_MODEL='account.MyUser'    #this tell the django that now its a default User model
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware',
