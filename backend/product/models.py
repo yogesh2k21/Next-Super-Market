@@ -27,7 +27,7 @@ class ProductOrder(models.Model):
     quantity = models.IntegerField(default=1)
 
     def __str__(self):
-        return f"{self.quantity} of {self.item.item_name}"
+        return f"{self.quantity} of {self.product.title}"
 
     def get_total_product_price(self):
         return self.quantity * self.product.price
@@ -47,10 +47,10 @@ class Order(models.Model):
     start_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField()
     ordered = models.BooleanField(default=False)
-    address=models.ForeignKey(BillingAddress, on_delete=models.CASCADE)
+    address=models.ForeignKey(BillingAddress, on_delete=models.CASCADE,null=True,blank=True)
 
     def __str__(self):
-        return f'Order no. - {self.id} | Email - {self.customer.email}'
+        return f'Order no. - {self.id} | Email - {self.customer.user.email}'
     
     def get_total_order_price(self):
         total = 0
