@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import BaseUserManager,AbstractBaseUser
+from django.contrib.auth.models import BaseUserManager,AbstractUser
 from django.core.validators import RegexValidator
 import secrets
 
@@ -52,12 +52,13 @@ class MyUserManager(BaseUserManager):
                 last_name=last_name
             )
             user.is_admin = True
+            user.is_superuser = True
             user.save(using=self._db)
             return user
 
 
 phone_regex = RegexValidator(regex=r'^\d{10,10}$', message="Phone number must be entered in the format: '0123456789'. Up to 15 digits allowed.")
-class MyUser(AbstractBaseUser):
+class MyUser(AbstractUser):
     username=models.CharField(unique=True,max_length=50,null=True,blank=True)
     email = models.EmailField(verbose_name='Email address',max_length=50,unique=True)
     mobile=models.CharField(unique=True,validators=[phone_regex],max_length=12,null=True,blank=True) #max legnth is 12 but RegexValidator only allows 10 so only 10 digit can be stored.
@@ -65,7 +66,7 @@ class MyUser(AbstractBaseUser):
     last_name=models.CharField(max_length=50)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
-    USERNAME_FIELD = 'username'
+    USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name','last_name']
     objects = MyUserManager()
 

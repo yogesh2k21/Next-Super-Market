@@ -1,7 +1,51 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Link from "next/link";
+import { useRouter } from 'next/router'
 
 const Login = () => {
+
+  const router = useRouter();
+  // console.log(localStorage === window.localStorage);
+  // if(localStorage.getItem('token')){ //if token is already set then this will redirext my page to home page
+  //   e.preventDefault()
+  //   router.push('/')
+  // }else{
+  //   console.log('no local');
+  // }
+
+  const [credentials, setCredentials] = useState({ email: "", password: "" });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const response = await fetch("http://127.0.0.1:8000/login", {
+    method: "POST", // *POST is use bcoz here we are login the user
+    headers: {
+    "Content-Type": "application/json",
+    },
+
+    body: JSON.stringify({
+      email: credentials.email,
+      password: credentials.password,
+    }),
+
+    }); //request end
+
+    const json = await response.json();
+    console.log(json);
+    if (json.success) {
+
+    // Save the jwt token and redirect to home
+    localStorage.setItem("token", json.JwtToken);
+
+    // console.log(localStorage.getItem('token'))
+    router.push('/')
+  }};
+
+  const onChange = (e) => {
+    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+    console.log(credentials);
+  }
+
   return (
     <>
         <div className="min-h-full flex items-center justify-center py-28 px-4 sm:px-6 lg:px-8">
@@ -20,7 +64,7 @@ const Login = () => {
               </a></Link>
             </p>
           </div>
-          <form className="mt-8 space-y-6" action="#" method="POST">
+          <form className="mt-8 space-y-6" onSubmit={handleSubmit} method="POST">
             <input type="hidden" name="remember" defaultValue="true" />
             <div className="rounded-md shadow-sm -space-y-px">
               <div>
@@ -29,8 +73,10 @@ const Login = () => {
                 </label>
                 <input
                   id="email-address"
-                  name="email"
                   type="email"
+                  name="email"
+                  value={credentials.email}
+                  onChange={onChange}
                   autoComplete="email"
                   required
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
@@ -43,8 +89,10 @@ const Login = () => {
                 </label>
                 <input
                   id="password"
-                  name="password"
                   type="password"
+                  name="password"
+                  value={credentials.password}
+                  onChange={onChange}
                   autoComplete="current-password"
                   required
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
@@ -74,6 +122,6 @@ const Login = () => {
       </div>
     </>
   )
-}
+};
 
 export default Login
