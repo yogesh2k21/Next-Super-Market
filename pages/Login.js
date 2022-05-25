@@ -1,10 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState , useEffect } from 'react'
 import Link from "next/link";
 import { useRouter } from 'next/router'
 
 const Login = () => {
 
   const router = useRouter();
+  useEffect(()=>{
+    if(localStorage.getItem('token')){ //if token is already set then this will redirext my page to home page
+      // e.preventDefault()
+      router.push('/')
+    }
+  },[])
   // console.log(localStorage === window.localStorage);
   // if(localStorage.getItem('token')){ //if token is already set then this will redirext my page to home page
     // e.preventDefault()
@@ -40,7 +46,7 @@ const Login = () => {
     
     //redirect to home after 0.5 sec
     setTimeout(() => {
-      router.push('http://localhost:3000')
+      router.push('/')
     }, 500);
     // console.log(localStorage.getItem('token'))
   }else{

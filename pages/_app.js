@@ -14,9 +14,9 @@ function MyApp({ Component, pageProps }) {
     console.log("removing token from localStorage....");
     localStorage.removeItem("token");
     setKey(Math.random());
-    setUser({ value: null });
+    setUser({ value: null }); //setting user value to null so that _app.js will re render the navbar and remove the login botton and add logout button bcoz they are depend on user.value in code
     setTimeout(() => {
-      router.push("http://localhost:3000");
+      router.push('/');
     }, 500);
   };
 
@@ -27,9 +27,6 @@ function MyApp({ Component, pageProps }) {
     if (token) {
       console.log("changing user value");
       setUser({ value: token });
-      setKey(Math.random());
-    } else {
-      // setUser({value:null})
       setKey(Math.random());
     }
   }, [router.query]); //passing router.query is to Re-render the _app so that this useEffect runs, now it will re render on every URL change.
