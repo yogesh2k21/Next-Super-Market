@@ -7,9 +7,10 @@ const Login = () => {
   const router = useRouter();
   // console.log(localStorage === window.localStorage);
   // if(localStorage.getItem('token')){ //if token is already set then this will redirext my page to home page
-  //   e.preventDefault()
-  //   router.push('/')
-  // }else{
+    // e.preventDefault()
+    // router.push('http://localhost:3000')
+  // }
+  // else{
   //   console.log('no local');
   // }
 
@@ -32,18 +33,27 @@ const Login = () => {
 
     const json = await response.json();
     console.log(json);
-    if (json.success) {
+    if (json.access) {
 
     // Save the jwt token and redirect to home
-    localStorage.setItem("token", json.JwtToken);
-
+    localStorage.setItem("token", json.access);
+    
+    //redirect to home after 0.5 sec
+    setTimeout(() => {
+      router.push('http://localhost:3000')
+    }, 500);
     // console.log(localStorage.getItem('token'))
-    router.push('/')
-  }};
+  }else{
+    //worng credentials
+
+    //run toastify
+  }
+
+};
 
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
-    console.log(credentials);
+    // console.log(credentials);
   }
 
   return (

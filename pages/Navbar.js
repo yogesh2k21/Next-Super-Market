@@ -1,17 +1,18 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
-const Navbar = () => {
-    const [disp, setDisp] = useState("none");
-    const openDrop=()=>{
-        if(disp==="none"){
-            setDisp("block");
-            console.log(disp);
-        }else{
-            setDisp("none");
-            console.log(disp);
-        }
+const Navbar = ({user,logout}) => {
+    // console.log(user.value)
+    const router = useRouter();
+
+    const [dropDown, setDropDown] = useState(false)
+
+    const removedropDown = ()=>{
+        setTimeout(() => {
+            setDropDown(false);
+        }, 3000);
     }
 
     return <>
@@ -46,20 +47,23 @@ const Navbar = () => {
                 <Link href="/explore"><a className='mt-2 transition-colors duration-200 transform lg:mt-0 lg:mx-4 hover:text-gray-900 cursor-pointer dark:hover:text-teal-500'> Explore</a></Link>
                 <Link href="/about"><a className='mt-2 transition-colors duration-200 transform lg:mt-0 lg:mx-4 hover:text-gray-900 cursor-pointer dark:hover:text-teal-500'> About</a></Link>
 
+
                     <div className='dropdown'>
-                        <button onMouseEnter={openDrop}  className="mt-2 transition-colors duration-200 transform lg:mt-0 lg:mx-4 hover:text-gray-900 cursor-pointer dark:hover:text-teal-500" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">Settings <i className={disp==='none'?"fa fa-angle-down":"fa fa-angle-up"}></i> </button>
-                        <ul style={{display:disp}} className="absolute bg-white text-base z-50 float-left py-2 list-none text-left rounded-lg shadow-lg mt-5 m-3 bg-clip-padding border-none">
+                        <button onMouseOver={()=>setDropDown(true)} onMouseLeave={removedropDown} className="mt-2 transition-colors duration-200 transform lg:mt-0 lg:mx-4 hover:text-gray-900 cursor-pointer dark:hover:text-teal-500" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">Settings <i className={dropDown===false?"fa fa-angle-down":"fa fa-angle-up"}></i> </button>
+                        {dropDown && <div>
+                        <ul className="absolute bg-white text-base z-50 float-left py-2 list-none text-left rounded-lg shadow-lg mt-5 m-3 bg-clip-padding border-none">
                             <li>
                                 <Link href="/Profile"><a className="text-sm py-2 px-4 font-normal block w-full bg-transparent text-gray-700 hover:bg-gray-100"><i className='fa fa-user-circle'></i> My Profile</a></Link>
                                 <Link href="/MyOrder"><a className="text-sm py-2 px-4 font-normal block w-full bg-transparent text-gray-700 hover:bg-gray-100"><i className='fa fa-reorder'></i> My Orders</a></Link>
                                 <Link href="/Wishlist"><a className="text-sm py-2 px-4 font-normal block w-full bg-transparent text-gray-700 hover:bg-gray-100"><i className="fa fa-heart"></i> Wishlist</a></Link>
                                 <Link href="/Review"><a className="text-sm py-2 px-4 font-normal block w-full bg-transparent text-gray-700 hover:bg-gray-100"><i className="fa fa-comments"></i> My Reviews</a></Link>
-                                <Link href="/Login"><a className="text-sm py-2 px-4 font-normal block w-full bg-transparent text-gray-700 hover:bg-gray-100">Login & Logout <i className="fa fa-sign-out"></i></a></Link>
+                                {!user.value && <Link href="/Login"><a className="text-sm py-2 px-4 font-normal w-full block bg-transparent text-gray-700 hover:bg-gray-100">Login <i className="fa fa-sign-out"></i></a></Link>}
+                                {user.value && <a onClick={logout} className="text-sm py-2 px-4 cursor-pointer font-normal w-full block bg-transparent text-gray-700 hover:bg-gray-100">Logout <i className="fa fa-sign-out"></i></a>}
                                 <hr/>
                                 <Link href="/contact"><a className="text-sm py-2 px-4 font-normal block w-full bg-transparent text-gray-700 hover:bg-gray-100"><i className="mt-1 p-1 fa fa-headphones"></i> 24x7 Customer Care</a></Link>
                             </li>
                         </ul>
-
+                        </div>}
                     </div>
                     <Link href="/cart"><a className="mt-2 transition-colors duration-200 transform lg:mt-0 lg:mx-4 hover:text-gray-900 cursor-pointer dark:hover:text-teal-500"><i className="fa fa-shopping-cart"></i> Cart</a></Link>
                 </div>
