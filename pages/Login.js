@@ -1,20 +1,23 @@
 import React, { useState , useEffect } from 'react'
 import Link from "next/link";
 import { useRouter } from 'next/router'
+import { toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
 
   const router = useRouter();
   useEffect(()=>{
     if(localStorage.getItem('token')){ //if token is already set then this will redirext my page to home page
+      // toast.success('hello')
       // e.preventDefault()
       router.push('/')
     }
   },[])
   // console.log(localStorage === window.localStorage);
   // if(localStorage.getItem('token')){ //if token is already set then this will redirext my page to home page
-    // e.preventDefault()
-    // router.push('http://localhost:3000')
+  // e.preventDefault()
+  // router.push('http://localhost:3000')
   // }
   // else{
   //   console.log('no local');
@@ -40,16 +43,26 @@ const Login = () => {
     const json = await response.json();
     console.log(json);
     if (json.access) {
-
-    // Save the jwt token and redirect to home
-    localStorage.setItem("token", json.access);
-    
-    //redirect to home after 0.5 sec
-    setTimeout(() => {
-      router.push('/')
-    }, 500);
-    // console.log(localStorage.getItem('token'))
+      toast.success('Successfully logged in')
+      // toast.success('🦄 Wow so easy!', {
+      //   position: "top-right",
+      //   autoClose: 1000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      //   });
+      // Save the jwt token and redirect to home
+      localStorage.setItem("token", json.access);
+      
+      //redirect to home after 0.5 sec
+      setTimeout(() => {
+        router.push('/')
+      }, 2000);
+      // console.log(localStorage.getItem('token'))
   }else{
+    toast.error('Wrong credentials!')
     //worng credentials
 
     //run toastify
@@ -64,6 +77,17 @@ const Login = () => {
 
   return (
     <>
+      {/* <ToastContainer
+        position="top-center"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover={false}
+        /> */}
         <div className="min-h-full flex items-center justify-center py-28 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div>
