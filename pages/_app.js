@@ -53,7 +53,7 @@ function MyApp({ Component, pageProps }) {
       newCart[product_id].product_qty = Globalcart[product_id].product_qty + 1;
       newCart[product_id].product_subtotal = Globalcart[product_id].product_subtotal + Globalcart[product_id].product_price;
       toast.success("Quantity +1");
-      router.push('/Cart')
+      // router.push('/Cart')
     } else {
       newCart[product_id] = { product_name, product_price, product_qty: 1 ,product_category,product_subtotal};
       toast.success(product_name.slice(0, 11) + "..." +" in Cart Now!");
@@ -70,17 +70,23 @@ function MyApp({ Component, pageProps }) {
     if (product_id in newCart) {
       newCart[product_id].product_qty =  Globalcart[product_id].product_qty - 1;
       newCart[product_id].product_subtotal =  Globalcart[product_id].product_subtotal - newCart[product_id].product_price;
-      toast.success("Quantity -1");
+      if (newCart[product_id].product_qty <= 0) { //if quantity becomes equal to or less then 0 then it will delete object and Re-render the page.
+        delete newCart[product_id];
+        toast.success("Removed from Cart");
+        // router.push('/Cart')
+      }else{ //if newCart[product_id].product_qty not equal to zer0
+        toast.success("Quantity -1");
+      }
     }else{
       router.push('/Cart')
     }
-    if (newCart[product_id].product_qty <= 0) {
-      delete newCart[product_id];
-    }
+    // if (newCart[product_id].product_qty <= 0) {
+    //   delete newCart[product_id];
+    // }
     
     setGlobalcart(newCart);
     saveGlobalCart(newCart);
-    router.push('/Cart')
+    // router.push('/Cart')
   };
 
   const clearCart = () => {

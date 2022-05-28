@@ -15,7 +15,7 @@ def home(request):
 
 def banner(request):
     print('banner')
-    banners=Banner.objects.filter()
+    banners=Banner.objects.filter(active=True)
     serialized=BannerSerializer(banners,many=True)
     return JsonResponse(serialized.data,safe=False)
 

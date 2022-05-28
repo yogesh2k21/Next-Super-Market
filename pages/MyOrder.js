@@ -1,81 +1,23 @@
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import Image from "next/image";
-import Link from "next/link";
+import Image from 'next/image';
+import Link from 'next/link';
+import React from 'react'
 
-const Cart = ({
-  setGlobalcart,
-  saveGlobalCart,
-  Globalcart,
-  product,
-  increaseQuantity,
-  decreaseQuantity,
-  clearCart,
-  Total,
-  user,
-}) => {
-  const [promocode, setPromocode] = useState("");
-  const [cartitem, setCartitem] = useState(0);
-  let router = useRouter();
-  let total_html = "";
-
-  useEffect(() => {
-    console.log("hey i am Cart.js useEffect");
-    if (!user.value) {
-      router.push("/");
-    }
-    // console.log(Total===0);
-    setCartitem(Object.keys(Globalcart).length);
-    if (Total == 0) {
-      total_html = "";
-    } else {
-      total_html = Total;
-      console.log(total_html);
-    }
-    // try {
-    //   if (!localStorage.getItem("token")) {
-    //     router.push("/");
-    // setGlobalcart(JSON.parse(localStorage.getItem("cart")));
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    //   localStorage.clear();
-    // }
-
-    // const token = localStorage.getItem("token");
-    // if (token) {
-    //   console.log("changing user value");
-    //   setUser({ value: token });
-    //   setKey(Math.random());
-    // }
-  }, [router.query, Math.random()]); //passing router.query is to Re-render the _app so that this useEffect runs, now it will re render on every URL change.
-
-  const removeFromCart = (product_id, product_name) => {
-    console.log(product_id);
-    console.log(Globalcart);
-    let newCart = Globalcart;
-    delete newCart[product_id];
-    console.log("removeFromCart");
-    setGlobalcart(newCart);
-    saveGlobalCart(newCart);
-    toast.success(product_name + " is removed from Cart!");
-    // router.push("/Cart");
-    // delete Globalcart[product_id];
-    // Object.keys(Globalcart)
-  };
-
-  const checkPromoCode = () => {
-    toast.error("Invalid Code");
-  };
+const MyOrder = ({setGlobalcart,
+    saveGlobalCart,
+    Globalcart,
+    product,
+    increaseQuantity,
+    decreaseQuantity,
+    clearCart,
+    Total,
+    user}) => {
   return (
     <>
-      <div class="bg-white m-5 rounded-3xl">
         <div class="container mx-auto">
           <div class="flex shadow-2xl rounded-3xl">
             <div class="w-full bg-white px-10 py-10 rounded-3xl">
-              <div class="flex justify-between border-b pb-8">
-                <div className="">
+              <div class="flex justify-center border-b pb-8">
+                {/* <div className="">
                   <Link
                     href="/"
                     class="flex font-semibold text-indigo-600 text-sm"
@@ -86,27 +28,29 @@ const Cart = ({
                 <div className="flex">
                   <h1 class="font-semibold text-2xl">Your Cart has</h1>
                   <h2 class="font-semibold text-2xl ml-2 text-indigo-600">
-                    {cartitem} Items
+                     Items
                   </h2>
-                </div>
+                </div> */}
+                <h2 className='text-bold text-3xl'>Your Orders</h2>
               </div>
               <div class="flex mt-10 mb-5">
                 <h3 class="font-semibold text-gray-600 text-xs uppercase w-2/5">
-                  Product Details
+                Order ID
                 </h3>
                 <h3 class="font-semibold text-center text-gray-600 text-xs uppercase w-1/5">
-                  Quantity
+                  Product Quantity
                 </h3>
                 <h3 class="font-semibold text-center text-gray-600 text-xs uppercase w-1/5">
-                  Price
+                  Total
                 </h3>
                 <h3 class="font-semibold text-center text-gray-600 text-xs uppercase w-1/5">
-                  Overall Total
+                  Order Status
                 </h3>
               </div>
-              {!Object.keys(Globalcart).length && (
+              {/* {Object.keys(Globalcart).length===0 && (
                 <div className="text-3xl">Cart is empty</div>
-              )}
+              )} */}
+
               {Object.keys(Globalcart).map((item) => {
                 return (
                   <div
@@ -203,9 +147,8 @@ const Cart = ({
             </div>
           </div>
         </div>
-      </div>
     </>
-  );
-};
+  )
+}
 
-export default Cart;
+export default MyOrder
