@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -6,8 +6,29 @@ import { useRouter } from 'next/router'
 const Navbar = ({user,logout}) => {
     // console.log(user.value)
     const router = useRouter();
-
+    
     const [dropDown, setDropDown] = useState(false)
+
+    useEffect(() => {
+        console.log("hey i am navbar.js useEffect");
+    
+        // try {
+        //   if (!localStorage.getItem("token")) {
+        //     router.push("/");
+        //     setGlobalcart(JSON.parse(localStorage.getItem("cart")));
+        //   }
+        // } catch (error) {
+        //   console.log(error);
+        //   localStorage.clear();
+        // }
+    
+        // const token = localStorage.getItem("token");
+        // if (token) {
+        //   console.log("changing user value");
+        //   setUser({ value: token });
+        //   setKey(Math.random());
+        // }
+      }, [router.query]); //passing router.query is to Re-render the _app so that this useEffect runs, now it will re render on every URL change.
 
     const removedropDown = ()=>{
         setTimeout(() => {
@@ -65,7 +86,7 @@ const Navbar = ({user,logout}) => {
                         </ul>
                         </div>}
                     </div>
-                    <Link href="/cart"><a className="mt-2 transition-colors duration-200 transform lg:mt-0 lg:mx-4 hover:text-gray-900 cursor-pointer dark:hover:text-teal-500"><i className="fa fa-shopping-cart"></i> Cart</a></Link>
+                    {user.value && <Link href="/Cart"><a className="mt-2 transition-colors duration-200 transform lg:mt-0 lg:mx-4 hover:text-gray-900 cursor-pointer dark:hover:text-teal-500"><i className="fa fa-shopping-cart"></i> Cart</a></Link>}
                 </div>
             </div>
         </nav>

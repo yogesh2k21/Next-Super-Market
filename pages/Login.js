@@ -64,8 +64,6 @@ const Login = () => {
   }else{
     toast.error('Wrong credentials!')
     //worng credentials
-
-    //run toastify
   }
 
 };
@@ -77,17 +75,6 @@ const Login = () => {
 
   return (
     <>
-      {/* <ToastContainer
-        position="top-center"
-        autoClose={1000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover={false}
-        /> */}
         <div className="min-h-full flex items-center justify-center py-28 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div>

@@ -1,12 +1,42 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import { useState } from "react";
-
-const Product = (props) => {
-const [items, setitems] = useState(props);
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
+const Product = ({product,increaseQuantity,Globalcart,user}) => {
+// const [items, setitems] = useState(product);
 const [Service, setService] = useState();
 const [Pin, setPin] = useState('');
 const [pinSpinner, setpinSpinner] = useState(false);
+const [cartButtonState, setcartButtonState] = useState(false)
+let router = useRouter();
+
+useEffect(() => {
+  if(Globalcart){
+    console.log(Globalcart);
+
+  }
+  if (product.id in Globalcart) {
+    console.log("useEffect of product page");
+    setcartButtonState(true)
+    // Globalcart[product_id].product_qty =  Globalcart[product_id].product_qty - product_qty;
+    // toast.success("Quantity Decreased!");
+  }
+}, [router.query]) //router.query is used to run this useEffect when url changes or page loads
+
+
+const addToCart=(product_id,product_name,product_price,product_qty,product_category,product_subtotal)=>{
+  if(!user.value){
+    toast.error('Please Login...')
+    setTimeout(() => {
+      router.push("/Login");
+    }, 2500);
+    return;
+  }
+  // console.log(product_id,product_name,product_price,product_qty,product_category,product_subtotal);
+  setcartButtonState(true);
+  increaseQuantity(product_id,product_name,product_price,product_qty,product_category,product_subtotal)
+}
 
 const onChangePin = (event) =>{
   setPin(event.target.value);
@@ -22,20 +52,20 @@ const CheckServiceAvailability = async () =>{
   setpinSpinner(false);
 }
 
-const rating=items.product.rating;
+const rating=product.rating;
 return (
 <>
-  <section className="text-gray-600 bg-gray-100 body-font overflow-hidden">
+  <section className="text-gray-600 bg-gray-100 body-font overflow-hidden py-6">
     <div className="container px-5 py-24 mx-auto">
       <div className="lg:w-4/5 mx-auto flex flex-wrap">
         <Image alt="ecommerce" className="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded"
-          src={`http://localhost:8000` + items.product.image} width={400} height={420} />
+          src={`http://localhost:8000` + product.image} width={400} height={420} />
         <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
           <h2 className="text-sm title-font text-gray-500 tracking-widest">
-            {items.product.category.toUpperCase()}
+            {product.category.toUpperCase()}
           </h2>
           <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">
-            {items.product.title}
+            {product.title}
           </h1>
           <div className="flex mb-4">
             <span className="flex items-center">
@@ -65,19 +95,22 @@ return (
                 </path>
               </svg>
               <span className="text-gray-600 ml-3">
-                {items.product.rating} Reviews count
+                {product.rating} Reviews count
               </span>
             </span>
           </div>
-          <p className="leading-relaxed">{items.product.description}</p>
+          <p className="leading-relaxed">{product.description}</p>
           <div className="flex mt-2">
             <span className="title-font font-medium text-2xl text-gray-900">
-              ${items.product.price}
+              ${product.price}
             </span>
-            <button
+            {!cartButtonState && <button disabled={cartButtonState} onClick={()=>{addToCart(product.id,product.title,product.price,1,product.category,product.price)}}
               className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">
-              Add Cart
-            </button>
+              Add to Cart
+            </button>}
+            {cartButtonState && <button disabled={cartButtonState} className="flex ml-auto text-white bg-slate-400 border-0 py-2 px-6 focus:outline-none hover:bg-grey-600 rounded">
+              Added
+            </button>}
             <button
               className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
               <svg fill="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-5 h-5"

@@ -22,7 +22,7 @@ class Product(models.Model):
 
 class ProductOrder(models.Model):
     customer = models.ForeignKey(Customer,on_delete=models.CASCADE)
-    ordered = models.BooleanField(default=False)
+    ordered = models.BooleanField(default=False)    #no need of this field remove it
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
 
