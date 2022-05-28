@@ -19,8 +19,6 @@ useEffect(() => {
   if (product.id in Globalcart) {
     console.log("useEffect of product page");
     setcartButtonState(true)
-    // Globalcart[product_id].product_qty =  Globalcart[product_id].product_qty - product_qty;
-    // toast.success("Quantity Decreased!");
   }
 }, [router.query]) //router.query is used to run this useEffect when url changes or page loads
 

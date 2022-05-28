@@ -33,22 +33,7 @@ const Cart = ({
       total_html = Total;
       console.log(total_html);
     }
-    // try {
-    //   if (!localStorage.getItem("token")) {
-    //     router.push("/");
-    // setGlobalcart(JSON.parse(localStorage.getItem("cart")));
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    //   localStorage.clear();
-    // }
-
-    // const token = localStorage.getItem("token");
-    // if (token) {
-    //   console.log("changing user value");
-    //   setUser({ value: token });
-    //   setKey(Math.random());
-    // }
+    
   }, [router.query, Math.random()]); //passing router.query is to Re-render the _app so that this useEffect runs, now it will re render on every URL change.
 
   const removeFromCart = (product_id, product_name) => {
@@ -60,9 +45,7 @@ const Cart = ({
     setGlobalcart(newCart);
     saveGlobalCart(newCart);
     toast.success(product_name + " is removed from Cart!");
-    // router.push("/Cart");
-    // delete Globalcart[product_id];
-    // Object.keys(Globalcart)
+    
   };
 
   const checkPromoCode = () => {
@@ -80,7 +63,23 @@ const Cart = ({
                     href="/"
                     class="flex font-semibold text-indigo-600 text-sm"
                   >
-                    <a>{"<---"} Continue Shopping</a>
+                    <a className="flex">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-6 w-6 mr-2"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                        />
+                      </svg>{" "}
+                      Continue Shopping
+                    </a>
                   </Link>
                 </div>
                 <div className="flex">

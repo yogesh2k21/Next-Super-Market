@@ -14,14 +14,6 @@ const Login = () => {
       router.push('/')
     }
   },[])
-  // console.log(localStorage === window.localStorage);
-  // if(localStorage.getItem('token')){ //if token is already set then this will redirext my page to home page
-  // e.preventDefault()
-  // router.push('http://localhost:3000')
-  // }
-  // else{
-  //   console.log('no local');
-  // }
 
   const [credentials, setCredentials] = useState({ email: "", password: "" });
 
@@ -44,16 +36,6 @@ const Login = () => {
     console.log(json);
     if (json.access) {
       toast.success('Successfully logged in')
-      // toast.success('🦄 Wow so easy!', {
-      //   position: "top-right",
-      //   autoClose: 1000,
-      //   hideProgressBar: false,
-      //   closeOnClick: true,
-      //   pauseOnHover: true,
-      //   draggable: true,
-      //   progress: undefined,
-      //   });
-      // Save the jwt token and redirect to home
       localStorage.setItem("token", json.access);
       
       //redirect to home after 0.5 sec

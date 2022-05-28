@@ -73,16 +73,12 @@ function MyApp({ Component, pageProps }) {
       if (newCart[product_id].product_qty <= 0) { //if quantity becomes equal to or less then 0 then it will delete object and Re-render the page.
         delete newCart[product_id];
         toast.success("Removed from Cart");
-        // router.push('/Cart')
       }else{ //if newCart[product_id].product_qty not equal to zer0
         toast.success("Quantity -1");
       }
     }else{
       router.push('/Cart')
     }
-    // if (newCart[product_id].product_qty <= 0) {
-    //   delete newCart[product_id];
-    // }
     
     setGlobalcart(newCart);
     saveGlobalCart(newCart);
