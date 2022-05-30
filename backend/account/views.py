@@ -1,9 +1,10 @@
+from ast import Return
 from django.http import JsonResponse
 # from django.middleware.csrf import get_token
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
-
+from rest_framework.decorators import api_view
 # Create your views here.
 # def csrfToken(request):
 #     response=JsonResponse({"info":"success - Set CSRF Cookies"})
@@ -20,3 +21,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+
+@api_view(['POST'])
+def signup(request):
+    print(request.body)
+    return JsonResponse({"success":True})

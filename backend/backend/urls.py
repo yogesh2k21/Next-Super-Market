@@ -19,13 +19,14 @@ from django.urls import include, path
 from . import settings
 from django.conf.urls.static import static
 from rest_framework_simplejwt.views import ( TokenRefreshView )
-from account.views import MyTokenObtainPairView
+from account.views import MyTokenObtainPairView,signup
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
     path('login', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
+    path('signup/',signup,name='signup'),
     path('product/', include('product.urls')),
     path('account/', include('account.urls')),
 ] + static(settings.MEDIA_URL,

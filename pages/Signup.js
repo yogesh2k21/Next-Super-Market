@@ -33,7 +33,7 @@ const Signup = () => {
     }
 
     e.preventDefault();
-    const response = await fetch("http://127.0.0.1:8000/signup", {
+    const response = await fetch("http://127.0.0.1:8000/signup/", {
       method: "POST", // *POST is use bcoz here we are login the user
       headers: {
         "Content-Type": "application/json",
