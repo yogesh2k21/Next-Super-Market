@@ -23,7 +23,7 @@ useEffect(() => {
 }, [router.query]) //router.query is used to run this useEffect when url changes or page loads
 
 
-const addToCart=(product_id,product_name,product_price,product_qty,product_category,product_subtotal)=>{
+const addToCart = async(product_id,product_name,product_price,product_qty,product_category,product_subtotal)=>{
   if(!user.value){
     toast.error('Please Login...')
     setTimeout(() => {
@@ -33,6 +33,12 @@ const addToCart=(product_id,product_name,product_price,product_qty,product_categ
   }
   // console.log(product_id,product_name,product_price,product_qty,product_category,product_subtotal);
   setcartButtonState(true);
+  const response = await fetch("http://127.0.0.1:8000/product/addToCart/"+product_id, {
+    method: "GET", // *POST is use bcoz here we are login the user
+    headers: {
+    "Content-Type": "application/json",
+    "Authorization":"Bearer "+localStorage.getItem("token")
+  }}); //request end
   increaseQuantity(product_id,product_name,product_price,product_qty,product_category,product_subtotal)
 }
 

@@ -138,12 +138,14 @@ MEDIA_URL = '/media/'
 
 STATIC_URL = 'static/'
 
-CORS_ALLOWED_ORIGINS = [
+CORS_ORIGIN_ALLOW_ALL = False
+
+CORS_ORIGIN_WHITELIST  = [
     "http://localhost:3000",
     "http://127.0.0.1:3000"
 ]
 
-# CORS_EXPOSE_HEADERS = ['Content-Type','X-CSRFToken']
+CORS_EXPOSE_HEADERS = ['Content-Type','X-CSRFToken','Authorization']
 # CORS_ALLOW_CREDENTIALS = True    #if False than your sessionID will not set in browser
 
 # SESSION_COOKIE_SAMESITE = "Lax"

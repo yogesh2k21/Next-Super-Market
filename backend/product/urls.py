@@ -6,4 +6,5 @@ urlpatterns = [
     path('category/', views.category,name='category'),
     path('getProductCategoryWise/<str:id>/', views.getProductCategoryWise,name='getProductCategoryWise'),
     path('<int:pk>', views.getItem,name='getItem'),
+    path('addToCart/<int:product_id>', views.addToCart,name='addToCart'),
 ]
