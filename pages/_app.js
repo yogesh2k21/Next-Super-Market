@@ -98,8 +98,9 @@ function MyApp({ Component, pageProps }) {
     setKey(Math.random());
     setUser({ value: null }); //setting user value to null so that _app.js will re render the navbar and remove the login botton and add logout button bcoz they are depend on user.value in code
     setTimeout(() => {
-      router.push("/");
-    }, 2000);
+      // router.push("/");
+      window.location.replace("http://localhost:3000/"); //hard redirect addToCart button disable state not working
+    }, 1500);
   };
 
   return (

@@ -43,12 +43,20 @@ const Signup = () => {
         first_name: credentials.first,
         last_name: credentials.last,
         email: credentials.email,
-        password1: credentials.password1,
+        password: credentials.password1,
       }),
     }); //request end
 
     const json = await response.json();
-    console.log(json);
+    console.log(json.message);
+    if(json.success==false){
+      toast.error(json.message);
+    }else{
+      toast.success(json.message);
+      setTimeout(() => {
+        router.push('/Login')
+      }, 2000);
+    }
   };
 
   return (

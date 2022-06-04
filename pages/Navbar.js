@@ -51,8 +51,9 @@ const Navbar = ({user,logout}) => {
                 <div className="flex flex-col text-gray-600 capitalize dark:text-gray-500 lg:flex lg:px-16 lg:-mx-4 lg:flex-row lg:items-center">
                 <Link href="/explore"><a className='mt-2 transition-colors duration-200 transform lg:mt-0 lg:mx-4 hover:text-gray-900 cursor-pointer dark:hover:text-teal-500'> Explore</a></Link>
                 <Link href="/about"><a className='mt-2 transition-colors duration-200 transform lg:mt-0 lg:mx-4 hover:text-gray-900 cursor-pointer dark:hover:text-teal-500'> About</a></Link>
+                {!user.value && <Link href="/Login"><a className='mt-2 transition-colors duration-200 transform lg:mt-0 lg:mx-4 hover:text-gray-900 cursor-pointer dark:hover:text-teal-500'>Login</a></Link>}
 
-                {!user.value && <Link href="/Login"><a className="text-sm py-2 px-4 font-normal w-full block bg-transparent text-gray-700 hover:bg-gray-100">Login <i className="fa fa-sign-out"></i></a></Link>}
+                {/* {!user.value && <Link href="/Login"><a className="text-sm py-2 px-4 font-normal w-full block bg-transparent text-gray-700 hover:bg-gray-100">Login <i className="fa fa-sign-out"></i></a></Link>} */}
                     {user.value && <div className='dropdown'>
                         <button onMouseOver={()=>setDropDown(true)} onMouseLeave={removedropDown} className="mt-2 transition-colors duration-200 transform lg:mt-0 lg:mx-4 hover:text-gray-900 cursor-pointer dark:hover:text-teal-500" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">Settings <i className={dropDown===false?"fa fa-angle-down":"fa fa-angle-up"}></i> </button>
                         {dropDown && <div>
@@ -62,7 +63,7 @@ const Navbar = ({user,logout}) => {
                                 <Link href="/MyOrders"><a className="text-sm py-2 px-4 font-normal block w-full bg-transparent text-gray-700 hover:bg-gray-100"><i className='fa fa-reorder'></i> My Orders</a></Link>
                                 <Link href="/Wishlist"><a className="text-sm py-2 px-4 font-normal block w-full bg-transparent text-gray-700 hover:bg-gray-100"><i className="fa fa-heart"></i> Wishlist</a></Link>
                                 <Link href="/Review"><a className="text-sm py-2 px-4 font-normal block w-full bg-transparent text-gray-700 hover:bg-gray-100"><i className="fa fa-comments"></i> My Reviews</a></Link>
-                                {!user.value && <Link href="/Login"><a className="text-sm py-2 px-4 font-normal w-full block bg-transparent text-gray-700 hover:bg-gray-100">Login <i className="fa fa-sign-out"></i></a></Link>}
+                                {/* {!user.value && <Link href="/Login"><a className="text-sm py-2 px-4 font-normal w-full block bg-transparent text-gray-700 hover:bg-gray-100">Login <i className="fa fa-sign-out"></i></a></Link>} */}
                                 {user.value && <a onClick={logout} className="text-sm py-2 px-4 cursor-pointer font-normal w-full block bg-transparent text-gray-700 hover:bg-gray-100">Logout <i className="fa fa-sign-out"></i></a>}
                                 <hr/>
                                 <Link href="/contact"><a className="text-sm py-2 px-4 font-normal block w-full bg-transparent text-gray-700 hover:bg-gray-100"><i className="mt-1 p-1 fa fa-headphones"></i> 24x7 Customer Care</a></Link>
