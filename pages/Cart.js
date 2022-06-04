@@ -36,7 +36,13 @@ const Cart = ({
     
   }, [router.query, Math.random()]); //passing router.query is to Re-render the _app so that this useEffect runs, now it will re render on every URL change.
 
-  const removeFromCart = (product_id, product_name) => {
+  const removeFromCart = async (product_id, product_name) => {
+    const response = await fetch("http://127.0.0.1:8000/product/deleteFromCart/"+product_id, {
+      method: "GET",
+      headers: {
+      "Content-Type": "application/json",
+      "Authorization":"Bearer "+localStorage.getItem("token")
+    }}); //request end
     console.log(product_id);
     console.log(Globalcart);
     let newCart = Globalcart;

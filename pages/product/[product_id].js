@@ -33,12 +33,6 @@ const addToCart = async(product_id,product_name,product_price,product_qty,produc
   }
   // console.log(product_id,product_name,product_price,product_qty,product_category,product_subtotal);
   setcartButtonState(true);
-  const response = await fetch("http://127.0.0.1:8000/product/addToCart/"+product_id, {
-    method: "GET", // *POST is use bcoz here we are login the user
-    headers: {
-    "Content-Type": "application/json",
-    "Authorization":"Bearer "+localStorage.getItem("token")
-  }}); //request end
   increaseQuantity(product_id,product_name,product_price,product_qty,product_category,product_subtotal)
 }
 

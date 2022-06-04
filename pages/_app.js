@@ -45,7 +45,13 @@ function MyApp({ Component, pageProps }) {
     setTotal(subt)
   };
 
-  const increaseQuantity = (product_id,product_name,product_price,product_qty,product_category,product_subtotal) => {
+  const increaseQuantity = async (product_id,product_name,product_price,product_qty,product_category,product_subtotal) => {
+    const response = await fetch("http://127.0.0.1:8000/product/addToCart/"+product_id, {
+      method: "GET", 
+      headers: {
+      "Content-Type": "application/json",
+      "Authorization":"Bearer "+localStorage.getItem("token")
+    }}); //request end
     console.log(product_id,product_name,product_price,product_qty,product_category,product_subtotal);
     console.log("incresing");
     let newCart = Globalcart;
@@ -63,7 +69,13 @@ function MyApp({ Component, pageProps }) {
     saveGlobalCart(newCart);
   };
 
-  const decreaseQuantity = (product_id,product_name,product_price,product_qty,product_category,product_subtotal) => {
+  const decreaseQuantity = async (product_id,product_name,product_price,product_qty,product_category,product_subtotal) => {
+    const response = await fetch("http://127.0.0.1:8000/product/removeFromCart/"+product_id, {
+      method: "GET",
+      headers: {
+      "Content-Type": "application/json",
+      "Authorization":"Bearer "+localStorage.getItem("token")
+    }}); //request end
     console.log(product_id,product_name,product_price,product_qty,product_category,product_subtotal);
     console.log("decreasing");
     let newCart = Globalcart;
@@ -85,7 +97,13 @@ function MyApp({ Component, pageProps }) {
     // router.push('/Cart')
   };
 
-  const clearCart = () => {
+  const clearCart = async () => {
+    const response = await fetch("http://127.0.0.1:8000/product/ClearCart/", {
+      method: "GET", 
+      headers: {
+      "Content-Type": "application/json",
+      "Authorization":"Bearer "+localStorage.getItem("token")
+    }}); //request end
     setGlobalcart({});
     saveGlobalCart({});
     toast.success("Cart is Empty now!");

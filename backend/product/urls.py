@@ -7,4 +7,7 @@ urlpatterns = [
     path('getProductCategoryWise/<str:id>/', views.getProductCategoryWise,name='getProductCategoryWise'),
     path('<int:pk>', views.getItem,name='getItem'),
     path('addToCart/<int:product_id>', views.addToCart,name='addToCart'),
+    path('removeFromCart/<int:product_id>', views.removeFromCart,name='removeFromCart'),
+    path('deleteFromCart/<int:product_id>', views.deleteFromCart,name='deleteFromCart'),
+    path('ClearCart/', views.ClearCart,name='ClearCart'),
 ]

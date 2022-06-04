@@ -50,3 +50,61 @@ def addToCart(request,product_id):
     print("order saved")
     return JsonResponse({"success":True}) 
 
+
+@api_view(['GET'])
+@permission_classes((IsAuthenticated,))
+@authentication_classes([JWTAuthentication])
+def removeFromCart(request,product_id):
+    try:
+        product=Product.objects.get(id=product_id)
+        customer=Customer.objects.get(user=request.user)
+    except:
+        return JsonResponse({"success":False}) 
+    try:
+        OldCartProduct=ProductOrder.objects.get(customer=customer,product=product,ordered=False)
+        OldCartProduct.quantity=OldCartProduct.quantity-1
+        if OldCartProduct.quantity==0:
+            OldCartProduct.delete()
+        else:
+            OldCartProduct.save(update_fields=['quantity'])
+    except Exception as e:
+        print(e)
+        return JsonResponse({"success":False}) 
+    print("removed")
+    return JsonResponse({"success":True}) 
+
+
+@api_view(['GET'])
+@permission_classes((IsAuthenticated,))
+@authentication_classes([JWTAuthentication])
+def ClearCart(request):
+    try:
+        customer=Customer.objects.get(user=request.user)
+    except:
+        return JsonResponse({"success":False}) 
+    try:
+        OldCartProduct=ProductOrder.objects.filter(customer=customer,ordered=False)
+        OldCartProduct.delete()
+    except Exception as e:
+        print(e)
+        return JsonResponse({"success":False}) 
+    print("all deleted")
+    return JsonResponse({"success":True}) 
+
+@api_view(['GET'])
+@permission_classes((IsAuthenticated,))
+@authentication_classes([JWTAuthentication])
+def deleteFromCart(request,product_id):
+    try:
+        product=Product.objects.get(id=product_id)
+        customer=Customer.objects.get(user=request.user)
+    except:
+        return JsonResponse({"success":False}) 
+    try:
+        OldCartProduct=ProductOrder.objects.filter(customer=customer,product=product,ordered=False).delete()
+    except Exception as e:
+        print(e)
+        return JsonResponse({"success":False}) 
+    print("deleted from cart")
+    return JsonResponse({"success":True}) 
+
