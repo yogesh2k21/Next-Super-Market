@@ -108,3 +108,33 @@ def deleteFromCart(request,product_id):
     print("deleted from cart")
     return JsonResponse({"success":True}) 
 
+
+@api_view(['GET'])
+@permission_classes((IsAuthenticated,))
+@authentication_classes([JWTAuthentication])
+def getCart(request):
+    try:
+        customer=Customer.objects.get(user=request.user)
+    except:
+        return JsonResponse({"success":False}) 
+    print(request.user)
+    try:
+        CartProduct=ProductOrder.objects.filter(customer=customer,ordered=False).values('id','quantity','product__id','product__title','product__category__title','product__image','product__price','product__image')
+        data={}
+        for p in CartProduct:
+            obj={
+                "product_name":p['product__title'],
+                "product_price":p['product__price'],
+                "product_qty":p['quantity'],
+                "product_category":p['product__category__title'],
+                "product_subtotal":p['quantity']*p['product__price'],
+                "url":p['product__image'],
+            }
+            data.update({p['product__id']:obj})
+        print(CartProduct)
+        print("deleted from cart")
+        return JsonResponse(data,safe=True) 
+    except Exception as e:
+        print(e)
+        return JsonResponse({"success":False}) 
+

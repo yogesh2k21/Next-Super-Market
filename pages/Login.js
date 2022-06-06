@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { toast } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
 
-const Login = () => {
+const Login = ({setGlobalcart,setGlobalcart}) => {
 
   const router = useRouter();
   useEffect(()=>{
@@ -37,7 +37,17 @@ const Login = () => {
     if (json.access) {
       toast.success('Successfully logged in')
       localStorage.setItem("token", json.access);
-      
+      const data = await fetch("http://127.0.0.1:8000/product/getCart/", {
+      method: "GET",
+      headers: {
+      "Content-Type": "application/json",
+      "Authorization":"Bearer "+localStorage.getItem("token")
+      }}); //request end
+      const product = await data.json();
+      console.log(product);
+      localStorage.setItem("cart",JSON.stringify(product));
+      setGlobalcart(JSON.parse(localStorage.getItem("cart")));
+      console.log(localStorage.getItem("cart"));
       //redirect to home after 0.5 sec
       setTimeout(() => {
         router.push('/')

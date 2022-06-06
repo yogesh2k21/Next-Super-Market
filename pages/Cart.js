@@ -14,27 +14,108 @@ const Cart = ({
   clearCart,
   Total,
   user,
+  dataBaseCart,
+  cartitems,
+  logout
 }) => {
   const [promocode, setPromocode] = useState("");
   const [cartitem, setCartitem] = useState(0);
   let router = useRouter();
   let total_html = "";
 
-  useEffect(() => {
+  console.log(cartitems);
+
+  // const initialCart=async()=>{
+  //   const data = await fetch("http://127.0.0.1:8000/product/getCart/", {
+  //     method: "GET",
+  //     headers: {
+  //     "Content-Type": "application/json",
+  //     "Authorization":"Bearer "+localStorage.getItem("token")
+  //   }
+  // }); //request end
+  // const product = await data.json();
+  // console.log(product);
+  // // localStorage.removeItem("cart")
+  // localStorage.setItem("cart",JSON.stringify(product))
+  // JSON.parse(localStorage.getItem("cart"))
+  // }
+
+
+
+  useEffect(async () => {
     console.log("hey i am Cart.js useEffect");
     if (!user.value) {
       router.push("/");
     }
-    // console.log(Total===0);
-    setCartitem(Object.keys(Globalcart).length);
-    if (Total == 0) {
-      total_html = "";
-    } else {
-      total_html = Total;
-      console.log(total_html);
+    const data = await fetch("http://127.0.0.1:8000/product/getCart/", {
+      method: "GET",
+      headers: {
+      "Content-Type": "application/json",
+      "Authorization":"Bearer "+localStorage.getItem("token")
     }
+  }); //request end
+  const product = await data.json();
+  console.log(product);
+  // if(product["code"]==true){
+
+    // localStorage.removeItem("cart")
+    localStorage.setItem("cart",JSON.stringify(product))
+    // setGlobalcart(JSON.parse(localStorage.getItem("cart")))
+    saveGlobalCart(product)
+    // JSON.parse(localStorage.getItem("cart"))
+    // localStorage.removeItem("cart")
+    // localStorage.setItem("cart",JSON.stringify(Globalcart))
+  //   const data = await fetch("http://127.0.0.1:8000/product/getCart/", {
+  //     method: "GET",
+  //     headers: {
+  //     "Content-Type": "application/json",
+  //     "Authorization":"Bearer "+localStorage.getItem("token")
+  //   }
+  // }); //request end
+  // const product = await data.json();
+  // console.log(product);
+  // // localStorage.removeItem("cart")
+  // // setGlobalcart(localStorage.getItem("cart"))
+  // localStorage.setItem("cart",JSON.stringify(product))
+  // setGlobalcart(JSON.parse(localStorage.getItem("cart")))
+  // console.log(Total===0);
+  setCartitem(Object.keys(Globalcart).length);
+  if (Total == 0) {
+    total_html = "";
+  } else {
+    total_html = Total;
+    console.log(total_html);
+  }
+// }else{
+
+//   localStorage.clear()
+//   toast.error('Session timeout, Please Login Again!')
+//   setTimeout(() => {
     
-  }, [router.query, Math.random()]); //passing router.query is to Re-render the _app so that this useEffect runs, now it will re render on every URL change.
+//     logout()
+//   }, 1);
+  // console.log('Session timeout, Please Login Again!');
+  // router.push('/Login')
+// }
+  // initialCart(JSON.parse(localStorage.getItem("cart")))
+    
+  }, [router.query,Math.random()]); //passing router.query is to Re-render the _app so that this useEffect runs, now it will re render on every URL change.
+
+  // const initialCart=async()=>{
+  //   const data = await fetch("http://127.0.0.1:8000/product/getCart/", {
+  //     method: "GET",
+  //     headers: {
+  //     "Content-Type": "application/json",
+  //     "Authorization":"Bearer "+localStorage.getItem("token")
+  //   }
+  // }); //request end
+  // const product = await data.json();
+  // console.log(product);
+  // localStorage.removeItem("cart")
+  // localStorage.setItem("cart",JSON.stringify(product))
+  // }
+
+  // initialCart()
 
   const removeFromCart = async (product_id, product_name) => {
     const response = await fetch("http://127.0.0.1:8000/product/deleteFromCart/"+product_id, {
@@ -122,7 +203,7 @@ const Cart = ({
                       <div class="w-20">
                         <Image
                           class="h-24 rounded-lg"
-                          src={`http://localhost:8000/media/productImages/1.jpg`}
+                          src={`http://localhost:8000/media/${Globalcart[item].url}`}
                           height={110}
                           width={100}
                           alt={Globalcart[item].product_name}
@@ -212,5 +293,46 @@ const Cart = ({
     </>
   );
 };
+
+// export async function getStaticProps() {
+  // Call an external API endpoint to get posts
+  // const res = await fetch('http://127.0.0.1:8000/product/getCart/',{
+  //   method: "GET",
+  //     headers: {
+  //     "Content-Type": "application/json",
+  //     "Authorization":"Bearer "+localStorage.getItem("token")
+  // })
+  // const data = await fetch("http://127.0.0.1:8000/product/getCart/", {
+  //     method: "GET",
+  //     headers: {
+  //     "Content-Type": "application/json",
+  //     "Authorization":"Bearer "+localStorage.getItem("token")
+  //     }}); //request end
+  // const cartitems = await data.json()
+
+  // By returning { props: { posts } }, the Blog component
+  // will receive `posts` as a prop at build time
+//   return {
+//     props: {
+//       cartitems,
+//     },
+//   }
+// }
+
+// export async function getServerSideProps({req}) {
+//   console.log(req.headers);
+//   const data = await fetch("http://127.0.0.1:8000/product/getCart", {
+//       method: "GET",
+//       headers: {
+//       "Content-Type": "application/json",
+//       "Authorization":"Bearer "+localStorage.getItem("token")
+//     }
+//   }); //request end
+//   // let data = await fetch(`http://127.0.0.1:8000/product/getCart`);
+//   let dataBaseCart = await data.json();
+//   return {
+//   props: { dataBaseCart }, // will be passed to the page component as props
+//   };
+// }
 
 export default Cart;

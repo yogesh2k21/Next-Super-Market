@@ -26,10 +26,17 @@ function MyApp({ Component, pageProps }) {
     }
 
     const token = localStorage.getItem("token");
+    
     if (token) {
       console.log("changing user value");
       setUser({ value: token });
       setKey(Math.random());
+    let subt = 0;
+    let keys=Object.keys(Globalcart)
+    for (let i = 0; i < keys.length; i++) {
+      subt += Globalcart[keys[i]].product_subtotal;
+    }
+    setTotal(subt)
     }
   }, [router.query]); //passing router.query is to Re-render the _app so that this useEffect runs, now it will re render on every URL change.
 
@@ -111,13 +118,13 @@ function MyApp({ Component, pageProps }) {
 
   const logout = () => {
     console.log("removing token from localStorage....");
-    toast.success("Successfully logout!");
     localStorage.clear();
+    toast.success("Successfully logout!");
     setKey(Math.random());
     setUser({ value: null }); //setting user value to null so that _app.js will re render the navbar and remove the login botton and add logout button bcoz they are depend on user.value in code
     setTimeout(() => {
-      // router.push("/");
-      window.location.replace("http://localhost:3000/"); //hard redirect addToCart button disable state not working
+      router.push("/");
+      // window.location.replace("http://localhost:3000/"); //hard redirect addToCart button disable state not working
     }, 1500);
   };
 
@@ -148,6 +155,7 @@ function MyApp({ Component, pageProps }) {
         Globalcart={Globalcart}
         Total={Total}
         user={user}
+        logout={logout}
         {...pageProps}
       />
       <Footer />
