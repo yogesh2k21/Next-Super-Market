@@ -53,7 +53,7 @@ const Checkout = ({ Globalcart,Total }) => {
     }
     e.preventDefault();
     const response = await fetch(
-      "http://127.0.0.1:8000/product/getAddressMakeOrder/",
+      `${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/getAddressMakeOrder/`,
       {
         method: "POST", // *POST is use bcoz here we are login the user
         headers: {
@@ -107,7 +107,7 @@ const Checkout = ({ Globalcart,Total }) => {
                             <div class="flex items-start">
                               <img
                                 class="flex-shrink-0 object-cover w-16 h-16 rounded-lg"
-                                src={`http://localhost:8000${Globalcart[item].product_image}`}
+                                src={`${process.env.NEXT_PUBLIC_MY_BACK_HOST}${Globalcart[item].product_image}`}
                                 alt=""
                               />
 

@@ -53,7 +53,7 @@ function MyApp({ Component, pageProps }) {
   };
 
   const increaseQuantity = async (product_id,product_name,product_price,product_qty,product_category,product_subtotal,product_image) => {
-    const response = await fetch("http://127.0.0.1:8000/product/addToCart/"+product_id, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/addToCart/`+product_id, {
       method: "GET", 
       headers: {
       "Content-Type": "application/json",
@@ -77,7 +77,7 @@ function MyApp({ Component, pageProps }) {
   };
 
   const decreaseQuantity = async (product_id,product_name,product_price,product_qty,product_category,product_subtotal) => {
-    const response = await fetch("http://127.0.0.1:8000/product/removeFromCart/"+product_id, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/removeFromCart/`+product_id, {
       method: "GET",
       headers: {
       "Content-Type": "application/json",
@@ -105,7 +105,7 @@ function MyApp({ Component, pageProps }) {
   };
 
   const clearCart = async () => {
-    const response = await fetch("http://127.0.0.1:8000/product/ClearCart/", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/ClearCart/`, {
       method: "GET", 
       headers: {
       "Content-Type": "application/json",

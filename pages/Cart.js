@@ -47,7 +47,7 @@ const Cart = ({
     if (!user.value) {
       router.push("/");
     }
-    const data = await fetch("http://127.0.0.1:8000/product/getCart/", {
+    const data = await fetch(`${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/getCart/`, {
       method: "GET",
       headers: {
       "Content-Type": "application/json",
@@ -120,7 +120,7 @@ const Cart = ({
   // initialCart()
 
   const removeFromCart = async (product_id, product_name) => {
-    const response = await fetch("http://127.0.0.1:8000/product/deleteFromCart/"+product_id, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/deleteFromCart/`+product_id, {
       method: "GET",
       headers: {
       "Content-Type": "application/json",
@@ -213,7 +213,7 @@ const Cart = ({
                       <div class="w-20">
                         <Image
                         class="h-24 rounded-lg"
-                        src={`http://localhost:8000${Globalcart[item].product_image}`}
+                        src={`${process.env.NEXT_PUBLIC_MY_BACK_HOST}${Globalcart[item].product_image}`}
                         height={110}
                         width={100}
                         alt={Globalcart[item].product_name}

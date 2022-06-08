@@ -21,13 +21,13 @@ return (
         <div className="max-w-2xl sm:py-2 sm:px-6 lg:max-w-7xl lg:px-1">
           <div className="mt- grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
             {products.map((product, i) => {
-            return (
-            <Link key={i} href={"product/" + product.id} passHref>
+              return (
+                <Link key={i} href={"product/" + product.id} passHref>
             <a>
               <div className="group relative">
                 <div
                   className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
-                  <Image src={`http://localhost:8000${product.image}`} width={350} height={450} alt={product.description} />
+                  <Image src={`${process.env.NEXT_PUBLIC_MY_BACK_HOST}${product.image}`} width={350} height={450} alt={product.description} />
                 </div>
                 <div className="mt-4 flex justify-between">
                   <div>
@@ -59,9 +59,9 @@ return (
 };
 
 export async function getServerSideProps(context) {
-let products = await fetch("http://127.0.0.1:8000/"); //fetching products
+let products = await fetch(`${process.env.NEXT_PUBLIC_MY_BACK_HOST}`); //fetching products
 let product = await products.json();
-let banners = await fetch("http://127.0.0.1:8000/banner"); //fetching banners
+let banners = await fetch(`${process.env.NEXT_PUBLIC_MY_BACK_HOST}/banner`); //fetching banners
 let banner = await banners.json();
 return {
 props: { product, banner }, // will be passed to the page component as props

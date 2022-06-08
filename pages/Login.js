@@ -19,7 +19,7 @@ const Login = ({setGlobalcart,setGlobalcart}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch("http://127.0.0.1:8000/login", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_MY_BACK_HOST}/login`, {
     method: "POST", // *POST is use bcoz here we are login the user
     headers: {
     "Content-Type": "application/json",
@@ -37,7 +37,7 @@ const Login = ({setGlobalcart,setGlobalcart}) => {
     if (json.access) {
       toast.success('Successfully logged in')
       localStorage.setItem("token", json.access);
-      const data = await fetch("http://127.0.0.1:8000/product/getCart/", {
+      const data = await fetch(`${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/getCart/`, {
       method: "GET",
       headers: {
       "Content-Type": "application/json",

@@ -32,7 +32,7 @@ const Banner = (props) => {
       {banners.map((banner,i)=>{
         return (
           <SwiperSlide key={i}>
-            <Image src={`http://localhost:8000${banner.image}`} width={10000} height={4510} alt={`${banner.title}`} />
+            <Image src={`${process.env.NEXT_PUBLIC_MY_BACK_HOST}${banner.image}`} width={10000} height={4510} alt={`${banner.title}`} />
           </SwiperSlide>
         )
       })}

@@ -43,7 +43,7 @@ const onChangePin = (event) =>{
 const CheckServiceAvailability = async () =>{
   setpinSpinner(true);
   console.log(Pin);
-  let data = await fetch(`http://127.0.0.1:8000/checkPin/${Pin}/`);
+  let data = await fetch(`${process.env.NEXT_PUBLIC_MY_BACK_HOST}/checkPin/${Pin}/`);
   let res = await data.json();
   console.log(res.Available);
   setService(res.Available);
@@ -57,7 +57,7 @@ return (
     <div className="container px-5 py-24 mx-auto">
       <div className="lg:w-4/5 mx-auto flex flex-wrap">
         <Image alt="ecommerce" className="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded"
-          src={`http://localhost:8000` + product.image} width={400} height={420} />
+          src={`${process.env.NEXT_PUBLIC_MY_BACK_HOST}` + product.image} width={400} height={420} />
         <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
           <h2 className="text-sm title-font text-gray-500 tracking-widest">
             {product.category.toUpperCase()}
@@ -141,7 +141,7 @@ return (
 
 export async function getServerSideProps(context) {
 const { product_id } = context.query;
-let data = await fetch(`http://127.0.0.1:8000/product/${product_id}`);
+let data = await fetch(`${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/${product_id}`);
 let product = await data.json();
 return {
 props: { product }, // will be passed to the page component as props
