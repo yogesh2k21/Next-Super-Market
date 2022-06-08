@@ -23,7 +23,7 @@ useEffect(() => {
 }, [router.query]) //router.query is used to run this useEffect when url changes or page loads
 
 
-const addToCart = async(product_id,product_name,product_price,product_qty,product_category,product_subtotal)=>{
+const addToCart = async(product_id,product_name,product_price,product_qty,product_category,product_subtotal,product_image)=>{
   if(!user.value){
     toast.error('Please Login...')
     setTimeout(() => {
@@ -33,7 +33,7 @@ const addToCart = async(product_id,product_name,product_price,product_qty,produc
   }
   // console.log(product_id,product_name,product_price,product_qty,product_category,product_subtotal);
   setcartButtonState(true);
-  increaseQuantity(product_id,product_name,product_price,product_qty,product_category,product_subtotal)
+  increaseQuantity(product_id,product_name,product_price,product_qty,product_category,product_subtotal,product_image)
 }
 
 const onChangePin = (event) =>{
@@ -102,7 +102,7 @@ return (
             <span className="title-font font-medium text-2xl text-gray-900">
               ${product.price}
             </span>
-            {!cartButtonState && <button disabled={cartButtonState} onClick={()=>{addToCart(product.id,product.title,product.price,1,product.category,product.price)}}
+            {!cartButtonState && <button disabled={cartButtonState} onClick={()=>{addToCart(product.id,product.title,product.price,1,product.category,product.price,product.image)}}
               className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">
               Add to Cart
             </button>}

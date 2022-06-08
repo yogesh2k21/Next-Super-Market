@@ -23,8 +23,8 @@ const Cart = ({
   let router = useRouter();
   let total_html = "";
 
-  console.log(cartitems);
-
+  console.log(cartitems+" cartitems");
+ console.log(Globalcart);
   // const initialCart=async()=>{
   //   const data = await fetch("http://127.0.0.1:8000/product/getCart/", {
   //     method: "GET",
@@ -86,6 +86,8 @@ const Cart = ({
     total_html = Total;
     console.log(total_html);
   }
+  // let a="dasd"
+  // a.upp
 // }else{
 
 //   localStorage.clear()
@@ -140,9 +142,9 @@ const Cart = ({
   };
   return (
     <>
-      <div class="bg-white m-5 rounded-3xl">
+      <div class="bg-white m-5 rounded-3xl  min-h-screen">
         <div class="container mx-auto">
-          <div class="flex shadow-2xl rounded-3xl">
+          <div class="flex shadow-2xl rounded-3xl min-h-0">
             <div class="w-full bg-white px-10 py-10 rounded-3xl">
               <div class="flex justify-between border-b pb-8">
                 <div className="">
@@ -191,7 +193,15 @@ const Cart = ({
                 </h3>
               </div>
               {!Object.keys(Globalcart).length && (
-                <div className="text-3xl">Cart is empty</div>
+                <div className="text-3xl flex justify-center py-16">
+                  <Image
+                        class="h-24 rounded-lg"
+                        src="/emptyCart.png"
+                        height={350}
+                        width={500}
+                        alt={"Empty Cart"}
+                        />
+                </div>
               )}
               {Object.keys(Globalcart).map((item) => {
                 return (
@@ -202,16 +212,21 @@ const Cart = ({
                     <div class="flex w-2/5">
                       <div class="w-20">
                         <Image
-                          class="h-24 rounded-lg"
-                          src={`http://localhost:8000/media/${Globalcart[item].url}`}
-                          height={110}
-                          width={100}
-                          alt={Globalcart[item].product_name}
+                        class="h-24 rounded-lg"
+                        src={`http://localhost:8000${Globalcart[item].product_image}`}
+                        height={110}
+                        width={100}
+                        alt={Globalcart[item].product_name}
                         />
                       </div>
-                      <div class="flex flex-col justify-between ml-4  flex-grow">
+
+                      <div class="flex flex-col justify-between ml-4 flex-grow">
                         <span class="font-bold text-sm items-center">
-                          {Globalcart[item].product_name}
+                      <Link href={`/product/${item}/`}>
+                        <a>
+                          {Globalcart[item].product_name.toUpperCase()}
+                      </a>
+                      </Link>
                         </span>
                         <span class="text-red-500 text-xs">
                           {Globalcart[item].product_category}
@@ -220,7 +235,7 @@ const Cart = ({
                           onClick={() => {
                             removeFromCart(item, Globalcart[item].product_name);
                           }}
-                          class="flex font-semibold hover:text-red-500 text-gray-500 text-xs"
+                          class="flex w-5 font-semibold hover:text-red-500 text-gray-500 text-xs"
                         >
                           Remove
                         </button>
@@ -263,7 +278,7 @@ const Cart = ({
                   </div>
                 );
               })}
-              <div className="md:flex justify-around  py-8 my-4 border-t border-gray-200">
+              {Total!=0 && (<div className="md:flex justify-around  py-8 my-4 border-t border-gray-200">
                 <div className="md:pl-3 md:w-3/4 w-full">
                   {
                     <button
@@ -276,16 +291,16 @@ const Cart = ({
                   }
                 </div>
                 <div className="md:pl-3 md:w-3/4 w-full">
-                  {
+                  <Link href={'/Checkout'}>
                     <button
                       disabled={Total === 0 ? true : false}
                       className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 m-5 focus:outline-none hover:bg-indigo-600 rounded"
-                    >
-                      $ {Total === 0 ? "0" : Math.ceil(Total)} Checkout
+                      >
+                      $ {Total === 0 ? "0d" : Math.ceil(Total)} Checkout
                     </button>
-                  }
+                  </Link>
                 </div>
-              </div>
+              </div>)}
             </div>
           </div>
         </div>

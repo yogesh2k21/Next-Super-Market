@@ -33,6 +33,8 @@ class ProductOrder(models.Model):
         return self.quantity * self.product.price
 
 class BillingAddress(models.Model):
+    full_name=models.CharField(max_length=50,null=True)
+    phone=models.CharField(max_length=15,null=True)
     address = models.CharField(max_length=150)
     city = models.CharField(max_length=50)
     state = models.CharField(max_length=50)
@@ -47,6 +49,7 @@ class Order(models.Model):
     start_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField()
     ordered = models.BooleanField(default=False)
+    amount=models.FloatField(default=0.0)
     address=models.ForeignKey(BillingAddress, on_delete=models.CASCADE,null=True,blank=True)
 
     def __str__(self):

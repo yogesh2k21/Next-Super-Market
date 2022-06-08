@@ -52,14 +52,14 @@ function MyApp({ Component, pageProps }) {
     setTotal(subt)
   };
 
-  const increaseQuantity = async (product_id,product_name,product_price,product_qty,product_category,product_subtotal) => {
+  const increaseQuantity = async (product_id,product_name,product_price,product_qty,product_category,product_subtotal,product_image) => {
     const response = await fetch("http://127.0.0.1:8000/product/addToCart/"+product_id, {
       method: "GET", 
       headers: {
       "Content-Type": "application/json",
       "Authorization":"Bearer "+localStorage.getItem("token")
     }}); //request end
-    console.log(product_id,product_name,product_price,product_qty,product_category,product_subtotal);
+    console.log(product_id,product_name,product_price,product_qty,product_category,product_subtotal,product_image);
     console.log("incresing");
     let newCart = Globalcart;
     if (product_id in newCart) {
@@ -68,7 +68,7 @@ function MyApp({ Component, pageProps }) {
       toast.success("Quantity +1");
       // router.push('/Cart')
     } else {
-      newCart[product_id] = { product_name, product_price, product_qty: 1 ,product_category,product_subtotal};
+      newCart[product_id] = { product_name, product_price, product_qty: 1 ,product_category,product_subtotal,product_image}; //new item adding
       toast.success(product_name.slice(0, 11) + "..." +" in Cart Now!");
     }
     

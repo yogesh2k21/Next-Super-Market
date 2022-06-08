@@ -1,6 +1,10 @@
+from datetime import datetime
+from django.utils import timezone
+import json
 from django.http import JsonResponse
+from pytz import timezone
 from .serializers import ProductSerializer,CategorySerializer
-from product.models import Product,Category,ProductOrder
+from product.models import Product,Category,ProductOrder,BillingAddress,Order
 from account.models import Customer
 from rest_framework.decorators import api_view, permission_classes,authentication_classes
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -128,12 +132,52 @@ def getCart(request):
                 "product_qty":p['quantity'],
                 "product_category":p['product__category__title'],
                 "product_subtotal":p['quantity']*p['product__price'],
-                "url":p['product__image'],
+                "product_image":"/media/"+p['product__image'],
             }
             data.update({p['product__id']:obj})
         print(CartProduct)
         print("deleted from cart")
         return JsonResponse(data,safe=True) 
+    except Exception as e:
+        print(e)
+        return JsonResponse({"success":False}) 
+
+@api_view(['POST'])
+@permission_classes((IsAuthenticated,))
+@authentication_classes([JWTAuthentication])
+def getAddressMakeOrder(request):
+    try:
+        received_json_data = json.loads(request.body.decode("utf-8"))
+        customer=Customer.objects.get(user=request.user)
+    except:
+        return JsonResponse({"success":False}) 
+    print(request.user)
+    try:
+        address=BillingAddress(
+            full_name=received_json_data['full_name'],
+            phone=received_json_data['phone'],
+            address=received_json_data['address'],
+            city=received_json_data['city'],
+            state=received_json_data['state'],
+            postal_code=received_json_data['postal_code']
+        )
+        address.save()
+        # print(address.id)
+        products=ProductOrder.objects.filter(customer=customer,ordered=False)
+        # print(products)
+        order=Order(
+            customer=customer,
+            address=address,
+            ordered_date=datetime.now().astimezone()
+        )
+        order.save()
+        # print(order.id)
+        for p in products:
+            order.products.add(p)
+        order.amount=order.get_total_order_price()
+        order.save(update_fields=['amount'])
+        print(f'Total Order Amount:- '+str(order.get_total_order_price()))
+        return JsonResponse({"success":True,"order_no":order.id,"amount":order.amount})
     except Exception as e:
         print(e)
         return JsonResponse({"success":False}) 
