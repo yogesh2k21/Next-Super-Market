@@ -51,6 +51,9 @@ class Order(models.Model):
     ordered = models.BooleanField(default=False)
     amount=models.FloatField(default=0.0)
     address=models.ForeignKey(BillingAddress, on_delete=models.CASCADE,null=True,blank=True)
+    razorpay_order_id=models.CharField(max_length=200,blank=True,null=True)
+    razorpay_payment_id=models.CharField(max_length=200,blank=True,null=True)
+    razorpay_signature=models.CharField(max_length=200,blank=True,null=True)
 
     def __str__(self):
         return f'Order no. - {self.id} | Email - {self.customer.user.email}'

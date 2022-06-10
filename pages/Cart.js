@@ -178,7 +178,7 @@ const Cart = ({
                   </h2>
                 </div>
               </div>
-              <div class="flex mt-10 mb-5">
+              {Total!=0 && (<div class="flex mt-10 mb-5">
                 <h3 class="font-semibold text-gray-600 text-xs uppercase w-2/5">
                   Product Details
                 </h3>
@@ -191,7 +191,7 @@ const Cart = ({
                 <h3 class="font-semibold text-center text-gray-600 text-xs uppercase w-1/5">
                   Overall Total
                 </h3>
-              </div>
+              </div>)}
               {!Object.keys(Globalcart).length && (
                 <div className="text-3xl flex justify-center py-16">
                   <Image

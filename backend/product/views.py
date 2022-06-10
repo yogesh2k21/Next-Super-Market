@@ -9,6 +9,7 @@ from account.models import Customer
 from rest_framework.decorators import api_view, permission_classes,authentication_classes
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
+from django.conf import settings
 # Create your views here.
 
 @api_view(['GET'])
@@ -153,6 +154,7 @@ def getAddressMakeOrder(request):
         return JsonResponse({"success":False}) 
     print(request.user)
     try:
+        addressRazorpay=received_json_data['address']+" "+received_json_data['postal_code']+" "+received_json_data['state']
         address=BillingAddress(
             full_name=received_json_data['full_name'],
             phone=received_json_data['phone'],
@@ -176,9 +178,54 @@ def getAddressMakeOrder(request):
             order.products.add(p)
         order.amount=order.get_total_order_price()
         order.save(update_fields=['amount'])
+        
+        import razorpay
+        client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+        data = {
+                "amount": order.amount*100,
+                "currency": "INR",
+                "receipt": str(order.id),
+                "notes": {
+                    "order ID":order.id,
+                    "name": str(received_json_data['full_name']),
+                    "address": addressRazorpay
+                }
+            }
+        razorOrder=client.order.create(data=data)
+        print(razorOrder)
+        print(request.user.email)
         print(f'Total Order Amount:- '+str(order.get_total_order_price()))
-        return JsonResponse({"success":True,"order_no":order.id,"amount":order.amount})
+        return JsonResponse({"success":True,"order_no":order.id,"razorOrder_id":razorOrder['id'],"amount":razorOrder['amount'],"email":request.user.email})
     except Exception as e:
         print(e)
         return JsonResponse({"success":False}) 
+
+@api_view(['POST'])
+@permission_classes((IsAuthenticated,))
+@authentication_classes([JWTAuthentication])
+def finalOrderPaymentRequest(request):
+    try:
+        received_json_data = json.loads(request.body.decode("utf-8"))
+    except:
+        return JsonResponse({"success":False}) 
+    print(request.user)
+    try:
+        order_no=received_json_data['order_no']
+        razorpay_order_id=received_json_data['razorpay_order_id']
+        razorpay_payment_id=received_json_data['razorpay_payment_id']
+        razorpay_signature=received_json_data['razorpay_signature']
+        order=Order.objects.get(id=order_no)
+        order.ordered=True
+        order.razorpay_order_id=razorpay_order_id
+        order.razorpay_payment_id=razorpay_payment_id
+        order.razorpay_signature=razorpay_signature
+        order.save(update_fields=['razorpay_order_id','razorpay_payment_id','razorpay_signature','ordered'])
+        orderProducts=order.products.all()
+        for op in orderProducts:
+            op.ordered=True
+            op.save()
+        return JsonResponse({"success":True,"order_no":order.id})
+    except Exception as e:
+        print(e)
+        return JsonResponse({"success":False,"order_no":order.id})
 

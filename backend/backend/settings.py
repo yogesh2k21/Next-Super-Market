@@ -154,7 +154,9 @@ CORS_EXPOSE_HEADERS = ['Content-Type','X-CSRFToken','Authorization']
 # CSRF_COOKIE_HTTPONLY = True
 # CSRF_COOKIE_HTTPONLY = True
 
-
+RAZORPAY_KEY_ID='rzp_test_wfYulHXuF8VtO6' #provided by razorPay
+RAZORPAY_KEY_SECRET='ayg4uLou9GDN0Ag5VpNejklU' #provided by razorPay
+ 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 

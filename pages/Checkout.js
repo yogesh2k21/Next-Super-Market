@@ -1,15 +1,15 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import Script from "next/script";
 
-const Checkout = ({ Globalcart,Total }) => {
+const Checkout = ({ Globalcart, Total }) => {
   let router = useRouter();
   useEffect(() => {
-      console.log('hey i m test.js useeffect');
-    if(Total === 0){
-        router.push('/Cart')
+    console.log("hey i m test.js useeffect");
+    if (Total === 0) {
+      router.push("/Cart");
     }
-    
   }, [router.query]);
 
   const [address, setAddress] = useState({
@@ -23,7 +23,7 @@ const Checkout = ({ Globalcart,Total }) => {
 
   const onChange = (e) => {
     setAddress({ ...address, [e.target.name]: e.target.value });
-    console.log(address);
+    // console.log(address);
   };
 
   const handleSubmit = async (e) => {
@@ -73,10 +73,80 @@ const Checkout = ({ Globalcart,Total }) => {
     ); //request end
     const data = await response.json();
     console.log(data);
+
+    var options = {
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
+      name: "Next super market",
+      description: "Order no #" + data.order_no,
+      image:
+        "https://res.cloudinary.com/crunchbase-production/image/upload/dtokjerhk1dxyludtlwc",
+      order_id: data.razorOrder_id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      handler: async function (response) {
+        // alert("Payment Successfull")
+        console.log({
+          order_no: data.order_no,
+          razorpay_payment_id: response.razorpay_payment_id,
+          razorpay_order_id: response.razorpay_order_id,
+          razorpay_signature: response.razorpay_signature,
+        });
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/finalOrderPaymentRequest/`,
+          {
+            method: "POST", // *POST is use bcoz here we are login the user
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+
+            body: JSON.stringify({
+              order_no: data.order_no,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_signature: response.razorpay_signature,
+            }),
+          }
+        ); //request end
+        const orderRes = await res.json();
+        console.log(orderRes);
+        if (orderRes.success) {
+          localStorage.setItem("cart", JSON.stringify({}));
+          toast.success("Congratulations! Order placed.");
+          setTimeout(() => {
+            router.push("/MyOrders");
+          }, 2500);
+        }
+      },
+      prefill: {
+        name: address.full_name,
+        email: data.email,
+        contact: address.phone,
+      },
+      notes: {
+        address: "",
+      },
+      theme: {
+        color: "#6366f1",
+      },
+    };
+    var rzp1 = new Razorpay(options);
+    rzp1.on("payment.failed", function (response) {
+      toast.error("Payment Failed! try again....",{autoClose: 5000});
+      // alert(response.error.code);
+      // alert(response.error.description);
+      // alert(response.error.source);
+      // alert(response.error.step);
+      // alert(response.error.reason);
+      // alert(response.error.metadata.order_id);
+      // alert(response.error.metadata.payment_id);
+    });
+    rzp1.open();
+    e.preventDefault();
   };
 
   return (
     <>
+      <Script src="https://checkout.razorpay.com/v1/checkout.js" />
+
       <section className="">
         <div class="relative mx-auto ">
           <div class="grid grid-cols-1 md:grid-cols-2 min-h-screen">
@@ -112,17 +182,25 @@ const Checkout = ({ Globalcart,Total }) => {
                               />
 
                               <div class="ml-4">
-                                <p class="text-sm">{Globalcart[item].product_name.toUpperCase()}</p>
+                                <p class="text-sm">
+                                  {Globalcart[item].product_name.toUpperCase()}
+                                </p>
 
                                 <dl class="mt-1 space-y-1 text-xs text-gray-500">
                                   <div>
                                     <dt class="inline">Category:</dt>
-                                    <dd class="inline"> {Globalcart[item].product_category}</dd>
+                                    <dd class="inline">
+                                      {" "}
+                                      {Globalcart[item].product_category}
+                                    </dd>
                                   </div>
 
                                   <div>
                                     <dt class="inline">Quantity:</dt>
-                                    <dd class="inline"> {Globalcart[item].product_qty}</dd>
+                                    <dd class="inline">
+                                      {" "}
+                                      {Globalcart[item].product_qty}
+                                    </dd>
                                   </div>
                                 </dl>
                               </div>
@@ -131,8 +209,13 @@ const Checkout = ({ Globalcart,Total }) => {
                             <div>
                               <p class="text-sm">
                                 ${Math.ceil(Globalcart[item].product_price)}
-                                <small class="text-gray-500">x{Globalcart[item].product_qty}</small>
-                                =<span className="text-base text-indigo-500">{Math.ceil(Globalcart[item].product_subtotal)}</span>
+                                <small class="text-gray-500">
+                                  x{Globalcart[item].product_qty}
+                                </small>
+                                =
+                                <span className="text-base text-indigo-500">
+                                  {Math.ceil(Globalcart[item].product_subtotal)}
+                                </span>
                               </p>
                             </div>
                           </li>
