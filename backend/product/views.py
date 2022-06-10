@@ -256,3 +256,31 @@ def getMyOrders(request):
     except Exception as e:
         print(e)
         return JsonResponse({"success":False})
+
+@api_view(['GET'])
+@permission_classes((IsAuthenticated,))
+@authentication_classes([JWTAuthentication])
+def getOrder(request,order_id):
+    try:
+        customer=Customer.objects.get(user=request.user)
+    except:
+        return JsonResponse({"success":False})
+    print(request.user)
+    try:
+        order=Order.objects.get(id=order_id)
+        data={}
+        product_order=order.products.all()# fetch all product object of this order
+        for p in product_order:
+            t={
+                "product_id":p.product.id,
+                "product_title":p.product.title,
+                "product_price":p.product.price,
+                "product_qty":p.quantity,
+                "product_total":p.get_total_product_price()
+            }
+            data.update({p.id:t})
+        return JsonResponse({"success":True,"data":data})
+
+    except Exception as e:
+        print(e)
+        return JsonResponse({"success":False})

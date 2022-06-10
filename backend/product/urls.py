@@ -12,6 +12,7 @@ urlpatterns = [
     path('ClearCart/', views.ClearCart,name='ClearCart'),
     path('getCart/', views.getCart,name='getCart'),
     path('getMyOrders/', views.getMyOrders,name='getMyOrders'),
+    path('getOrder/<int:order_id>/', views.getOrder,name='getOrder'),
     path('getAddressMakeOrder/', views.getAddressMakeOrder,name='getAddressMakeOrder'),
     path('finalOrderPaymentRequest/', views.finalOrderPaymentRequest,name='finalOrderPaymentRequest'),
 ]

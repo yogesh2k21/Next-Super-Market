@@ -1,16 +1,32 @@
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import Link from 'next/link';
 
-const Order = ({user}) => {
-    const router = useRouter();
-      useEffect(() => {
+const Order = ({user,context}) => {
+  const [order, setOrder] = useState({})
+  const router = useRouter();
+  const order_id=router.query.order_id
+  // console.log(order_id);
+      useEffect(async () => {
         if (!user.value) {
           router.push("/");
         }
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/getOrder/${order_id}/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization":"Bearer "+localStorage.getItem("token")
+          }
+        }); //request end
+        const res = await response.json();
+        console.log(res);
+        setOrder(JSON.parse(JSON.stringify(res.data)))
+        console.log(order);
       }, [router.query])
   return (
     <>
-      <section class="text-gray-600 body-font">
+      <section class="text-gray-600 body-font min-h-screen">
   <div class="container px-5 py-24 mx-auto">
     <div class="flex flex-col text-center w-full mb-10">
       <h1 class="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">Order Items</h1>
@@ -28,14 +44,18 @@ const Order = ({user}) => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td class="px-4 py-3">Apple</td>
-            <td class="px-4 py-3">$5</td>
-            <td class="px-4 py-3">5</td>
-            <td class="px-4 py-3 text-lg text-gray-900">$25</td>
-            <td class="w-10 text-center">
-            </td>
-          </tr>
+          {Object.keys(order).map((i)=>{
+            return (
+              <tr>
+              <td class="px-4 py-3"><Link href={`/product/${order[i].product_id}`}><a>{order[i].product_title}</a></Link></td>
+              <td class="px-4 py-3">{order[i].product_price}</td>
+              <td class="px-4 py-3">{order[i].product_qty}</td>
+              <td class="px-4 py-3 text-lg text-gray-900">${order[i].product_total}</td>
+              <td class="w-10 text-center">
+              </td>
+            </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>
