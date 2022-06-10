@@ -12,6 +12,7 @@ function MyApp({ Component, pageProps }) {
   const [key, setKey] = useState(0);
   const [Globalcart, setGlobalcart] = useState({});
   const [Total, setTotal] = useState(0);
+  const [orders, setOrders] = useState({})
 
   useEffect(() => {
     console.log("hey i am _app.js useEffect");
@@ -154,6 +155,8 @@ function MyApp({ Component, pageProps }) {
         setGlobalcart={setGlobalcart}
         Globalcart={Globalcart}
         Total={Total}
+        orders={orders}
+        setOrders={setOrders}
         user={user}
         logout={logout}
         {...pageProps}

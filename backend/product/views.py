@@ -229,3 +229,30 @@ def finalOrderPaymentRequest(request):
         print(e)
         return JsonResponse({"success":False,"order_no":order.id})
 
+@api_view(['GET'])
+@permission_classes((IsAuthenticated,))
+@authentication_classes([JWTAuthentication])
+def getMyOrders(request):
+    try:
+        customer=Customer.objects.get(user=request.user)
+    except:
+        return JsonResponse({"success":False})
+    print(request.user)
+    try:
+        orders=Order.objects.filter(customer=customer,ordered=True).order_by('-ordered_date')
+        data={}
+        for order in orders:
+            t={
+                "id":order.id,
+                "amount":order.amount,
+                "ordered":order.ordered,
+                "products":order.products.all().count(),
+                "date":order.ordered_date.strftime("%m/%d/%Y - %H:%M:%S")
+            }
+            data.update({order.id:t})
+            print(data)
+        return JsonResponse({"success":True,"data":data})
+
+    except Exception as e:
+        print(e)
+        return JsonResponse({"success":False})

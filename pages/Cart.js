@@ -142,7 +142,7 @@ const Cart = ({
   };
   return (
     <>
-      <div class="bg-white m-5 rounded-3xl  min-h-screen">
+      <div class="bg-white m-5 rounded-3xl min-h-screen">
         <div class="container mx-auto">
           <div class="flex shadow-2xl rounded-3xl min-h-0">
             <div class="w-full bg-white px-10 py-10 rounded-3xl">
