@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from pytz import timezone
 from .serializers import ProductSerializer,CategorySerializer
 from product.models import Product,Category,ProductOrder,BillingAddress,Order
-from account.models import Customer
+from account.models import Customer,MyUser
 from rest_framework.decorators import api_view, permission_classes,authentication_classes
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -215,7 +215,7 @@ def finalOrderPaymentRequest(request):
         razorpay_payment_id=received_json_data['razorpay_payment_id']
         razorpay_signature=received_json_data['razorpay_signature']
         order=Order.objects.get(id=order_no)
-        order.ordered=True
+        order.ordered=True      #from here it denotes the order payment is done!!!
         order.razorpay_order_id=razorpay_order_id
         order.razorpay_payment_id=razorpay_payment_id
         order.razorpay_signature=razorpay_signature
@@ -279,7 +279,8 @@ def getOrder(request,order_id):
                 "product_total":p.get_total_product_price()
             }
             data.update({p.id:t})
-        return JsonResponse({"success":True,"data":data})
+        # data.update({"amount":order.amount})
+        return JsonResponse({"success":True,"data":data,"amount":order.amount})
 
     except Exception as e:
         print(e)

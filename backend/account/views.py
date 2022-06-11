@@ -7,6 +7,9 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.decorators import api_view
 from .models import MyUser,Customer
+from django.core.mail import send_mail
+import random
+import string
 # Create your views here.
 # def csrfToken(request):
 #     response=JsonResponse({"info":"success - Set CSRF Cookies"})
@@ -47,3 +50,29 @@ def signup(request):
         print(e)
     print(user)
     return JsonResponse({"success":True,"message":"Account Created successfully"})
+
+@api_view(['POST'])
+def changePassword(request):
+    try:
+        received_json_data = json.loads(request.body.decode("utf-8"))
+        email=received_json_data['email']
+        print(email)
+        u=MyUser.objects.get(email=email)
+        letters = string.ascii_lowercase
+        result_str = ''.join(random.choice(letters) for i in range(8))
+        u.set_password(result_str)
+        u.save()
+        try:
+            send_mail(
+                'Next Super Market',
+                f'Your New Password to your account is {result_str}',
+                'NextSuperMarket@gmail.com',
+                [email],
+                fail_silently=False,
+            )
+            return JsonResponse({"success":True,"message":"New Password is Sent to your Email"})
+        except:
+            return JsonResponse({"success":False,"message":"Something went wrong try again later"})
+    except Exception as e:
+        print(e)
+        return JsonResponse({"success":False,"message":"Account doesn't exists!!!"})

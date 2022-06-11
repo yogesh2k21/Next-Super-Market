@@ -4,6 +4,7 @@ import Link from 'next/link';
 
 const Order = ({user,context}) => {
   const [order, setOrder] = useState({})
+  const [total, setTotal] = useState(0)
   const router = useRouter();
   const order_id=router.query.order_id
   // console.log(order_id);
@@ -22,6 +23,7 @@ const Order = ({user,context}) => {
         const res = await response.json();
         console.log(res);
         setOrder(JSON.parse(JSON.stringify(res.data)))
+        setTotal(res.amount)
         console.log(order);
       }, [router.query])
   return (
@@ -29,7 +31,11 @@ const Order = ({user,context}) => {
       <section class="text-gray-600 body-font min-h-screen">
   <div class="container px-5 py-24 mx-auto">
     <div class="flex flex-col text-center w-full mb-10">
-      <h1 class="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">Order Items</h1>
+      <div className='flex justify-around'>
+
+      <h1 class="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">Order ID:- {order_id}</h1>
+      <button class="flex text-white bg-indigo-500 border-0 px-5 py-3 focus:outline-none hover:bg-indigo-600 rounded">Track order</button>
+      </div>
       <p class="lg:w-2/3 mx-auto leading-relaxed text-base">Your Order has been successfully placed.</p>
     </div>
     <div class="lg:w-2/3 w-full mx-auto overflow-auto">
@@ -46,26 +52,34 @@ const Order = ({user,context}) => {
         <tbody>
           {Object.keys(order).map((i)=>{
             return (
-              <tr>
-              <td class="px-4 py-3"><Link href={`/product/${order[i].product_id}`}><a>{order[i].product_title}</a></Link></td>
+              <tr key={i}>
+              <td class="px-4 py-3 text-green-500"><Link href={`/product/${order[i].product_id}`}><a>{order[i].product_title.toUpperCase()}</a></Link></td>
               <td class="px-4 py-3">{order[i].product_price}</td>
               <td class="px-4 py-3">{order[i].product_qty}</td>
-              <td class="px-4 py-3 text-lg text-gray-900">${order[i].product_total}</td>
-              <td class="w-10 text-center">
-              </td>
+              <td class="px-4 py-3 text-lg text-gray-900">+ ${order[i].product_total}</td>
+              <td class="w-10 text-center"> </td>
             </tr>
             );
           })}
+          <tr>
+              <td class="px-4 py-3"></td>
+              <td class="px-4 py-3"></td>
+              <td class="px-4 py-3">Grand Total</td>
+              <td class="px-4 py-3 text-2xl text-indigo-600">= ${total}</td>
+              <td class="w-10 text-center"></td>
+            </tr>
         </tbody>
       </table>
     </div>
-    <div class="flex pl-4 mt-4 lg:w-2/3 w-full mx-auto">
+    <div class="flex justify-between pl-4 mt-4 lg:w-2/3 w-full mx-auto">
       <a href="#" class="text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0">Download invoice
         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
         </svg>
       </a>
-      <button class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">Track order</button>
+
+      {/* <p class=" text-3xl inline-flex items-center md:mb-2 lg:mb-0">Grand total:- {total}</p> */}
+      {/* <button class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">Track order</button> */}
     </div>
   </div>
 </section>

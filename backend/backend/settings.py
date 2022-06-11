@@ -154,6 +154,13 @@ CORS_EXPOSE_HEADERS = ['Content-Type','X-CSRFToken','Authorization']
 # CSRF_COOKIE_HTTPONLY = True
 # CSRF_COOKIE_HTTPONLY = True
 
+EMAIL_USE_TLS=True
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_HOST_USER='princesha9899583253@gmail.com'
+EMAIL_HOST_PASSWORD='vxyswtmzzttxrcnx'
+EMAIL_PORT=587
+EMAIL_USER_SSL=False
+
 RAZORPAY_KEY_ID='rzp_test_wfYulHXuF8VtO6' #provided by razorPay
 RAZORPAY_KEY_SECRET='ayg4uLou9GDN0Ag5VpNejklU' #provided by razorPay
  
