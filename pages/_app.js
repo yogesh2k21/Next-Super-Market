@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import LoadingBar from 'react-top-loading-bar'
 
 function MyApp({ Component, pageProps }) {
   let router = useRouter();
@@ -13,10 +14,13 @@ function MyApp({ Component, pageProps }) {
   const [Globalcart, setGlobalcart] = useState({});
   const [Total, setTotal] = useState(0);
   const [orders, setOrders] = useState({})
+  const [progress, setProgress] = useState(0)
 
   useEffect(() => {
     console.log("hey i am _app.js useEffect");
-
+    router.events.on('routeChangeStart', ()=>{
+      setProgress(10)
+    })
     try {
       if (localStorage.getItem("cart")) {
         setGlobalcart(JSON.parse(localStorage.getItem("cart")));
@@ -39,6 +43,9 @@ function MyApp({ Component, pageProps }) {
     }
     setTotal(subt)
     }
+    router.events.on('routeChangeComplete', ()=>{
+      setProgress(100)
+    })
   }, [router.query]); //passing router.query is to Re-render the _app so that this useEffect runs, now it will re render on every URL change.
 
   const saveGlobalCart = (myCart) => {
@@ -145,6 +152,12 @@ function MyApp({ Component, pageProps }) {
         pauseOnFocusLoss
         draggable
         pauseOnHover={false}
+      />
+      <LoadingBar
+        color='#6366F1'
+        progress={progress}
+        waitingTime={500}
+        onLoaderFinished={() => setProgress(0)}
       />
       <Navbar logout={logout} user={user} key={key} />
       <Component

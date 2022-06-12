@@ -7,7 +7,7 @@ const Explore = ({ category }) => {
   const [items, setitems] = useState(category);
   return (
     <>
-      <section className="text-gray-600 body-font">
+      <section className="text-gray-600 body-font min-h-screen">
         <div className="container px-10 py-10 mx-auto">
           <div className="flex flex-wrap -m-4">
             {items.map((item, i) => {
