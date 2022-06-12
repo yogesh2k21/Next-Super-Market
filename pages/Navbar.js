@@ -2,8 +2,13 @@ import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { AiOutlineShoppingCart,AiOutlineHeart } from 'react-icons/ai';
+import { CgProfile } from 'react-icons/cg';
+import { GoListUnordered } from 'react-icons/go';
+import { MdOutlineReviews,MdLogout } from 'react-icons/md';
+import { RiCustomerService2Fill } from 'react-icons/ri';
 
-const Navbar = ({user,logout}) => {
+const Navbar = ({user,logout,cartLength}) => {
     // console.log(user.value)
     const router = useRouter();
     
@@ -11,6 +16,7 @@ const Navbar = ({user,logout}) => {
 
     useEffect(() => {
         console.log("hey i am navbar.js useEffect");
+        
     
       }, [router.query]); //passing router.query is to Re-render the _app so that this useEffect runs, now it will re render on every URL change.
 
@@ -59,19 +65,20 @@ const Navbar = ({user,logout}) => {
                         {dropDown && <div>
                         <ul className="absolute bg-white text-base z-50 float-left py-2 list-none text-left rounded-lg shadow-lg mt-5 m-3 bg-clip-padding border-none">
                             <li>
-                                <Link href="/Profile"><a className="text-sm py-2 px-4 font-normal block w-full bg-transparent text-gray-700 hover:bg-gray-100"><i className='fa fa-user-circle'></i> My Profile</a></Link>
-                                <Link href="/MyOrders"><a className="text-sm py-2 px-4 font-normal block w-full bg-transparent text-gray-700 hover:bg-gray-100"><i className='fa fa-reorder'></i> My Orders</a></Link>
-                                <Link href="/Wishlist"><a className="text-sm py-2 px-4 font-normal block w-full bg-transparent text-gray-700 hover:bg-gray-100"><i className="fa fa-heart"></i> Wishlist</a></Link>
-                                <Link href="/Review"><a className="text-sm py-2 px-4 font-normal block w-full bg-transparent text-gray-700 hover:bg-gray-100"><i className="fa fa-comments"></i> My Reviews</a></Link>
+                                <Link href="/Profile"><a className="text-sm py-2 flex items-center px-4 font-normal w-full bg-transparent text-gray-700 hover:bg-gray-100"><CgProfile className='mr-1'/> My Profile</a></Link>
+                                <Link href="/MyOrders"><a className="text-sm py-2 px-4 flex items-center font-normal w-full bg-transparent text-gray-700 hover:bg-gray-100"><GoListUnordered className='mr-1'/> My Orders</a></Link>
+                                <Link href="/Wishlist"><a className="text-sm py-2 px-4 flex items-center font-normal w-full bg-transparent text-gray-700 hover:bg-gray-100"><AiOutlineHeart className='mr-1'/> Wishlist</a></Link>
+                                <Link href="/Review"><a className="text-sm py-2 px-4 flex items-center font-normal w-full bg-transparent text-gray-700 hover:bg-gray-100"><MdOutlineReviews className='mr-1'/> My Reviews</a></Link>
                                 {/* {!user.value && <Link href="/Login"><a className="text-sm py-2 px-4 font-normal w-full block bg-transparent text-gray-700 hover:bg-gray-100">Login <i className="fa fa-sign-out"></i></a></Link>} */}
-                                {user.value && <a onClick={logout} className="text-sm py-2 px-4 cursor-pointer font-normal w-full block bg-transparent text-gray-700 hover:bg-gray-100">Logout <i className="fa fa-sign-out"></i></a>}
+                                {user.value && <a onClick={logout} className="text-sm py-2 px-4 flex items-center cursor-pointer font-normal w-full bg-transparent text-gray-700 hover:bg-gray-100">Logout <MdLogout className='ml-2 mt-1'/></a>}
                                 <hr/>
-                                <Link href="/contact"><a className="text-sm py-2 px-4 font-normal block w-full bg-transparent text-gray-700 hover:bg-gray-100"><i className="mt-1 p-1 fa fa-headphones"></i> 24x7 Customer Care</a></Link>
+                                <Link href="/contact"><a className="text-sm py-2 px-4 flex items-center mr-2 font-normal w-full bg-transparent text-gray-700 hover:bg-gray-100"><RiCustomerService2Fill className=' mr-2'/> 24x7 Customer Care</a></Link>
                             </li>
                         </ul>
                         </div>}
                     </div>}
-                    {user.value && <Link href="/Cart"><a className="mt-2 transition-colors duration-200 transform lg:mt-0 lg:mx-4 hover:text-gray-900 cursor-pointer dark:hover:text-teal-500"><i className="fa fa-shopping-cart"></i> Cart</a></Link>}
+                    {user.value && <Link href="/Cart"><a className="mt-2 flex items-center transition-colors duration-200 transform lg:mt-0 lg:mx-4 hover:text-gray-900 cursor-pointer dark:hover:text-teal-500">Cart<AiOutlineShoppingCart className='ml-1'/>
+                    {cartLength!=0 && <span class="absolute top-0 right-0 inline-flex items-center justify-center p-1 px-2 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-indigo-600 rounded-full">{cartLength}</span>}</a></Link>}
                 </div>
             </div>
         </nav>

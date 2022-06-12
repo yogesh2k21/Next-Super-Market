@@ -15,6 +15,7 @@ function MyApp({ Component, pageProps }) {
   const [Total, setTotal] = useState(0);
   const [orders, setOrders] = useState({})
   const [progress, setProgress] = useState(0)
+  const [cartLength, setCartLength] = useState(0)
 
   useEffect(() => {
     console.log("hey i am _app.js useEffect");
@@ -42,6 +43,11 @@ function MyApp({ Component, pageProps }) {
       subt += Globalcart[keys[i]].product_subtotal;
     }
     setTotal(subt)
+    try {
+      setCartLength(Object.keys(JSON.parse((localStorage.getItem("cart")))).length)
+  } catch (error) {
+      console.log('Error in getting cart length');            
+  }
     }
     router.events.on('routeChangeComplete', ()=>{
       setProgress(100)
@@ -77,6 +83,7 @@ function MyApp({ Component, pageProps }) {
       // router.push('/Cart')
     } else {
       newCart[product_id] = { product_name, product_price, product_qty: 1 ,product_category,product_subtotal,product_image}; //new item adding
+      setCartLength(cartLength+1)
       toast.success(product_name.slice(0, 11) + "..." +" in Cart Now!");
     }
     
@@ -99,6 +106,7 @@ function MyApp({ Component, pageProps }) {
       newCart[product_id].product_subtotal =  Globalcart[product_id].product_subtotal - newCart[product_id].product_price;
       if (newCart[product_id].product_qty <= 0) { //if quantity becomes equal to or less then 0 then it will delete object and Re-render the page.
         delete newCart[product_id];
+        setCartLength(cartLength-1);
         toast.success("Removed from Cart");
       }else{ //if newCart[product_id].product_qty not equal to zer0
         toast.success("Quantity -1");
@@ -121,6 +129,7 @@ function MyApp({ Component, pageProps }) {
     }}); //request end
     setGlobalcart({});
     saveGlobalCart({});
+    setCartLength(0)
     toast.success("Cart is Empty now!");
   };
 
@@ -159,7 +168,7 @@ function MyApp({ Component, pageProps }) {
         waitingTime={500}
         onLoaderFinished={() => setProgress(0)}
       />
-      <Navbar logout={logout} user={user} key={key} />
+      <Navbar cartLength={cartLength} logout={logout} user={user} key={key} />
       <Component
         increaseQuantity={increaseQuantity}
         decreaseQuantity={decreaseQuantity}
@@ -169,6 +178,8 @@ function MyApp({ Component, pageProps }) {
         Globalcart={Globalcart}
         Total={Total}
         orders={orders}
+        cartLength={cartLength}
+        setCartLength={setCartLength}
         setOrders={setOrders}
         user={user}
         logout={logout}

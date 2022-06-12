@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
-const Product = ({product,increaseQuantity,Globalcart,user}) => {
+const Product = ({product,increaseQuantity,Globalcart,user,cartLength,setCartLength}) => {
 // const [items, setitems] = useState(product);
 const [Service, setService] = useState();
 const [Pin, setPin] = useState('');
@@ -34,6 +34,7 @@ const addToCart = async(product_id,product_name,product_price,product_qty,produc
   // console.log(product_id,product_name,product_price,product_qty,product_category,product_subtotal);
   setcartButtonState(true);
   increaseQuantity(product_id,product_name,product_price,product_qty,product_category,product_subtotal,product_image)
+  // setCartLength(cartLength+1)
 }
 
 const onChangePin = (event) =>{
