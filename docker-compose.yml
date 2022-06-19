@@ -1,20 +1,23 @@
-version: '3'  # specify docker-compose version
+version: '3.8'  # specify docker-compose version
 services:
-  backend:
-    build: ./backend
-    container_name: django-backend
-    ports:
-      - 8000:8000
-    networks:
-      - project-network
   frontend:
     build: .
     container_name: nextjs-frontend
+    restart: always
     ports:
       - 3000:3000
     depends_on:
-      - django-backend
-    networks:
-      - project-network
-networks:
-  project-network:
+      - backend
+    # networks:
+    #   - mynetwork
+  backend:
+    build: ./backend
+    container_name: django-backend
+    restart: always
+    ports:
+      - 8000:8000
+    # networks:
+    #   - mynetwork
+
+# networks:
+#   mynetwork:

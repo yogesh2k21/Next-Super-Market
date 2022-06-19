@@ -6,6 +6,6 @@ const nextConfig = {
 module.exports = nextConfig
 module.exports = {
   images: {
-    domains: ['localhost','uxwing.com'],
+    domains: ['localhost','uxwing.com','django-backend','127.0.0.1'],
   },
 }
