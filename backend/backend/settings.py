@@ -154,6 +154,7 @@ CORS_EXPOSE_HEADERS = ['Content-Type','X-CSRFToken','Authorization']
 # CSRF_COOKIE_HTTPONLY = True
 # CSRF_COOKIE_HTTPONLY = True
 
+EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS=True
 EMAIL_HOST='smtp.gmail.com'
 EMAIL_HOST_USER='princesha9899583253@gmail.com'
@@ -168,6 +169,12 @@ RAZORPAY_KEY_SECRET='ayg4uLou9GDN0Ag5VpNejklU' #provided by razorPay
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CELERY_BROKER_URL='redis://127.0.0.1:6379'
+CELERY_RESULT_BACKEND='redis://127.0.0.1:6379'
+CELERY_RESULT_CONTENT=['application/json']
+CELERY_RESULT_SERIALIZER='json'
+CELERY_TASK_SERIALIZER='json'
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Summary</title>
+    <style>
+        tr:nth-child(even) {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="font-size: xx-large;display: flex;justify-content: center;">Next Super Market</div>
+    <div style="font-size: larger;display: flex;justify-content: center;margin-top: 3rem;">Your<span
+            style="color: #6366F1;margin-left: 8px;margin-right: 8px;">Congratulations! Your Order #{{order_id}} </span>has been successfully placed.</div>
+    <div style="padding: 3rem;">
+        <table style="font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;">
+            <tr style="border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;">
+                <th style="padding: 10px;">Product Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+            </tr>
+            {% for p in items %}
+            <tr>
+                <td style="padding: 10px;">{{p.title}}</td>
+                <td style="padding: 10px;">{{p.quantity}}</td>
+                <td style="padding: 10px;">{{p.total}}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td style="padding: 10px;"></td>
+                <td style="padding: 10px;">Grand Total</td>
+                <td style="color:#6366F1;padding: 10px;">{{amount}}</td>
+            </tr>
+        </table>
+    </div>
+    <h3 style="display: flex;justify-content: center;">Will be delivered within 4-5 days</h3>
+
+
+    this is auto-generated email do not reply.
+</body>
+
+</html>

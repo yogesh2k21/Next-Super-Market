@@ -10,6 +10,8 @@ from rest_framework.decorators import api_view, permission_classes,authenticatio
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.conf import settings
+from .tasks import send_order_email_confirmation
+import razorpay
 # Create your views here.
 
 @api_view(['GET'])
@@ -164,9 +166,7 @@ def getAddressMakeOrder(request):
             postal_code=received_json_data['postal_code']
         )
         address.save()
-        # print(address.id)
         products=ProductOrder.objects.filter(customer=customer,ordered=False)
-        # print(products)
         order=Order(
             customer=customer,
             address=address,
@@ -179,7 +179,7 @@ def getAddressMakeOrder(request):
         order.amount=order.get_total_order_price()
         order.save(update_fields=['amount'])
         
-        import razorpay
+        
         client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
         data = {
                 "amount": order.amount*100,
@@ -224,6 +224,10 @@ def finalOrderPaymentRequest(request):
         for op in orderProducts:
             op.ordered=True
             op.save()
+        try:
+            send_order_email_confirmation.delay(order.id) 
+        except Exception as e:
+            print(e)
         return JsonResponse({"success":True,"order_no":order.id})
     except Exception as e:
         print(e)
@@ -250,7 +254,6 @@ def getMyOrders(request):
                 "date":order.ordered_date.strftime("%m/%d/%Y - %H:%M:%S")
             }
             data.update({order.id:t})
-            print(data)
         return JsonResponse({"success":True,"data":data})
 
     except Exception as e:
@@ -279,7 +282,6 @@ def getOrder(request,order_id):
                 "product_total":p.get_total_product_price()
             }
             data.update({p.id:t})
-        # data.update({"amount":order.amount})
         return JsonResponse({"success":True,"data":data,"amount":order.amount})
 
     except Exception as e:
