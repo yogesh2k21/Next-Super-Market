@@ -1,6 +1,5 @@
 from celery import shared_task
 from time import sleep
-from django.core.mail import send_mail
 from django.conf import settings
 from product.models import Order
 from django.core.mail import EmailMultiAlternatives
@@ -15,7 +14,7 @@ def sleepy(duration):
 @shared_task
 def send_order_email_confirmation(order_id):
     try:
-        order=Order.objects.get(id=order_id)
+        order=Order.objects.select_related('customer').get(id=order_id)
         items=[]
         for pro in order.products.all():
             t={
@@ -27,22 +26,26 @@ def send_order_email_confirmation(order_id):
         user_mail=str(order.customer.user.email)
         print(user_mail)
     except Exception as e:
-        print("celery email error")
+        print("Order fetching error")
         print(e)
     html_content=render_to_string('order_confirm_mail_template.html',{"order_id":order.id,"items":items,"amount":order.amount})
     text_content=strip_tags(html_content)
-
-    email=EmailMultiAlternatives(
-        "Next Super Market Order info",
-        text_content,
-        settings.EMAIL_HOST_USER,
-        [user_mail]
-    )
-    email.attach_alternative(html_content,"text/html")
-    email.fail_silently=False
-    email.send()
-    print("Mail has been sent.")
-    return None
+    try:
+        email=EmailMultiAlternatives(
+            "Next Super Market Order info",
+            text_content,
+            settings.EMAIL_HOST_USER,
+            [user_mail]
+        )
+        email.attach_alternative(html_content,"text/html")
+        email.fail_silently=False
+        email.send()
+        print("Mail has been sent.")
+        return None
+    except Exception as e:
+        print("Error! when sending mail")
+        print(e)
+        return None
 
 # from product.models import Order
 # from product.tasks import send_order_email_confirmation

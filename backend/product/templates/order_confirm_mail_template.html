@@ -15,8 +15,8 @@
 
 <body>
     <div style="font-size: xx-large;display: flex;justify-content: center;">Next Super Market</div>
-    <div style="font-size: larger;display: flex;justify-content: center;margin-top: 3rem;">Your<span
-            style="color: #6366F1;margin-left: 8px;margin-right: 8px;">Congratulations! Your Order #{{order_id}} </span>has been successfully placed.</div>
+    <div style="font-size: larger;display: flex;justify-content: center;margin-top: 3rem;">Congratulations! Your<span
+            style="color: #6366F1;margin-left: 8px;margin-right: 8px;"> Order #{{order_id}} </span>has been successfully placed.</div>
     <div style="padding: 3rem;">
         <table style="font-family: arial, sans-serif;
         border-collapse: collapse;
@@ -30,15 +30,15 @@
             </tr>
             {% for p in items %}
             <tr>
-                <td style="padding: 10px;">{{p.title}}</td>
+                <td style="padding: 10px;">{{p.title |upper }}</td>
                 <td style="padding: 10px;">{{p.quantity}}</td>
-                <td style="padding: 10px;">{{p.total}}</td>
+                <td style="padding: 10px;">${{p.total}}</td>
             </tr>
             {% endfor %}
             <tr>
                 <td style="padding: 10px;"></td>
                 <td style="padding: 10px;">Grand Total</td>
-                <td style="color:#6366F1;padding: 10px;">{{amount}}</td>
+                <td style="color:#6366F1;padding: 10px;">${{amount}}</td>
             </tr>
         </table>
     </div>

@@ -112,7 +112,7 @@ const Checkout = ({ Globalcart, Total }) => {
           localStorage.setItem("cart", JSON.stringify({}));
           toast.success("Congratulations! Order placed.");
           setTimeout(() => {
-            router.push("/MyOrders");
+            router.push("/Final");
           }, 2500);
         }
       },

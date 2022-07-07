@@ -22,5 +22,7 @@ def debug_task(self):
     print(f'Request: {self.request!r}')
 
 #before starting CELERY run redis image in docker
+#start env in django project
 #run this command in manage.py directory to start CELERY
 #   celery -A backend worker -l info -P eventlet
+#   docker run -d -p 6379:6379 redis  
