@@ -24,11 +24,15 @@ def send_order_email_confirmation(order_id):
             }
             items.append(t)
         user_mail=str(order.customer.user.email)
+        user_name=str(order.address.full_name)
+        user_phone=str(order.address.phone)
+        order_date=str(order.ordered_date.strftime("%m/%d/%Y - %H:%M:%S"))
+        address=str(order.address.address)+str(" "+order.address.city)+str(" "+order.address.state)+str(" "+order.address.postal_code)
         print(user_mail)
     except Exception as e:
         print("Order fetching error")
         print(e)
-    html_content=render_to_string('order_confirm_mail_template.html',{"order_id":order.id,"items":items,"amount":order.amount})
+    html_content=render_to_string('order_confirm_mail_template.html',{"order_id":order.id,"items":items,"amount":order.amount,"order_date":order_date,"user_name":user_name,"address":address,"user_phone":user_phone,"user_mail":user_mail})
     text_content=strip_tags(html_content)
     try:
         email=EmailMultiAlternatives(

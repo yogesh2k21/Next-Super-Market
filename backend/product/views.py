@@ -287,3 +287,20 @@ def getOrder(request,order_id):
     except Exception as e:
         print(e)
         return JsonResponse({"success":False})
+
+
+@api_view(['GET'])
+@permission_classes((IsAuthenticated,))
+@authentication_classes([JWTAuthentication])
+def getOrderInvoiceMail(request,order_id):
+    try:
+        customer=Customer.objects.get(user=request.user)
+    except:
+        return JsonResponse({"success":False})
+    print(request.user)
+    try:
+        send_order_email_confirmation.delay(order_id) 
+        return JsonResponse({"success":True,"message":"Email sent!"})
+    except Exception as e:
+        print(e)
+        return JsonResponse({"success":False})

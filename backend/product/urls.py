@@ -13,6 +13,7 @@ urlpatterns = [
     path('getCart/', views.getCart,name='getCart'),
     path('getMyOrders/', views.getMyOrders,name='getMyOrders'),
     path('getOrder/<int:order_id>/', views.getOrder,name='getOrder'),
+    path('getOrderInvoiceMail/<int:order_id>/', views.getOrderInvoiceMail,name='getOrderInvoiceMail'),
     path('getAddressMakeOrder/', views.getAddressMakeOrder,name='getAddressMakeOrder'),
     path('finalOrderPaymentRequest/', views.finalOrderPaymentRequest,name='finalOrderPaymentRequest'),
 ]
