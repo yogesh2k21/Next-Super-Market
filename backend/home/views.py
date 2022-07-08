@@ -9,7 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 def home(request):
     print('home')
-    products=Product.objects.filter().order_by('id')
+    products=Product.objects.filter().order_by('id')[:8]
     serialized=ProductSerializer(products,many=True)
     return JsonResponse(serialized.data,safe=False)
 

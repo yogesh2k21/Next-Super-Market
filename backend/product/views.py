@@ -251,7 +251,7 @@ def getMyOrders(request):
                 "amount":order.amount,
                 "ordered":order.ordered,
                 "products":order.products.all().count(),
-                "date":order.ordered_date.strftime("%m/%d/%Y - %H:%M:%S")
+                "date":order.ordered_date.strftime("%m/%d/%Y")
             }
             data.update({order.id:t})
         return JsonResponse({"success":True,"data":data})

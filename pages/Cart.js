@@ -142,9 +142,9 @@ const Cart = ({
   };
   return (
     <>
-      <div class="bg-white m-5 rounded-3xl min-h-screen">
-        <div class="container mx-auto">
-          <div class="flex shadow-2xl rounded-3xl min-h-0">
+      <div class="bg-white m-5 rounded-3xl min-h-[86vh]">
+        <div class="">
+          <div class="flex shadow-2xl rounded-3xl">
             <div class="w-full bg-white px-10 py-10 rounded-3xl">
               <div class="flex justify-between border-b pb-8">
                 <div className="">

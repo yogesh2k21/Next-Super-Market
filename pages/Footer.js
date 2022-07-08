@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <>
       <footer className="text-center text-white bg-gray-100">
-        <div className="container pt-9">
+        <div className="pt-9">
           <div className="flex justify-center mb-4">
             <a href="#!" className="mr-9 text-gray-800">
               <svg

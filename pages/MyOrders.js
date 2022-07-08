@@ -36,8 +36,8 @@ const MyOrders = ({ user, setOrders, orders }) => {
 
   return (
     <>
-      <div class="container min-h-screen">
-        <div class="flex shadow-2xl rounded-2xl m-5">
+      <div class="min-h-screen flex justify-center">
+        <div class="flex shadow-2xl rounded-2xl m-10 w-full">
           <div class="w-full bg-white m-10  rounded-3xl">
             <div class="flex justify-center border-b pb-8">
               <h2 className="text-bold text-3xl">Your Orders</h2>

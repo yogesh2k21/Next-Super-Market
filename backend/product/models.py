@@ -46,8 +46,7 @@ class BillingAddress(models.Model):
 class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     products = models.ManyToManyField(ProductOrder)
-    start_date = models.DateTimeField(auto_now_add=True)
-    ordered_date = models.DateTimeField()
+    ordered_date = models.DateField(auto_now_add=True,blank=True)
     ordered = models.BooleanField(default=False)
     amount=models.FloatField(default=0.0)
     address=models.ForeignKey(BillingAddress, on_delete=models.CASCADE,null=True,blank=True)
