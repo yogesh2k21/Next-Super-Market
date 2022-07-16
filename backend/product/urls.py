@@ -16,4 +16,6 @@ urlpatterns = [
     path('getOrderInvoiceMail/<int:order_id>/', views.getOrderInvoiceMail,name='getOrderInvoiceMail'),
     path('getAddressMakeOrder/', views.getAddressMakeOrder,name='getAddressMakeOrder'),
     path('finalOrderPaymentRequest/', views.finalOrderPaymentRequest,name='finalOrderPaymentRequest'),
+    path('review/<int:pk>', views.review,name='review'),
+    path('getReview/<int:pk>', views.getReview,name='getReview'),
 ]

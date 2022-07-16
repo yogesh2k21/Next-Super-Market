@@ -1,16 +1,19 @@
 from datetime import datetime
+from math import floor
 from django.utils import timezone
 import json
 from django.http import JsonResponse
+from rest_framework import status
 from pytz import timezone
 from .serializers import ProductSerializer,CategorySerializer
-from product.models import Product,Category,ProductOrder,BillingAddress,Order
+from product.models import Product,Category,ProductOrder,BillingAddress,Order,Review
 from account.models import Customer,MyUser
 from rest_framework.decorators import api_view, permission_classes,authentication_classes
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.conf import settings
 from .tasks import send_order_email_confirmation
+from django.db.models import Avg
 import razorpay
 # Create your views here.
 
@@ -18,25 +21,70 @@ import razorpay
 # @permission_classes((IsAuthenticated,))
 # @authentication_classes([JWTAuthentication])
 def getItem(request,pk):
-    product=Product.objects.get(id=pk)
-    serialized=ProductSerializer(product,many=False)
-    return JsonResponse(serialized.data,safe=False)
+    try:
+        product=Product.objects.get(id=pk)
+        serialized=ProductSerializer(product,many=False)
+        return JsonResponse(serialized.data,safe=False,status=status.HTTP_200_OK)
+    except Exception as e:
+        print(e)
+        return JsonResponse({"success":False,"message":"Internal server Error!"})
 
 @api_view(['GET'])
 # @permission_classes((IsAuthenticated,))
 # @authentication_classes([JWTAuthentication])
 def category(request):
-    category=Category.objects.filter().values()
-    serialized=CategorySerializer(category,many=True)
-    return JsonResponse(serialized.data,safe=False)
+    try:
+        category=Category.objects.filter().values()
+        serialized=CategorySerializer(category,many=True)
+        return JsonResponse(serialized.data,safe=False,status=status.HTTP_200_OK)
+    except Exception as e:
+        print(e)
+        return JsonResponse({"success":False,"message":"Internal server Error!"})
 
 @api_view(['GET'])
 # @permission_classes((IsAuthenticated,))
 # @authentication_classes([JWTAuthentication])
 def getProductCategoryWise(request,id):
-    product=Product.objects.filter(category=id)
-    serialized=ProductSerializer(product,many=True)
-    return JsonResponse(serialized.data,safe=False) 
+    try:
+        product=Product.objects.filter(category=id)
+        serialized=ProductSerializer(product,many=True)
+        return JsonResponse(serialized.data,safe=False,status=status.HTTP_200_OK) 
+    except Exception as e:
+        print(e)
+        return JsonResponse({"success":False,"message":"Internal server Error!"})
+
+@api_view(['GET'])
+# @permission_classes((IsAuthenticated,))
+# @authentication_classes([JWTAuthentication])
+def getReview(request,pk):
+    try:
+        # reviews=Review.objects.filter(product__id=pk)
+        try:
+            reviews=Review.objects.filter(product__id=pk).values('id','title','message','rating','customer__user__first_name','customer__user__last_name','review_date')
+            # print(testing)
+            data={}
+            for t in reviews:
+                d={
+                    "id":t['id'],
+                    "title":t['title'],
+                    "message":t['message'],
+                    "rating":t['rating'],
+                    "name":t['customer__user__first_name'].title()+' '+t['customer__user__last_name'].title(),
+                    'date':t['review_date'].strftime("%d %B %Y")
+                }
+                data.update({t['id']:d})
+                # print(t['review_date'].strftime("%m %B %Y"))
+                # print(t['customer__user__first_name'].title()+' '+t['customer__user__last_name'].title())
+                # print(data)
+        except Exception as e:
+            print(e)
+            pass
+        # print(reviews)
+        # serialized=ReviewSerializer(reviews,many=True)
+        return JsonResponse(data=data,safe=False,status=status.HTTP_200_OK)
+    except Exception as e:
+        print(e)
+        return JsonResponse({"success":False,"message":"Internal server Error!"})
 
 @api_view(['GET'])
 @permission_classes((IsAuthenticated,))
@@ -55,7 +103,7 @@ def addToCart(request,product_id):
         NewCartProduct=ProductOrder(customer=customer,ordered=False,product=product,quantity=1)
         NewCartProduct.save()
     print("order saved")
-    return JsonResponse({"success":True}) 
+    return JsonResponse(status=status.HTTP_200_OK) 
 
 
 @api_view(['GET'])
@@ -78,7 +126,7 @@ def removeFromCart(request,product_id):
         print(e)
         return JsonResponse({"success":False}) 
     print("removed")
-    return JsonResponse({"success":True}) 
+    return JsonResponse(status=status.HTTP_200_OK) 
 
 
 @api_view(['GET'])
@@ -96,7 +144,7 @@ def ClearCart(request):
         print(e)
         return JsonResponse({"success":False}) 
     print("all deleted")
-    return JsonResponse({"success":True}) 
+    return JsonResponse(status=status.HTTP_200_OK) 
 
 @api_view(['GET'])
 @permission_classes((IsAuthenticated,))
@@ -113,7 +161,7 @@ def deleteFromCart(request,product_id):
         print(e)
         return JsonResponse({"success":False}) 
     print("deleted from cart")
-    return JsonResponse({"success":True}) 
+    return JsonResponse(status=status.HTTP_200_OK) 
 
 
 @api_view(['GET'])
@@ -140,7 +188,7 @@ def getCart(request):
             data.update({p['product__id']:obj})
         print(CartProduct)
         print("deleted from cart")
-        return JsonResponse(data,safe=True) 
+        return JsonResponse(data,safe=True,status=status.HTTP_200_OK) 
     except Exception as e:
         print(e)
         return JsonResponse({"success":False}) 
@@ -304,3 +352,33 @@ def getOrderInvoiceMail(request,order_id):
     except Exception as e:
         print(e)
         return JsonResponse({"success":False})
+
+@api_view(['POST'])
+@permission_classes((IsAuthenticated,))
+@authentication_classes([JWTAuthentication])
+def review(request,pk):
+    try:
+        received_json_data = json.loads(request.body.decode("utf-8"))
+        customer=Customer.objects.get(user=request.user)
+        product=Product.objects.get(id=pk)
+    except:
+        return JsonResponse({"success":False,"message":"Internal server Error!"})
+    try:
+        # print(received_json_data)
+        # print(request.user)
+        reviewObject=Review(
+            customer=customer,
+            product=product,
+            title=received_json_data['title'],
+            message=received_json_data['message'],
+            rating=received_json_data['star']
+        )
+        reviewObject.save()
+        reviewsAvgRating=Review.objects.filter(product=product).aggregate(Avg('rating'))
+        print(type(floor(reviewsAvgRating['rating__avg'])))
+        product.rating=floor(reviewsAvgRating['rating__avg'])
+        product.save(update_fields=['rating'])
+        return JsonResponse({"success":True,"message":"Review Posted"})
+    except Exception as e:
+        print(e)
+        return JsonResponse({"success":False,"message":"Internal server Error!"})

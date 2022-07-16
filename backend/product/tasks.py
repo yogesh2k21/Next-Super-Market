@@ -26,7 +26,7 @@ def send_order_email_confirmation(order_id):
         user_mail=str(order.customer.user.email)
         user_name=str(order.address.full_name)
         user_phone=str(order.address.phone)
-        order_date=str(order.ordered_date.strftime("%m/%d/%Y - %H:%M:%S"))
+        order_date=str(order.ordered_date.strftime("%m/%d/%"))
         address=str(order.address.address)+str(" "+order.address.city)+str(" "+order.address.state)+str(" "+order.address.postal_code)
         print(user_mail)
     except Exception as e:

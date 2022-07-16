@@ -62,3 +62,13 @@ class Order(models.Model):
         for product_order in self.products.all():
             total += product_order.get_total_product_price()
         return total
+
+class Review(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    product=models.ForeignKey(Product,on_delete=models.CASCADE)
+    title=models.CharField(max_length=50,blank=True)
+    message=models.CharField(max_length=500,blank=True)
+    rating=models.IntegerField(default=1)
+    review_date=models.DateField(auto_now_add=True,blank=True)
+    def __str__(self):
+        return f'Reviewed by - {self.customer.user.email} | Product - {self.product.title} | Rating - {self.rating}'
