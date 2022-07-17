@@ -18,4 +18,5 @@ urlpatterns = [
     path('finalOrderPaymentRequest/', views.finalOrderPaymentRequest,name='finalOrderPaymentRequest'),
     path('review/<int:pk>', views.review,name='review'),
     path('getReview/<int:pk>', views.getReview,name='getReview'),
+    path('isPosted/<int:product_id>', views.isPosted,name='isPosted'),
 ]

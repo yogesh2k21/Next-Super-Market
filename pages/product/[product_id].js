@@ -7,6 +7,7 @@ import Review from "../Review";
 const Product = ({
   product,
   review,
+  reviewCount,
   increaseQuantity,
   Globalcart,
   user,
@@ -15,6 +16,7 @@ const Product = ({
 }) => {
   // console.log(review);
   // const [items, setitems] = useState(product);
+  const [reviewData, setReviewData] = useState(review)
   const [Service, setService] = useState();
   const [Pin, setPin] = useState("");
   const [pinSpinner, setpinSpinner] = useState(false);
@@ -25,8 +27,8 @@ const Product = ({
     if (Globalcart) {
       console.log(Globalcart);
     }
+    console.log("useEffect of product page");
     if (product.id in Globalcart) {
-      console.log("useEffect of product page");
       setcartButtonState(true);
     }
   }, [router.query]); //router.query is used to run this useEffect when url changes or page loads
@@ -263,7 +265,7 @@ const Product = ({
           </div>
         </div>
       </section>
-      <Review prod_id={product.id} reviews={review} sitare={rating} />
+      <Review user={user} prod_id={product.id} reviews={reviewData} setReviewData={setReviewData} reviewCount={reviewCount} sitare={rating} />
     </>
   );
 };
@@ -279,8 +281,10 @@ export async function getServerSideProps(context) {
     `${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/getReview/${product_id}`
   ); //fetching banners
   let review = await reviews.json();
+  const reviewCount=review['count'];
+  delete review['count']
   return {
-    props: { product,review }, // will be passed to the page component as props
+    props: { product,review,reviewCount }, // will be passed to the page component as props
   };
 }
 

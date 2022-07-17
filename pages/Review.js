@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-const Review = ({ prod_id, reviews, sitare }) => {
+const Review = ({ prod_id, reviews, sitare,setReviewData,reviewCount,user }) => {
   const [postStatus, setPostStatus] = useState(false);
   const [rating, setRating] = useState(1);
   const [hover, setHover] = useState(0);
   const [review, setReview] = useState({ title: "", message: "" });
-  // console.log(prod_id + " id");
+  console.log(reviews);
 
   const onChange = (e) => {
     setReview({ ...review, [e.target.name]: e.target.value });
@@ -47,6 +47,19 @@ const Review = ({ prod_id, reviews, sitare }) => {
     let res = await data.json();
     if (res.success) {
       toast.success(res.message);
+      const postedreview={
+          "id":-1,
+          "title":review.title,
+          "message":review.message,
+          "rating":rating,
+          "name":"You",
+          "date":"Now"
+        
+      }
+      let refreshData=reviews;
+      refreshData["-1"]=postedreview;
+      console.log(refreshData);
+      setReviewData(refreshData)
       setReview({ title: "", message: "" });
       setRating(1);
       setPostStatus(true);
@@ -54,12 +67,29 @@ const Review = ({ prod_id, reviews, sitare }) => {
       toast.error(res.message);
     }
   };
+  useEffect(async () => {
+    console.log('i am review useEffect');
+    const data = await fetch(
+      `${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/isPosted/${prod_id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        }
+      }
+    ); //request end
+    let res = await data.json();
+    console.log(res);
+    setPostStatus(res)
+  }, [])
+  
   return (
     <>
       {/* <hr /> */}
 
       <section className=" bg-gray-100">
-        {!postStatus && (
+        {!postStatus && user.value && (
           <section className="bg-gray-100">
             <div className="max-w-screen-xl px-4 py-16 mx-auto sm:px-6 lg:px-8">
               <div className="grid grid-cols-1 gap-x-16 gap-y-8 lg:grid-cols-1">
@@ -162,7 +192,7 @@ const Review = ({ prod_id, reviews, sitare }) => {
           </section>
         )}
         <div className="max-w-screen-xl px-4 py-8 mx-auto sm:px-6 lg:px-8">
-          <h2 className="text-xl font-bold sm:text-2xl">Customer Reviews</h2>
+          <h2 className="text-xl font-bold sm:text-2xl">Customer Latest Reviews</h2>
 
           <div className="flex items-center mt-4">
             <p className="text-3xl font-medium">
@@ -235,13 +265,14 @@ const Review = ({ prod_id, reviews, sitare }) => {
               </div>
 
               <p className="mt-0.5 text-xs text-gray-500">
-                Based on {Object.keys(reviews).length} reviews
+                Based on {reviewCount} reviews
               </p>
             </div>
           </div>
 
           <div className="grid bg grid-cols-1 mt-8 lg:grid-cols-1 gap-x-16 gap-y-12">
-            {Object.keys(reviews).map((i) => {
+            {Object.keys(reviews).slice(0)
+              .reverse().map((i) => {
               return (
                 <blockquote className="bg-white shadow-xl rounded-3xl p-5 min-w-min h-auto">
                   <header className="sm:items-center sm:flex">

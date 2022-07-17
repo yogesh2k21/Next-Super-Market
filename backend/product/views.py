@@ -60,9 +60,22 @@ def getReview(request,pk):
     try:
         # reviews=Review.objects.filter(product__id=pk)
         try:
-            reviews=Review.objects.filter(product__id=pk).values('id','title','message','rating','customer__user__first_name','customer__user__last_name','review_date')
+            reviews=Review.objects.filter(product__id=pk).values('id','title','message','rating','customer__user__first_name','customer__user__last_name','review_date').order_by('-id')[:25]
             # print(testing)
+            reviewCount=Review.objects.filter(product__id=pk).count()
             data={}
+            # test={}
+            # for t in range(0,10):
+            #     d={
+            #         "id":reviews[t]['id'],
+            #         "title":reviews[t]['title'],
+            #         "message":reviews[t]['message'],
+            #         "rating":reviews[t]['rating'],
+            #         "name":reviews[t]['customer__user__first_name'].title()+' '+reviews[t]['customer__user__last_name'].title(),
+            #         'date':reviews[t]['review_date'].strftime("%d %B %Y")
+            #     }
+            #     test.update({t:d})
+            # print(test)
             for t in reviews:
                 d={
                     "id":t['id'],
@@ -81,10 +94,36 @@ def getReview(request,pk):
             pass
         # print(reviews)
         # serialized=ReviewSerializer(reviews,many=True)
+        data.update({"count":reviewCount})
         return JsonResponse(data=data,safe=False,status=status.HTTP_200_OK)
     except Exception as e:
         print(e)
         return JsonResponse({"success":False,"message":"Internal server Error!"})
+
+@api_view(['GET'])
+@permission_classes((IsAuthenticated,))
+@authentication_classes([JWTAuthentication])
+def isPosted(request,product_id):
+    try:
+        customer=Customer.objects.get(user=request.user)
+        product=Product.objects.get(id=product_id)
+    except:
+        return JsonResponse({"success":False}) 
+    try:
+        data=True
+        isOrdered=ProductOrder.objects.filter(customer=customer,product=product,ordered=True).exists()
+
+        isPosted=Review.objects.filter(customer=customer,product=product).exists()
+        print(isOrdered,isPosted,"dasdb")
+        if isOrdered:
+            if isPosted:
+                data=True
+            else:
+                data=False
+        return JsonResponse(data=data,safe=False,status=status.HTTP_200_OK) 
+    except Exception as e:
+        print(e)
+        return JsonResponse({"success":False}) 
 
 @api_view(['GET'])
 @permission_classes((IsAuthenticated,))
