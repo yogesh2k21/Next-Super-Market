@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { toast } from 'react-toastify'
+import Image from 'next/image'
 
 const Forgot = () => {
   const [email, setEmail] = useState('')
   const handleChange=(e)=>{
     setEmail(e.target.value)
-    console.log(email);
+    // console.log(email);
   }
 
   const handleSubmit=async(e)=>{
@@ -27,7 +28,7 @@ const Forgot = () => {
     }); //request end
     
     const json = await response.json();
-    console.log(json.success);
+    // console.log(json.success);
     // e.preventDefault();
     if(json.success){
       toast.success("Password is send to your Email!",{autoClose:7000})
@@ -42,7 +43,7 @@ const Forgot = () => {
         <div className="min-h-full flex items-center justify-center py-36 px-4 mb-5 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div>
-            <img
+            <Image
               className="mx-auto h-6 w-auto"
               src="vercel.svg"
               alt="Workflow"

@@ -2,38 +2,41 @@ import React, { useState , useEffect } from 'react'
 import Link from "next/link";
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify';
+import Image from 'next/image';
 // import 'react-toastify/dist/ReactToastify.css';
 
-const Login = ({setGlobalcart,setGlobalcart}) => {
+const Login = ({setGlobalcart}) => {
 
   const router = useRouter();
   useEffect(()=>{
+    console.log("hey i am Login.js useEffect");
     if(localStorage.getItem('token')){ //if token is already set then this will redirext my page to home page
       // toast.success('hello')
       // e.preventDefault()
       router.push('/')
     }
-  },[])
+  },[router])
 
   const [credentials, setCredentials] = useState({ email: "", password: "" });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch(`${process.env.NEXT_PUBLIC_MY_BACK_HOST}/login`, {
-    method: "POST", // *POST is use bcoz here we are login the user
-    headers: {
-    "Content-Type": "application/json",
-    },
-
-    body: JSON.stringify({
-      email: credentials.email,
-      password: credentials.password,
-    }),
-
-    }); //request end
-
-    const json = await response.json();
-    console.log(json);
+      
+      const response = await fetch(`${process.env.NEXT_PUBLIC_MY_BACK_HOST}/login`, {
+        method: "POST", // *POST is use bcoz here we are login the user
+        headers: {
+          "Content-Type": "application/json",
+        },
+        
+        body: JSON.stringify({
+          email: credentials.email,
+          password: credentials.password,
+        }),
+        
+      }); //request end
+      
+      const json = await response.json();
+    // console.log(json);
     if (json.access) {
       toast.success('Successfully logged in')
       localStorage.setItem("token", json.access);
@@ -44,10 +47,10 @@ const Login = ({setGlobalcart,setGlobalcart}) => {
       "Authorization":"Bearer "+localStorage.getItem("token")
       }}); //request end
       const product = await data.json();
-      console.log(product);
+      // console.log(product);
       localStorage.setItem("cart",JSON.stringify(product));
       setGlobalcart(JSON.parse(localStorage.getItem("cart")));
-      console.log(localStorage.getItem("cart"));
+      // console.log(localStorage.getItem("cart"));
       //redirect to home after 0.5 sec
       setTimeout(() => {
         router.push('/')
@@ -70,9 +73,9 @@ const Login = ({setGlobalcart,setGlobalcart}) => {
         <div className="min-h-full flex items-center justify-center py-28 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div>
-            <img
+            <Image width={500} height={30}
               className="mx-auto h-6 w-auto"
-              src="vercel.svg"
+              src="/vercel.svg"
               alt="Workflow"
             />
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Login to your account</h2>

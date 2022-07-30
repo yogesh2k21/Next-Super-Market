@@ -3,7 +3,7 @@ services:
   frontend:
     build: .
     container_name: nextjs-frontend
-    restart: always
+    # restart: always
     ports:
       - 3000:3000
     depends_on:
@@ -13,7 +13,7 @@ services:
   backend:
     build: ./backend
     container_name: django-backend
-    restart: always
+    # restart: always
     ports:
       - 8000:8000
     # networks:

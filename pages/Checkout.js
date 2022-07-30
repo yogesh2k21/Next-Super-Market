@@ -2,11 +2,12 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Script from "next/script";
+import Image from "next/image";
 
 const Checkout = ({ Globalcart, Total }) => {
   let router = useRouter();
   useEffect(() => {
-    console.log("hey i m test.js useeffect");
+    console.log("hey i m checkout.js useEffect");
     if (Total === 0) {
       router.push("/Cart");
     }
@@ -72,7 +73,7 @@ const Checkout = ({ Globalcart, Total }) => {
       }
     ); //request end
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
 
     var options = {
       key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
@@ -83,12 +84,12 @@ const Checkout = ({ Globalcart, Total }) => {
       order_id: data.razorOrder_id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
       handler: async function (response) {
         // alert("Payment Successfull")
-        console.log({
-          order_no: data.order_no,
-          razorpay_payment_id: response.razorpay_payment_id,
-          razorpay_order_id: response.razorpay_order_id,
-          razorpay_signature: response.razorpay_signature,
-        });
+        // console.log({
+        //   order_no: data.order_no,
+        //   razorpay_payment_id: response.razorpay_payment_id,
+        //   razorpay_order_id: response.razorpay_order_id,
+        //   razorpay_signature: response.razorpay_signature,
+        // });
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/finalOrderPaymentRequest/`,
           {
@@ -107,7 +108,7 @@ const Checkout = ({ Globalcart, Total }) => {
           }
         ); //request end
         const orderRes = await res.json();
-        console.log(orderRes);
+        // console.log(orderRes);
         if (orderRes.success) {
           localStorage.setItem("cart", JSON.stringify({}));
           toast.success("Congratulations! Order placed.");
@@ -175,7 +176,9 @@ const Checkout = ({ Globalcart, Total }) => {
                             className="flex items-center justify-between py-4"
                           >
                             <div className="flex items-start">
-                              <img
+                              <Image
+                              width={150}
+                              height={150}
                                 className="flex-shrink-0 object-cover w-16 h-16 rounded-lg"
                                 src={`${process.env.NEXT_PUBLIC_MY_BACK_HOST}${Globalcart[item].product_image}`}
                                 alt=""

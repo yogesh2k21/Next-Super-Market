@@ -1,5 +1,5 @@
 import "../styles/globals.css";
-import Navbar from "../pages/Navbar";
+import Navbar from "../components/Navbar";
 import Footer from "../pages/Footer";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
@@ -34,7 +34,7 @@ function MyApp({ Component, pageProps }) {
     const token = localStorage.getItem("token");
     
     if (token) {
-      console.log("changing user value");
+      // console.log("changing user value");
       setUser({ value: token });
       setKey(Math.random());
     let subt = 0;
@@ -55,7 +55,7 @@ function MyApp({ Component, pageProps }) {
   }, [router.query]); //passing router.query is to Re-render the _app so that this useEffect runs, now it will re render on every URL change.
 
   const saveGlobalCart = (myCart) => {
-    console.log("save cart running");
+    // console.log("save cart running");
     localStorage.setItem("cart", JSON.stringify(myCart));
     let subt = 0;
     let keys=Object.keys(myCart)
@@ -73,8 +73,8 @@ function MyApp({ Component, pageProps }) {
       "Content-Type": "application/json",
       "Authorization":"Bearer "+localStorage.getItem("token")
     }}); //request end
-    console.log(product_id,product_name,product_price,product_qty,product_category,product_subtotal,product_image);
-    console.log("incresing");
+    // console.log(product_id,product_name,product_price,product_qty,product_category,product_subtotal,product_image);
+    // console.log("incresing");
     let newCart = Globalcart;
     if (product_id in newCart) {
       newCart[product_id].product_qty = Globalcart[product_id].product_qty + 1;
@@ -98,8 +98,8 @@ function MyApp({ Component, pageProps }) {
       "Content-Type": "application/json",
       "Authorization":"Bearer "+localStorage.getItem("token")
     }}); //request end
-    console.log(product_id,product_name,product_price,product_qty,product_category,product_subtotal);
-    console.log("decreasing");
+    // console.log(product_id,product_name,product_price,product_qty,product_category,product_subtotal);
+    // console.log("decreasing");
     let newCart = Globalcart;
     if (product_id in newCart) {
       newCart[product_id].product_qty =  Globalcart[product_id].product_qty - 1;
@@ -134,7 +134,7 @@ function MyApp({ Component, pageProps }) {
   };
 
   const logout = () => {
-    console.log("removing token from localStorage....");
+    // console.log("removing token from localStorage....");
     localStorage.clear();
     toast.success("Successfully logout!");
     setKey(Math.random());
@@ -163,7 +163,7 @@ function MyApp({ Component, pageProps }) {
         pauseOnHover={false}
       />
       <LoadingBar
-        color='#6366F1'
+        color='#ff0000'
         progress={progress}
         waitingTime={500}
         onLoaderFinished={() => setProgress(0)}

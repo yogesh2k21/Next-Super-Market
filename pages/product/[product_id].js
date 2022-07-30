@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import React, { memo, useEffect } from "react";
 import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
-import Review from "../Review";
+import Review from "../../components/Review";
 const Product = ({
   product,
   review,
@@ -17,7 +17,7 @@ const Product = ({
   // console.log(review);
   // const [items, setitems] = useState(product);
   const [reviewData, setReviewData] = useState(review)
-  const [Service, setService] = useState();
+  const [Service, setService] = useState(null);
   const [Pin, setPin] = useState("");
   const [pinSpinner, setpinSpinner] = useState(false);
   const [cartButtonState, setcartButtonState] = useState(false);
@@ -25,9 +25,9 @@ const Product = ({
 
   useEffect(() => {
     if (Globalcart) {
-      console.log(Globalcart);
+      // console.log(Globalcart);
     }
-    console.log("useEffect of product page");
+    console.log("i am useEffect of product page");
     if (product.id in Globalcart) {
       setcartButtonState(true);
     }
@@ -69,12 +69,12 @@ const Product = ({
 
   const CheckServiceAvailability = async () => {
     setpinSpinner(true);
-    console.log(Pin);
+    // console.log(Pin);
     let data = await fetch(
       `${process.env.NEXT_PUBLIC_MY_BACK_HOST}/checkPin/${Pin}/`
     );
     let res = await data.json();
-    console.log(res.Available);
+    // console.log(res.Available);
     setService(res.Available);
     setpinSpinner(false);
   };
@@ -207,37 +207,37 @@ const Product = ({
                 </button>
               </div>
               <div>
-                <div class="mt-2 flex h-10">
+                <div className="mt-2 flex h-10">
                   <input
                     type="number"
                     onChange={onChangePin}
                     value={Pin}
-                    class="rounded-l-lg p-4 border-t mr-0 border-b border-l w-25 text-gray-800 focus:outline-none bg-white hover:border-indigo-500"
+                    className="rounded-l-lg p-4 border-t mr-0 border-b border-l w-25 text-gray-800 focus:outline-none bg-white hover:border-indigo-500"
                     placeholder="Enter Pincode here"
                   />
                   <button
                     onClick={CheckServiceAvailability}
-                    class="px-4 rounded-r-lg bg-indigo-500 focus:outline-none text-white p-1 uppercase border-indigo-600 border-t border-b border-r"
+                    className="px-4 rounded-r-lg bg-indigo-500 focus:outline-none text-white p-1 uppercase border-indigo-600 border-t border-b border-r"
                   >
                     Check
                   </button>
                   {pinSpinner ? (
                     <svg
-                      class="mt-2 ml-3 h-5 w-5 animate-spin text-indigo-500"
+                      className="mt-2 ml-3 h-5 w-5 animate-spin text-indigo-500"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
                     >
                       <circle
-                        class="opacity-25"
+                        className="opacity-25"
                         cx="12"
                         cy="12"
                         r="10"
                         stroke="currentColor"
-                        stroke-width="4"
+                        strokeWidth="4"
                       ></circle>
                       <path
-                        class="opacity-75"
+                        className="opacity-75"
                         fill="currentColor"
                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                       ></path>
@@ -247,14 +247,14 @@ const Product = ({
                   )}
                 </div>
                 {Service != null && !Service ? (
-                  <span class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
-                    Sorry! We don't deliver to this address yet
+                  <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
+                    Sorry! We don&apos;t deliver to this address yet
                   </span>
                 ) : (
                   ""
                 )}
                 {Service != null && Service ? (
-                  <span class="flex items-center font-medium tracking-wide text-green-500 text-xs mt-1 ml-1">
+                  <span className="flex items-center font-medium tracking-wide text-green-500 text-xs mt-1 ml-1">
                     Yah! We can deliver here
                   </span>
                 ) : (
@@ -279,7 +279,7 @@ export async function getServerSideProps(context) {
 
   let reviews = await fetch(
     `${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/getReview/${product_id}`
-  ); //fetching banners
+  ); 
   let review = await reviews.json();
   const reviewCount=review['count'];
   delete review['count']
@@ -288,4 +288,4 @@ export async function getServerSideProps(context) {
   };
 }
 
-export default Product;
+export default memo(Product);

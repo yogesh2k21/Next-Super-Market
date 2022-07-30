@@ -2,7 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import Banner from "./Banner";
+import Banner from "../components/Banner";
 import Statistic from "./Statistic";
 const Home = (props) => {
 const [products, setproducts] = useState(props.product);
@@ -22,7 +22,7 @@ return (
           <div className="mt- grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
             {products.map((product, i) => {
               return (
-                <Link key={i} href={"product/" + product.id} passHref>
+                <Link key={i} href={"/product/" + product.id} passHref>
             <a>
               <div className="group relative">
                 <div

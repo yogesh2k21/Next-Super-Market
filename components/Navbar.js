@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, memo } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -18,7 +18,7 @@ const Navbar = ({user,logout,cartLength}) => {
         console.log("hey i am navbar.js useEffect");
         
     
-      }, [router.query]); //passing router.query is to Re-render the _app so that this useEffect runs, now it will re render on every URL change.
+      }, []); //passing router.query is to Re-render the _app so that this useEffect runs, now it will re render on every URL change.
 
     const removedropDown = ()=>{
         setTimeout(() => {
@@ -28,12 +28,12 @@ const Navbar = ({user,logout,cartLength}) => {
 
     return <>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-            rel="stylesheet"></link>
+        {/* <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+            rel="stylesheet"></link> */}
         <nav className="bg-white shadow dark:bg-white-500">
             <div className="container px-6 py-4 mx-auto lg:flex lg:justify-between lg:items-center">
                 <div>
-                <Link href="/"><Image className='cursor-pointer' src="/vercel.svg" width='200' height='20' alt=''/></Link>
+                <Link href="/" passHref><Image className='cursor-pointer' src="/vercel.svg" width='200' height='20' alt=''/></Link>
                 </div>
                 <div className="flex flex-col text-gray-600 capitalize dark:text-gray-800 lg:flex lg:px-16 lg:-mx-4 lg:flex-row lg:items-center">
                     <div className="relative mt-4 lg:mt-0 lg:mx-4">
@@ -55,9 +55,9 @@ const Navbar = ({user,logout,cartLength}) => {
 
                 </div>
                 <div className="flex flex-col text-gray-600 capitalize dark:text-gray-500 lg:flex lg:px-16 lg:-mx-4 lg:flex-row lg:items-center">
-                <Link href="/explore"><a className='mt-2 transition-colors duration-200 transform lg:mt-0 lg:mx-4 hover:text-gray-900 cursor-pointer dark:hover:text-teal-500'> Explore</a></Link>
-                <Link href="/about"><a className='mt-2 transition-colors duration-200 transform lg:mt-0 lg:mx-4 hover:text-gray-900 cursor-pointer dark:hover:text-teal-500'> About</a></Link>
-                {!user.value && <Link href="/Login"><a className='mt-2 transition-colors duration-200 transform lg:mt-0 lg:mx-4 hover:text-gray-900 cursor-pointer dark:hover:text-teal-500'>Login</a></Link>}
+                <Link passHref href="/explore"><a className='mt-2 transition-colors duration-200 transform lg:mt-0 lg:mx-4 hover:text-gray-900 cursor-pointer dark:hover:text-teal-500'> Explore</a></Link>
+                <Link passHref href="/about"><a className='mt-2 transition-colors duration-200 transform lg:mt-0 lg:mx-4 hover:text-gray-900 cursor-pointer dark:hover:text-teal-500'> About</a></Link>
+                {!user.value && <Link passHref href="/Login"><a className='mt-2 transition-colors duration-200 transform lg:mt-0 lg:mx-4 hover:text-gray-900 cursor-pointer dark:hover:text-teal-500'>Login</a></Link>}
 
                 {/* {!user.value && <Link href="/Login"><a className="text-sm py-2 px-4 font-normal w-full block bg-transparent text-gray-700 hover:bg-gray-100">Login <i className="fa fa-sign-out"></i></a></Link>} */}
                     {user.value && <div className='dropdown'>
@@ -65,24 +65,24 @@ const Navbar = ({user,logout,cartLength}) => {
                         {dropDown && <div>
                         <ul className="absolute bg-white text-base z-50 float-left py-2 list-none text-left rounded-lg shadow-lg mt-5 m-3 bg-clip-padding border-none">
                             <li>
-                                <Link href="/Profile"><a className="text-sm py-2 flex items-center px-4 font-normal w-full bg-transparent text-gray-700 hover:bg-gray-100"><CgProfile className='mr-1'/> My Profile</a></Link>
-                                <Link href="/MyOrders"><a className="text-sm py-2 px-4 flex items-center font-normal w-full bg-transparent text-gray-700 hover:bg-gray-100"><GoListUnordered className='mr-1'/> My Orders</a></Link>
-                                <Link href="/Wishlist"><a className="text-sm py-2 px-4 flex items-center font-normal w-full bg-transparent text-gray-700 hover:bg-gray-100"><AiOutlineHeart className='mr-1'/> Wishlist</a></Link>
-                                <Link href="/Review"><a className="text-sm py-2 px-4 flex items-center font-normal w-full bg-transparent text-gray-700 hover:bg-gray-100"><MdOutlineReviews className='mr-1'/> My Reviews</a></Link>
+                                <Link passHref href="/Profile"><a className="text-sm py-2 flex items-center px-4 font-normal w-full bg-transparent text-gray-700 hover:bg-gray-100"><CgProfile className='mr-1'/> My Profile</a></Link>
+                                <Link passHref href="/MyOrders"><a className="text-sm py-2 px-4 flex items-center font-normal w-full bg-transparent text-gray-700 hover:bg-gray-100"><GoListUnordered className='mr-1'/> My Orders</a></Link>
+                                <Link passHref href="/Wishlist"><a className="text-sm py-2 px-4 flex items-center font-normal w-full bg-transparent text-gray-700 hover:bg-gray-100"><AiOutlineHeart className='mr-1'/> Wishlist</a></Link>
+                                <Link passHref href="/MyReview"><a className="text-sm py-2 px-4 flex items-center font-normal w-full bg-transparent text-gray-700 hover:bg-gray-100"><MdOutlineReviews className='mr-1'/> My Reviews</a></Link>
                                 {/* {!user.value && <Link href="/Login"><a className="text-sm py-2 px-4 font-normal w-full block bg-transparent text-gray-700 hover:bg-gray-100">Login <i className="fa fa-sign-out"></i></a></Link>} */}
                                 {user.value && <a onClick={logout} className="text-sm py-2 px-4 flex items-center cursor-pointer font-normal w-full bg-transparent text-gray-700 hover:bg-gray-100">Logout <MdLogout className='ml-2 mt-1'/></a>}
                                 <hr/>
-                                <Link href="/contact"><a className="text-sm py-2 px-4 flex items-center mr-2 font-normal w-full bg-transparent text-gray-700 hover:bg-gray-100"><RiCustomerService2Fill className=' mr-2'/> 24x7 Customer Care</a></Link>
+                                <Link passHref href="/contact"><a className="text-sm py-2 px-4 flex items-center mr-2 font-normal w-full bg-transparent text-gray-700 hover:bg-gray-100"><RiCustomerService2Fill className=' mr-2'/> 24x7 Customer Care</a></Link>
                             </li>
                         </ul>
                         </div>}
                     </div>}
-                    {user.value && <Link href="/Cart"><a className="mt-2 flex items-center transition-colors duration-200 transform lg:mt-0 lg:mx-4 hover:text-gray-900 cursor-pointer dark:hover:text-teal-500">Cart<AiOutlineShoppingCart className='ml-1'/>
-                    {cartLength!=0 && <span class="absolute top-0 right-0 inline-flex items-center justify-center p-1 px-2 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-indigo-600 rounded-full">{cartLength}</span>}</a></Link>}
+                    {user.value && <Link passHref href="/Cart"><a className="mt-2 flex items-center transition-colors duration-200 transform lg:mt-0 lg:mx-4 hover:text-gray-900 cursor-pointer dark:hover:text-teal-500">Cart<AiOutlineShoppingCart className='ml-1'/>
+                    {cartLength!=0 && <span className="absolute top-0 right-0 inline-flex items-center justify-center p-1 px-2 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-indigo-600 rounded-full">{cartLength}</span>}</a></Link>}
                 </div>
             </div>
         </nav>
     </>;
 }
 
-export default Navbar
+export default memo(Navbar);

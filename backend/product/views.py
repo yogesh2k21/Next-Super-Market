@@ -142,7 +142,7 @@ def addToCart(request,product_id):
         NewCartProduct=ProductOrder(customer=customer,ordered=False,product=product,quantity=1)
         NewCartProduct.save()
     print("order saved")
-    return JsonResponse(status=status.HTTP_200_OK) 
+    return JsonResponse(data={},status=status.HTTP_200_OK) 
 
 
 @api_view(['GET'])
@@ -165,7 +165,7 @@ def removeFromCart(request,product_id):
         print(e)
         return JsonResponse({"success":False}) 
     print("removed")
-    return JsonResponse(status=status.HTTP_200_OK) 
+    return JsonResponse(data={},status=status.HTTP_200_OK) 
 
 
 @api_view(['GET'])
@@ -183,7 +183,7 @@ def ClearCart(request):
         print(e)
         return JsonResponse({"success":False}) 
     print("all deleted")
-    return JsonResponse(status=status.HTTP_200_OK) 
+    return JsonResponse(data={},status=status.HTTP_200_OK) 
 
 @api_view(['GET'])
 @permission_classes((IsAuthenticated,))
@@ -200,7 +200,7 @@ def deleteFromCart(request,product_id):
         print(e)
         return JsonResponse({"success":False}) 
     print("deleted from cart")
-    return JsonResponse(status=status.HTTP_200_OK) 
+    return JsonResponse(data={},status=status.HTTP_200_OK) 
 
 
 @api_view(['GET'])

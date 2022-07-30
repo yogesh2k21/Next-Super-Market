@@ -139,21 +139,22 @@ MEDIA_URL = '/media/'
 
 STATIC_URL = 'static/'
 
-CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_ALLOW_ALL = True
 
-CORS_ORIGIN_WHITELIST  = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000"
-]
+# CORS_ORIGIN_WHITELIST  = [
+    # "http://localhost:3000",
+    # "http://127.0.0.1:3000",
+    # "http://192.168.1.102:3000"
+# ]
 
-CORS_EXPOSE_HEADERS = ['Content-Type','X-CSRFToken','Authorization']
-# CORS_ALLOW_CREDENTIALS = True    #if False than your sessionID will not set in browser
+CORS_EXPOSE_HEADERS = ['Content-Type','X-CSRFToken','Authorization','Accept','Origin']
+CORS_ALLOW_CREDENTIALS = True    #if False than your sessionID will not set in browser
 
-# SESSION_COOKIE_SAMESITE = "Lax"
-# SESSION_COOKIE_SAMESITE = "Lax"
+SESSION_COOKIE_SAMESITE = "Lax"
+SESSION_COOKIE_SAMESITE = "Lax"
 
-# CSRF_COOKIE_HTTPONLY = True
-# CSRF_COOKIE_HTTPONLY = True
+CSRF_COOKIE_HTTPONLY = True
+CSRF_COOKIE_HTTPONLY = True
 
 EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS=True
