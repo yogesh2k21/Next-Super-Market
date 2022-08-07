@@ -15,6 +15,7 @@ from django.conf import settings
 from .tasks import send_order_email_confirmation
 from django.db.models import Avg
 import razorpay
+from django.db.models import Q
 # Create your views here.
 
 @api_view(['GET'])
@@ -418,6 +419,43 @@ def review(request,pk):
         product.rating=floor(reviewsAvgRating['rating__avg'])
         product.save(update_fields=['rating'])
         return JsonResponse({"success":True,"message":"Review Posted"})
+    except Exception as e:
+        print(e)
+        return JsonResponse({"success":False,"message":"Internal server Error!"})
+
+@api_view(['GET'])
+# @permission_classes((IsAuthenticated,))
+# @authentication_classes([JWTAuthentication])
+def searchItem(request,searchKeyword):
+    try:
+        # reviews=Review.objects.filter(product__id=pk)
+        try:
+    #         title=models.CharField(max_length=50)
+    # type=models.CharField(max_length=50)
+    # category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
+    # description=models.CharField(max_length=50)
+            products=Product.objects.filter(
+                Q(title__icontains=searchKeyword)|
+                Q(category__title__icontains=searchKeyword)|
+                Q(description__icontains=searchKeyword)|
+                Q(type__icontains=searchKeyword)).values('id','title','category__title','price','image').order_by('-id')[:25]
+            print(products)
+            # reviews=Review.objects.filter().values('id','title','message','rating','customer__user__first_name','customer__user__last_name','review_date').order_by('-id')[:25]
+            # .values('id','title','category','price','image')
+            data={}
+            for t in products:
+                d={
+                    "id":t['id'],
+                    "title":t['title'],
+                    "category":t['category__title'],
+                    "price":t['price'],
+                    "image":t['image']
+                }
+                data.update({t['id']:d})
+        except Exception as e:
+            print(e)
+            return JsonResponse({"success":False,"message":"Internal server Error!"})
+        return JsonResponse(data=data,safe=False,status=status.HTTP_200_OK)
     except Exception as e:
         print(e)
         return JsonResponse({"success":False,"message":"Internal server Error!"})

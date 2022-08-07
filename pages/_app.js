@@ -13,9 +13,14 @@ function MyApp({ Component, pageProps }) {
   const [key, setKey] = useState(0);
   const [Globalcart, setGlobalcart] = useState({});
   const [Total, setTotal] = useState(0);
-  const [orders, setOrders] = useState({})
-  const [progress, setProgress] = useState(0)
-  const [cartLength, setCartLength] = useState(0)
+  const [orders, setOrders] = useState({});
+  const [progress, setProgress] = useState(0);
+  const [cartLength, setCartLength] = useState(0);
+  // const [searchItem, setSearchItem] = useState({});
+  const [searchKeyword, setSearchKeyword] = useState("");
+  // const [showMainContent, setshowMainContent] = useState(true);
+
+
 
   useEffect(() => {
     console.log("hey i am _app.js useEffect");
@@ -145,6 +150,26 @@ function MyApp({ Component, pageProps }) {
     }, 1500);
   };
 
+  const getSearchData= async()=>{
+    const response = await fetch(`${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/searchItem/${searchKeyword}`, {
+      method: "GET", 
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization":"Bearer "+localStorage.getItem("token")
+      }}); //request end
+      let data = await response.json();
+      // console.log(data)
+      // setshowMainContent(false);
+      if(Object.keys(data).length === 0){
+        toast.error("No Product Found!")
+      }else{
+        localStorage.setItem("search",JSON.stringify(data))
+        router.push('/SearchItem')
+        // setSearchItem(data)
+        // console.log(searchItem)
+      }
+  }
+
   return (
     <>
       <link
@@ -168,7 +193,7 @@ function MyApp({ Component, pageProps }) {
         waitingTime={500}
         onLoaderFinished={() => setProgress(0)}
       />
-      <Navbar cartLength={cartLength} logout={logout} user={user} key={key} />
+      <Navbar setSearchKeyword={setSearchKeyword} getSearchData={getSearchData} searchKeyword={searchKeyword} cartLength={cartLength} logout={logout} user={user} key={key} />
       <Component
         increaseQuantity={increaseQuantity}
         decreaseQuantity={decreaseQuantity}
@@ -183,6 +208,7 @@ function MyApp({ Component, pageProps }) {
         setOrders={setOrders}
         user={user}
         logout={logout}
+        getSearchData={getSearchData}
         {...pageProps}
       />
       <Footer />

@@ -8,7 +8,7 @@ import { GoListUnordered } from 'react-icons/go';
 import { MdOutlineReviews,MdLogout } from 'react-icons/md';
 import { RiCustomerService2Fill } from 'react-icons/ri';
 
-const Navbar = ({user,logout,cartLength}) => {
+const Navbar = ({user,logout,cartLength,searchKeyword,setSearchKeyword,getSearchData}) => {
     // console.log(user.value)
     const router = useRouter();
     
@@ -27,9 +27,6 @@ const Navbar = ({user,logout,cartLength}) => {
     }
 
     return <>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
-        {/* <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-            rel="stylesheet"></link> */}
         <nav className="bg-white shadow dark:bg-white-500">
             <div className="container px-6 py-4 mx-auto lg:flex lg:justify-between lg:items-center">
                 <div>
@@ -37,11 +34,16 @@ const Navbar = ({user,logout,cartLength}) => {
                 </div>
                 <div className="flex flex-col text-gray-600 capitalize dark:text-gray-800 lg:flex lg:px-16 lg:-mx-4 lg:flex-row lg:items-center">
                     <div className="relative mt-4 lg:mt-0 lg:mx-4">
-                        <form>
+                        <div>
                             <div className="flex items-center justify-center">
                                 <div className="flex border-2 rounded">
-                                    <input type="text" className="h-9 px-4 py-2 w-80 appearance-none border-0 text-black-600 focus:outline-none" placeholder="Search Products, Brands and more" />
-                                    <button className="flex items-center justify-center px-4 border-l" type='submit'>
+                                    <button disabled={searchKeyword===""?true:false} onClick={()=>{setSearchKeyword(""),router.push('/')}} className="flex items-center justify-center px-4 border-l">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                    </button>
+                                    <input type="text" value={searchKeyword} onChange={(e)=>setSearchKeyword(e.target.value)} className="h-9 px-4 py-2 w-60 appearance-none border-0 text-black-600 focus:outline-none" placeholder="Search Product, Brand & more" />
+                                    <button  disabled={searchKeyword===""?true:false} onClick={getSearchData} className="flex items-center justify-center px-4 border-l">
                                         <svg className="w-6 h-6 text-gray-600" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
                                             viewBox="0 0 24 24">
                                             <path
@@ -50,7 +52,7 @@ const Navbar = ({user,logout,cartLength}) => {
                                     </button>
                                 </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
 
                 </div>
