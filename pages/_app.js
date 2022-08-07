@@ -154,8 +154,7 @@ function MyApp({ Component, pageProps }) {
     const response = await fetch(`${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/searchItem/${searchKeyword}`, {
       method: "GET", 
       headers: {
-        "Content-Type": "application/json",
-        "Authorization":"Bearer "+localStorage.getItem("token")
+        "Content-Type": "application/json"
       }}); //request end
       let data = await response.json();
       // console.log(data)
