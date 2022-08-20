@@ -19,7 +19,7 @@ const SearchItem = ({getSearchData}) => {
       <div className="relative m-3 flex flex-wrap mx-auto justify-center">
         <div className="max-w-2xl sm:py-2 sm:px-6 lg:max-w-7xl lg:px-1">
           <div className="mt- grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-        {Object.keys(data).map((product) => {
+        {data && Object.keys(data).map((product) => {
               return (
                 <Link key={product} href={"/product/" + product} passHref>
             <a>
