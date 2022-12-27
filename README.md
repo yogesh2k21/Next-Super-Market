@@ -3,20 +3,28 @@
 
 
 ## 🚀 About Me
-I am a third year Student pursing Btech. I am interested in Web development currently working on Data-Structure Problem-Solving C++ DJANGO HTML CSS3 JavaScript PYTHON MYSQL PHP GIT Bootstrap Tailwind JAVA Photoshop Video Editing
+I am a fourth year Student pursing Btech. I am interested in Web development currently working on Django, ReactJS, NextJS, Docker, Linux.
 
 
-# NEXT SUPER MARKET 👉[Link](https://next-super-market.vercel.app/)
+# NEXT SUPER MARKET
 
-A Ecommerce site Only Frontend which made up of Next.js without backend.
-## Screenshot
+It's an Web application that demonstrates an E-commerce website using the Django as Backend and NextJS as Frontend. The application fetch products from a SQLite database and displays them. Users can select to display products in a single category. Users can click on any product to get more information including pricing, reviews and rating. Users can select items and add them to their shopping cart
+## Video Presentation
 
-![Screenshot (365)](https://user-images.githubusercontent.com/52989607/160095869-5af0dd34-ed56-474e-a59a-ed3cf387d64f.png)
+https://user-images.githubusercontent.com/52989607/177797914-d17ae50e-a83a-491e-8224-e3c74796960f.mp4
+
 
 ## Features
 
-- Clean and simple UI.
-- Very fast, super smooth design which user like the most.
+- Clean and simple UI using TailwindCSS.
+- Fast, super smooth design which will user like the most.
+- JWT Authentication
+- Product Search Features.
+- A fully functional Shopping Cart.
+- Payment Gateway of RazorPay.
+- Email Notification when user places the order.
+- Also send Order invoice to user's Email.
+- Email is sent asynchronously using Celery and Redis.
 
 ## 🛠 Tech used
 
@@ -24,18 +32,40 @@ A Ecommerce site Only Frontend which made up of Next.js without backend.
 
 ![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)
 
-![NPM](https://img.shields.io/badge/NPM-%23000000.svg?style=for-the-badge&logo=npm&logoColor=white) 
+![NPM](https://img.shields.io/badge/NPM-%23000000.svg?style=for-the-badge&logo=npm&logoColor=white)
 
-![NODE.JS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white) 
+![Django](https://img.shields.io/badge/django-%23092E20.svg?style=for-the-badge&logo=django&logoColor=white)
+
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+
+![postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+
+![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
+
+![github](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
 
 ## Installation
 
 Simply clone this repo
 and run
 
+To start Frontend
+
 ```bash
-npm install 
-npm run dev
+npm install
+npm run build
+npm run start
+```
+
+To start Backend
+
+First create virtual env using pip
+
+Now go in backend directory and enter these commands
+
+```bash
+pip install -r requirements.txt
+python manage.py runserver
 ```
 ## Authors
 
