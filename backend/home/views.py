@@ -8,25 +8,22 @@ from django.core.exceptions import ObjectDoesNotExist
 # Create your views here.
 
 def home(request):
-    print('home')
-    products=Product.objects.filter().order_by('id')[:8]
+    products=Product.objects.filter().order_by('-rating')[:8]
     serialized=ProductSerializer(products,many=True)
     return JsonResponse(serialized.data,safe=False)
 
 def banner(request):
-    print('banner')
     banners=Banner.objects.filter(active=True)
     serialized=BannerSerializer(banners,many=True)
     return JsonResponse(serialized.data,safe=False)
 
 def checkPin(request,pin):
-    print('pin checking')
-    print(pin)
     data={}
     try:
-        getPin=Pincode.objects.get(pin=pin)
-        if getPin:
+        # if exist then Available becomes true
+        if Pincode.objects.get(pin=pin):
             data.update({'Available':True})
+    # if not exist then it will through ObjectDoesNotExist error
     except ObjectDoesNotExist:
         data.update({'Available':False})
     return JsonResponse(data=data,safe=False)

@@ -8,7 +8,12 @@ const Review = ({ prod_id, reviews, sitare,setReviewData,reviewCount,user }) => 
   // const [review, setReview] = useState({ title: "", message: "" });
   // console.log("review.js",reviews);
   console.log("re rendering");
-
+  //sorting the reviews according to its rating decsending order
+  reviews.sort((a,b)=> b.rating-a.rating)
+  const capFirstLetter=(string)=>{
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+  
   // const onChange = (e) => {
   //   e.preventDefault();
   //   setReview({ ...review, [e.target.name]: e.target.value });
@@ -296,18 +301,15 @@ const Review = ({ prod_id, reviews, sitare,setReviewData,reviewCount,user }) => 
           </div>
 
           <div className="grid bg grid-cols-1 mt-8 lg:grid-cols-1 gap-x-16 gap-y-12">
-            {Object.keys(reviews).slice(0)
-              .reverse().map((i) => {
+            {reviews.map((i) => {
               return (
                 <blockquote key={i} className="bg-white shadow-xl rounded-3xl p-5 min-w-min h-auto">
                   <header className="sm:items-center sm:flex">
                     <div className="flex -ml-1">
-                      {/* ${i.reviews>=?"text-yellow-400":"text-gray-200"} */}
-                      {/* ()=>{return i.rating>=1?"w-5 h-5 text-yellow-400":"w-5 h-5 text-gray-200"} */}
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className={
-                          reviews[i].rating >= 1
+                          i.rating >= 1
                             ? "w-5 h-5 text-yellow-400"
                             : "w-5 h-5 text-gray-200"
                         }
@@ -319,7 +321,7 @@ const Review = ({ prod_id, reviews, sitare,setReviewData,reviewCount,user }) => 
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className={
-                          reviews[i].rating >= 2
+                          i.rating >= 2
                             ? "w-5 h-5 text-yellow-400"
                             : "w-5 h-5 text-gray-200"
                         }
@@ -331,7 +333,7 @@ const Review = ({ prod_id, reviews, sitare,setReviewData,reviewCount,user }) => 
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className={
-                          reviews[i].rating >= 3
+                          i.rating >= 3
                             ? "w-5 h-5 text-yellow-400"
                             : "w-5 h-5 text-gray-200"
                         }
@@ -343,7 +345,7 @@ const Review = ({ prod_id, reviews, sitare,setReviewData,reviewCount,user }) => 
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className={
-                          reviews[i].rating >= 4
+                          i.rating >= 4
                             ? "w-5 h-5 text-yellow-400"
                             : "w-5 h-5 text-gray-200"
                         }
@@ -355,7 +357,7 @@ const Review = ({ prod_id, reviews, sitare,setReviewData,reviewCount,user }) => 
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className={
-                          reviews[i].rating == 5
+                          i.rating == 5
                             ? "w-5 h-5 text-yellow-400"
                             : "w-5 h-5 text-gray-200"
                         }
@@ -367,15 +369,15 @@ const Review = ({ prod_id, reviews, sitare,setReviewData,reviewCount,user }) => 
                     </div>
 
                     <p className="mt-2 font-medium sm:ml-4 sm:mt-0">
-                      {reviews[i].title}
+                      {i.title}
                     </p>
                   </header>
 
-                  <p className="mt-2 text-gray-700">{reviews[i].message}</p>
+                  <p className="mt-2 text-gray-700">{i.message}</p>
 
                   <footer className="mt-4">
                     <p className="text-xs text-gray-500">
-                      {reviews[i].name} - {reviews[i].date}
+                      {capFirstLetter(i.customer__user__first_name)+' '+capFirstLetter(i.customer__user__last_name)} - {i.review_date}
                     </p>
                   </footer>
                 </blockquote>

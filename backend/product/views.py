@@ -18,6 +18,9 @@ import razorpay
 from django.db.models import Q
 # Create your views here.
 
+# @permission_classes if i put permission_classes on a view then it will be only accesible by authenticated user
+# @authentication_classes([JWTAuthentication]) means this Authentication check must be passed by request
+
 @api_view(['GET'])
 # @permission_classes((IsAuthenticated,))
 # @authentication_classes([JWTAuthentication])
@@ -59,43 +62,16 @@ def getProductCategoryWise(request,id):
 # @authentication_classes([JWTAuthentication])
 def getReview(request,pk):
     try:
-        # reviews=Review.objects.filter(product__id=pk)
         try:
             reviews=Review.objects.filter(product__id=pk).values('id','title','message','rating','customer__user__first_name','customer__user__last_name','review_date').order_by('-id')[:25]
-            # print(testing)
-            reviewCount=Review.objects.filter(product__id=pk).count()
+            reviewCount=len(reviews)
             data={}
-            # test={}
-            # for t in range(0,10):
-            #     d={
-            #         "id":reviews[t]['id'],
-            #         "title":reviews[t]['title'],
-            #         "message":reviews[t]['message'],
-            #         "rating":reviews[t]['rating'],
-            #         "name":reviews[t]['customer__user__first_name'].title()+' '+reviews[t]['customer__user__last_name'].title(),
-            #         'date':reviews[t]['review_date'].strftime("%d %B %Y")
-            #     }
-            #     test.update({t:d})
-            # print(test)
-            for t in reviews:
-                d={
-                    "id":t['id'],
-                    "title":t['title'],
-                    "message":t['message'],
-                    "rating":t['rating'],
-                    "name":t['customer__user__first_name'].title()+' '+t['customer__user__last_name'].title(),
-                    'date':t['review_date'].strftime("%d %B %Y")
-                }
-                data.update({t['id']:d})
-                # print(t['review_date'].strftime("%m %B %Y"))
-                # print(t['customer__user__first_name'].title()+' '+t['customer__user__last_name'].title())
-                # print(data)
+            review_list=list(reviews)
         except Exception as e:
             print(e)
-            pass
-        # print(reviews)
-        # serialized=ReviewSerializer(reviews,many=True)
-        data.update({"count":reviewCount})
+            return JsonResponse({"success":False,"message":"Internal server Error!"})
+
+        data.update({"count":reviewCount,"reviews":review_list})
         return JsonResponse(data=data,safe=False,status=status.HTTP_200_OK)
     except Exception as e:
         print(e)

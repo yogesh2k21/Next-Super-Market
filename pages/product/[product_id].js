@@ -282,7 +282,8 @@ export async function getServerSideProps(context) {
   ); 
   let review = await reviews.json();
   const reviewCount=review['count'];
-  delete review['count']
+  // delete review['count']
+  review=review['reviews']
   return {
     props: { product,review,reviewCount }, // will be passed to the page component as props
   };
