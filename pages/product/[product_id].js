@@ -14,8 +14,6 @@ const Product = ({
   cartLength,
   setCartLength,
 }) => {
-  // console.log(review);
-  // const [items, setitems] = useState(product);
   const [reviewData, setReviewData] = useState(review)
   const [Service, setService] = useState(null);
   const [Pin, setPin] = useState("");
@@ -24,11 +22,8 @@ const Product = ({
   let router = useRouter();
 
   useEffect(() => {
-    if (Globalcart) {
-      // console.log(Globalcart);
-    }
     console.log("i am useEffect of product page");
-    if (product.id in Globalcart) {
+    if(Globalcart.some(item => item._id === product.id)) {
       setcartButtonState(true);
     }
   }, [router.query]); //router.query is used to run this useEffect when url changes or page loads
@@ -49,7 +44,6 @@ const Product = ({
       }, 2500);
       return;
     }
-    // console.log(product_id,product_name,product_price,product_qty,product_category,product_subtotal);
     setcartButtonState(true);
     increaseQuantity(
       product_id,
@@ -60,7 +54,6 @@ const Product = ({
       product_subtotal,
       product_image
     );
-    // setCartLength(cartLength+1)
   };
 
   const onChangePin = (event) => {
@@ -69,12 +62,10 @@ const Product = ({
 
   const CheckServiceAvailability = async () => {
     setpinSpinner(true);
-    // console.log(Pin);
     let data = await fetch(
       `${process.env.NEXT_PUBLIC_MY_BACK_HOST}/checkPin/${Pin}/`
     );
     let res = await data.json();
-    // console.log(res.Available);
     setService(res.Available);
     setpinSpinner(false);
   };

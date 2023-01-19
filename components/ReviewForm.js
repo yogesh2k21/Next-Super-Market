@@ -3,7 +3,6 @@ import { toast } from "react-toastify";
 
 
 const ReviewForm = ({ setPostStatus,reviews,setReviewData,prod_id }) => {
-  // const [postStatus, setPostStatus] = useState(false);
 
   const [rating, setRating] = useState(1);
   const [hover, setHover] = useState(0);
@@ -12,7 +11,6 @@ const ReviewForm = ({ setPostStatus,reviews,setReviewData,prod_id }) => {
   const onChange = (e) => {
     e.preventDefault();
     setReview({ ...review, [e.target.name]: e.target.value });
-    // console.log(review);
   };
   const handleSubmit = async () => {
     console.log("handle submit run");
@@ -60,7 +58,7 @@ const ReviewForm = ({ setPostStatus,reviews,setReviewData,prod_id }) => {
       };
       let refreshData = reviews;
       refreshData["-1"] = postedreview;
-    //   console.log(refreshData);
+
       setReviewData(refreshData);
       setReview({ title: "", message: "" });
       setRating(1);

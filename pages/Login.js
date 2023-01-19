@@ -48,7 +48,7 @@ const Login = ({setGlobalcart}) => {
       }}); //request end
       const product = await data.json();
       // console.log(product);
-      localStorage.setItem("cart",JSON.stringify(product));
+      localStorage.setItem("cart",JSON.stringify(product.items));
       setGlobalcart(JSON.parse(localStorage.getItem("cart")));
       // console.log(localStorage.getItem("cart"));
       //redirect to home after 0.5 sec

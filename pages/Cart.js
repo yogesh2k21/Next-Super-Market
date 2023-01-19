@@ -14,40 +14,14 @@ const Cart = ({
   clearCart,
   Total,
   user,
-  // dataBaseCart,
+  cartLength,
+  setCartLength
   // cartitems,
   // logout,
 }) => {
-  // const [promocode, setPromocode] = useState("");
-  const [cartitem, setCartitem] = useState(0);
+  
   let router = useRouter();
-  // let total_html = "";
-
-  // console.log(cartitems + " cartitems");
-  // console.log("cart.js");
-  // console.log(Globalcart);
-  // const initialCart=async()=>{
-  //   const data = await fetch("http://127.0.0.1:8000/product/getCart/", {
-  //     method: "GET",
-  //     headers: {
-  //     "Content-Type": "application/json",
-  //     "Authorization":"Bearer "+localStorage.getItem("token")
-  //   }
-  // }); //request end
-  // const product = await data.json();
-  // console.log(product);
-  // // localStorage.removeItem("cart")
-  // localStorage.setItem("cart",JSON.stringify(product))
-  // JSON.parse(localStorage.getItem("cart"))
-  // }
-
-  // useCallback(
-  //   () => {
-    
-  //   },
-  //   [second],
-  // )
-  //eslint-disable-line
+  
   useEffect(() => {
     console.log("hey i am Cart.js useEffect");
     const getData = async () => {
@@ -62,98 +36,17 @@ const Cart = ({
         }
       ); //request end
       const product = await data.json();
-      localStorage.setItem("cart", JSON.stringify(product));
-      saveGlobalCart(product);
-      setCartitem(Object.keys(Globalcart).length);
+      console.log(product);
+      localStorage.setItem("cart", JSON.stringify(product.items));
+      saveGlobalCart(product.items);
+      setCartLength(Globalcart.length);
     };
     if (!user.value) {
       router.push("/");
     }
-  
-  //eslint-disable-line
-    // getData();
-    // try {
-      // const data = await fetch(`${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/getCart/`, {
-      //   method: "GET",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     "Authorization":"Bearer "+localStorage.getItem("token")
-      //   }
-      // }); //request end
-    // } catch (error) {
-    //   console.log(error);
-    // }
-    // const product = await data.json();
-    // console.log(product);
-    // if(product["code"]==true){
-
-    // localStorage.removeItem("cart")
-    // localStorage.setItem("cart", JSON.stringify(product));
-    // setGlobalcart(JSON.parse(localStorage.getItem("cart")))
-    // saveGlobalCart(product);
-    // JSON.parse(localStorage.getItem("cart"))
-    // localStorage.removeItem("cart")
-    // localStorage.setItem("cart",JSON.stringify(Globalcart))
-    //   const data = await fetch("http://127.0.0.1:8000/product/getCart/", {
-    //     method: "GET",
-    //     headers: {
-    //     "Content-Type": "application/json",
-    //     "Authorization":"Bearer "+localStorage.getItem("token")
-    //   }
-    // }); //request end
-    // const product = await data.json();
-    // console.log(product);
-    // // localStorage.removeItem("cart")
-    // // setGlobalcart(localStorage.getItem("cart"))
-    // localStorage.setItem("cart",JSON.stringify(product))
-    // setGlobalcart(JSON.parse(localStorage.getItem("cart")))
-    // console.log(Total===0);
-    // setCartitem(Object.keys(Globalcart).length);
-    // if (Total == 0) {
-    //   total_html = "";
-    // } else {
-    //   total_html = Total;
-    //   console.log(total_html);
-    // }
-    // let a="dasd"
-    // a.upp
-    // }else{
-
-    //   localStorage.clear()
-    //   toast.error('Session timeout, Please Login Again!')
-    //   setTimeout(() => {
-
-    //     logout()
-    //   }, 1);
-    // console.log('Session timeout, Please Login Again!');
-    // router.push('/Login')
-    // }
-    // initialCart(JSON.parse(localStorage.getItem("cart")))
     getData();
   }, [router.query,product,router,user.value]); //passing router.query is to Re-render the _app so that this useEffect runs, now it will re render on every URL change.
-// useEffect(() => {
-//   first
 
-//   return () => {
-//     second
-//   }
-// }, [third])
-
-  // const initialCart=async()=>{
-  //   const data = await fetch("http://127.0.0.1:8000/product/getCart/", {
-  //     method: "GET",
-  //     headers: {
-  //     "Content-Type": "application/json",
-  //     "Authorization":"Bearer "+localStorage.getItem("token")
-  //   }
-  // }); //request end
-  // const product = await data.json();
-  // console.log(product);
-  // localStorage.removeItem("cart")
-  // localStorage.setItem("cart",JSON.stringify(product))
-  // }
-
-  // initialCart()
 
   const removeFromCart = async (product_id, product_name) => {
     const response = await fetch(
@@ -167,11 +60,9 @@ const Cart = ({
         },
       }
     ); //request end
-    // console.log(product_id);
-    // console.log(Globalcart);
     let newCart = Globalcart;
-    delete newCart[product_id];
-    // console.log("removeFromCart");
+    newCart = newCart.filter(i => { return i._id != product_id })
+    setCartLength(newCart.length)
     setGlobalcart(newCart);
     saveGlobalCart(newCart);
     toast.success(product_name + " is removed from Cart!");
@@ -215,7 +106,7 @@ const Cart = ({
                 <div className="flex">
                   <h1 className="font-semibold text-2xl">Your Cart has</h1>
                   <h2 className="font-semibold text-2xl ml-2 text-indigo-600">
-                    {cartitem} Items
+                    {cartLength} Items
                   </h2>
                 </div>
               </div>
@@ -235,7 +126,7 @@ const Cart = ({
                   </h3>
                 </div>
               )}
-              {!Object.keys(Globalcart).length && (
+              {!Globalcart.length && (
                 <div className="text-3xl flex justify-center py-16">
                   <Image
                     className="h-24 rounded-lg"
@@ -246,35 +137,35 @@ const Cart = ({
                   />
                 </div>
               )}
-              {Object.keys(Globalcart).map((item) => {
+              {Globalcart.length && Globalcart.map((item) => {
                 return (
                   <div
-                    key={item}
+                    key={item._id}
                     className="flex items-center hover:bg-gray-100 -mx-8 px-8 py-2 rounded-lg"
                   >
                     <div className="flex w-2/5">
                       <div className="w-20">
                         <Image
                           className="h-24 rounded-lg"
-                          src={`${process.env.NEXT_PUBLIC_MY_BACK_HOST}${Globalcart[item].product_image}`}
+                          src={`${process.env.NEXT_PUBLIC_MY_BACK_HOST}${item.product_image}`}
                           height={100}
                           width={100}
-                          alt={Globalcart[item].product_name}
+                          alt={item.product_name}
                         />
                       </div>
 
                       <div className="flex flex-col justify-between ml-4 flex-grow">
                         <span className="font-bold text-sm items-center">
-                          <Link href={`/product/${item}/`}>
-                            <a>{Globalcart[item].product_name.toUpperCase()}</a>
+                          <Link href={`/product/${item._id}/`}>
+                            <a>{item.product_name.toUpperCase()}</a>
                           </Link>
                         </span>
                         <span className="text-red-500 text-xs">
-                          {Globalcart[item].product_category}
+                          {item.product_category}
                         </span>
                         <button
                           onClick={() => {
-                            removeFromCart(item, Globalcart[item].product_name);
+                            removeFromCart(item._id, item.product_name);
                           }}
                           className="flex w-5 font-semibold hover:text-red-500 text-gray-500 text-xs"
                         >
@@ -285,7 +176,7 @@ const Cart = ({
                     <div className="flex justify-center w-1/5">
                       <svg
                         onClick={() => {
-                          decreaseQuantity(item);
+                          decreaseQuantity(item._id,item);
                         }}
                         className="fill-current cursor-pointer text-gray-600 w-3"
                         viewBox="0 0 448 512"
@@ -297,12 +188,12 @@ const Cart = ({
                         className="mx-2 border text-center w-8"
                         type="text"
                         disabled={true}
-                        value={Globalcart[item].product_qty}
+                        value={item.product_qty}
                       />
 
                       <svg
                         onClick={() => {
-                          increaseQuantity(item);
+                          increaseQuantity(item._id);
                         }}
                         className="fill-current cursor-pointer text-gray-600 w-3"
                         viewBox="0 0 448 512"
@@ -311,10 +202,10 @@ const Cart = ({
                       </svg>
                     </div>
                     <span className="text-center w-1/5 font-semibold text-sm">
-                      {Globalcart[item].product_price}
+                      {item.product_price}
                     </span>
                     <span className="text-center w-1/5 font-semibold text-sm">
-                      {Math.ceil(Globalcart[item].product_subtotal)}
+                      {Math.ceil(item.product_subtotal)}
                     </span>
                   </div>
                 );
@@ -351,46 +242,5 @@ const Cart = ({
     </>
   );
 };
-
-// export async function getStaticProps() {
-// Call an external API endpoint to get posts
-// const res = await fetch('http://127.0.0.1:8000/product/getCart/',{
-//   method: "GET",
-//     headers: {
-//     "Content-Type": "application/json",
-//     "Authorization":"Bearer "+localStorage.getItem("token")
-// })
-// const data = await fetch("http://127.0.0.1:8000/product/getCart/", {
-//     method: "GET",
-//     headers: {
-//     "Content-Type": "application/json",
-//     "Authorization":"Bearer "+localStorage.getItem("token")
-//     }}); //request end
-// const cartitems = await data.json()
-
-// By returning { props: { posts } }, the Blog component
-// will receive `posts` as a prop at build time
-//   return {
-//     props: {
-//       cartitems,
-//     },
-//   }
-// }
-
-// export async function getServerSideProps({req}) {
-//   console.log(req.headers);
-//   const data = await fetch("http://127.0.0.1:8000/product/getCart", {
-//       method: "GET",
-//       headers: {
-//       "Content-Type": "application/json",
-//       "Authorization":"Bearer "+localStorage.getItem("token")
-//     }
-//   }); //request end
-//   // let data = await fetch(`http://127.0.0.1:8000/product/getCart`);
-//   let dataBaseCart = await data.json();
-//   return {
-//   props: { dataBaseCart }, // will be passed to the page component as props
-//   };
-// }
 
 export default Cart;

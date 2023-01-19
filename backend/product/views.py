@@ -15,7 +15,9 @@ from django.conf import settings
 from .tasks import send_order_email_confirmation
 from django.db.models import Avg
 import razorpay
-from django.db.models import Q
+from django.db.models import Q,F
+            # from django.db.models import F
+
 # Create your views here.
 
 # @permission_classes if i put permission_classes on a view then it will be only accesible by authenticated user
@@ -87,16 +89,14 @@ def isPosted(request,product_id):
     except:
         return JsonResponse({"success":False}) 
     try:
-        data=True
+        # checking is this product is ordered by this customer in past or not
         isOrdered=ProductOrder.objects.filter(customer=customer,product=product,ordered=True).exists()
-
-        isPosted=Review.objects.filter(customer=customer,product=product).exists()
-        print(isOrdered,isPosted,"dasdb")
+        
         if isOrdered:
-            if isPosted:
-                data=True
-            else:
-                data=False
+            # checking is this product is reviewed or not in past
+            isPosted=Review.objects.filter(customer=customer,product=product).exists()
+            data = True if isPosted else False
+
         return JsonResponse(data=data,safe=False,status=status.HTTP_200_OK) 
     except Exception as e:
         print(e)
@@ -154,8 +154,7 @@ def ClearCart(request):
     except:
         return JsonResponse({"success":False}) 
     try:
-        OldCartProduct=ProductOrder.objects.filter(customer=customer,ordered=False)
-        OldCartProduct.delete()
+        ProductOrder.objects.filter(customer=customer,ordered=False).delete()
     except Exception as e:
         print(e)
         return JsonResponse({"success":False}) 
@@ -172,7 +171,7 @@ def deleteFromCart(request,product_id):
     except:
         return JsonResponse({"success":False}) 
     try:
-        OldCartProduct=ProductOrder.objects.filter(customer=customer,product=product,ordered=False).delete()
+        ProductOrder.objects.filter(customer=customer,product=product,ordered=False).delete()
     except Exception as e:
         print(e)
         return JsonResponse({"success":False}) 
@@ -188,23 +187,22 @@ def getCart(request):
         customer=Customer.objects.get(user=request.user)
     except:
         return JsonResponse({"success":False}) 
-    print(request.user)
     try:
-        CartProduct=ProductOrder.objects.filter(customer=customer,ordered=False).values('id','quantity','product__id','product__title','product__category__title','product__image','product__price','product__image')
+        carpro=ProductOrder.objects.filter(customer=customer,ordered=False).values(
+                _id=F('product__id'),
+                product_name=F('product__title'),
+                product_price=F('product__price'),
+                product_qty=F('quantity'),
+                product_category=F('product__category__title'),
+                product_image=F('product__image')
+                )
+        for i in carpro:
+            i.update({'product_subtotal':int(i['product_qty'])*int(i['product_price'])}) # calculating subtotal
+            i.update({'product_image':'/media/'+i['product_image']}) # adding media keyword in image url
+
         data={}
-        for p in CartProduct:
-            obj={
-                "product_name":p['product__title'],
-                "product_price":p['product__price'],
-                "product_qty":p['quantity'],
-                "product_category":p['product__category__title'],
-                "product_subtotal":p['quantity']*p['product__price'],
-                "product_image":"/media/"+p['product__image'],
-            }
-            data.update({p['product__id']:obj})
-        print(CartProduct)
-        print("deleted from cart")
-        return JsonResponse(data,safe=True,status=status.HTTP_200_OK) 
+        data.update({'items':list(carpro)})
+        return JsonResponse(data=data,status=status.HTTP_200_OK) 
     except Exception as e:
         print(e)
         return JsonResponse({"success":False}) 

@@ -110,7 +110,7 @@ const Checkout = ({ Globalcart, Total }) => {
         const orderRes = await res.json();
         // console.log(orderRes);
         if (orderRes.success) {
-          localStorage.setItem("cart", JSON.stringify({}));
+          localStorage.setItem("cart", JSON.stringify([]));
           toast.success("Congratulations! Order placed.");
           setTimeout(() => {
             router.push("/Final");
