@@ -53,13 +53,12 @@ const ReviewForm = ({ setPostStatus,reviews,setReviewData,prod_id }) => {
         title: review.title,
         message: review.message,
         rating: rating,
-        name: "You",
-        date: "Now",
+        customer__user__first_name: "You",
+        customer__user__last_name: "",
+        review_date: "Now",
       };
-      let refreshData = reviews;
-      refreshData["-1"] = postedreview;
-
-      setReviewData(refreshData);
+      reviews.unshift(postedreview)
+      setReviewData(reviews);
       setReview({ title: "", message: "" });
       setRating(1);
       setPostStatus(true);

@@ -287,6 +287,7 @@ def finalOrderPaymentRequest(request):
             op.ordered=True
             op.save()
         try:
+            # its not taking order object throwing error of order object is not JSON serializer
             send_order_email_confirmation.delay(order.id) 
         except Exception as e:
             print(e)
@@ -305,8 +306,8 @@ def getMyOrders(request):
         return JsonResponse({"success":False})
     print(request.user)
     try:
-        orders=Order.objects.filter(customer=customer,ordered=True).order_by('-ordered_date')
-        data={}
+        orders=Order.objects.filter(customer=customer,ordered=True).order_by('-id')
+        data=[]
         for order in orders:
             t={
                 "id":order.id,
@@ -315,7 +316,7 @@ def getMyOrders(request):
                 "products":order.products.all().count(),
                 "date":order.ordered_date.strftime("%m/%d/%Y")
             }
-            data.update({order.id:t})
+            data.append(t)
         return JsonResponse({"success":True,"data":data})
 
     except Exception as e:

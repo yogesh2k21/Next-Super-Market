@@ -13,7 +13,7 @@ function MyApp({ Component, pageProps }) {
   const [key, setKey] = useState(0);
   const [Globalcart, setGlobalcart] = useState([]);
   const [Total, setTotal] = useState(0);
-  const [orders, setOrders] = useState({});
+  const [orders, setOrders] = useState([]);
   const [progress, setProgress] = useState(0);
   const [cartLength, setCartLength] = useState(0);
   // const [searchItem, setSearchItem] = useState({});
