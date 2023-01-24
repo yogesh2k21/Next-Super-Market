@@ -65,9 +65,9 @@ const Signup = () => {
       <div className="min-h-full flex items-center justify-center py-10 mb-2 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div>
-            <Image
-              className="mx-auto h-6 w-auto"
-              src="vercel.svg"
+          <Image width={500} height={30}
+              className="mx-auto h-6 my-20 w-auto"
+              src="/vercel.svg"
               alt="Workflow"
             />
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">

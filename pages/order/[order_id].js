@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import Link from "next/link";
 
 const Order = ({ user, context }) => {
-  const [order, setOrder] = useState({});
+  const [order, setOrder] = useState([]);
   const [total, setTotal] = useState(0);
   const router = useRouter();
   const order_id = router.query.order_id;
@@ -103,18 +103,18 @@ const Order = ({ user, context }) => {
                 </tr>
               </thead>
               <tbody>
-                {Object.keys(order).map((i) => {
+                {order.map((i) => {
                   return (
                     <tr key={i}>
                       <td className="px-4 py-3 text-green-500">
-                        <Link href={`/product/${order[i].product_id}`}>
-                          <a>{order[i].product_title.toUpperCase()}</a>
+                        <Link href={`/product/${i.product_id}`}>
+                          <a>{i.product_title.toUpperCase()}</a>
                         </Link>
                       </td>
-                      <td className="px-4 py-3">{order[i].product_price}</td>
-                      <td className="px-4 py-3">{order[i].product_qty}</td>
+                      <td className="px-4 py-3">{i.product_price}</td>
+                      <td className="px-4 py-3">{i.product_qty}</td>
                       <td className="px-4 py-3 text-lg text-gray-900">
-                        + ${order[i].product_total}
+                        + ${i.product_total}
                       </td>
                       <td className="w-10 text-center"> </td>
                     </tr>

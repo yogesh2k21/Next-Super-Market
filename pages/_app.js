@@ -161,15 +161,11 @@ function MyApp({ Component, pageProps }) {
       }
     }); //request end
     let data = await response.json();
-    // console.log(data)
-    // setshowMainContent(false);
-    if (Object.keys(data).length === 0) {
+    if (data.length === 0) {
       toast.error("No Product Found!")
     } else {
       localStorage.setItem("search", JSON.stringify(data))
       router.push('/SearchItem')
-      // setSearchItem(data)
-      // console.log(searchItem)
     }
   }
 

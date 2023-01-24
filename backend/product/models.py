@@ -20,6 +20,7 @@ class Product(models.Model):
     def __str__(self):
         return f'{self.id} - {self.title} - {self.type}'
 
+# cart objects
 class ProductOrder(models.Model):
     customer = models.ForeignKey(Customer,on_delete=models.CASCADE)
     ordered = models.BooleanField(default=False)    #no need of this field remove it

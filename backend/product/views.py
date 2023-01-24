@@ -334,7 +334,7 @@ def getOrder(request,order_id):
     print(request.user)
     try:
         order=Order.objects.get(id=order_id)
-        data={}
+        data=[]
         product_order=order.products.all()# fetch all product object of this order
         for p in product_order:
             t={
@@ -344,7 +344,7 @@ def getOrder(request,order_id):
                 "product_qty":p.quantity,
                 "product_total":p.get_total_product_price()
             }
-            data.update({p.id:t})
+            data.append(t)
         return JsonResponse({"success":True,"data":data,"amount":order.amount})
 
     except Exception as e:
@@ -379,8 +379,6 @@ def review(request,pk):
     except:
         return JsonResponse({"success":False,"message":"Internal server Error!"})
     try:
-        # print(received_json_data)
-        # print(request.user)
         reviewObject=Review(
             customer=customer,
             product=product,
@@ -390,7 +388,6 @@ def review(request,pk):
         )
         reviewObject.save()
         reviewsAvgRating=Review.objects.filter(product=product).aggregate(Avg('rating'))
-        print(type(floor(reviewsAvgRating['rating__avg'])))
         product.rating=floor(reviewsAvgRating['rating__avg'])
         product.save(update_fields=['rating'])
         return JsonResponse({"success":True,"message":"Review Posted"})
@@ -403,21 +400,13 @@ def review(request,pk):
 # @authentication_classes([JWTAuthentication])
 def searchItem(request,searchKeyword):
     try:
-        # reviews=Review.objects.filter(product__id=pk)
         try:
-    #         title=models.CharField(max_length=50)
-    # type=models.CharField(max_length=50)
-    # category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
-    # description=models.CharField(max_length=50)
             products=Product.objects.filter(
                 Q(title__icontains=searchKeyword)|
                 Q(category__title__icontains=searchKeyword)|
                 Q(description__icontains=searchKeyword)|
                 Q(type__icontains=searchKeyword)).values('id','title','category__title','price','image').order_by('-id')[:25]
-            print(products)
-            # reviews=Review.objects.filter().values('id','title','message','rating','customer__user__first_name','customer__user__last_name','review_date').order_by('-id')[:25]
-            # .values('id','title','category','price','image')
-            data={}
+            data=[]
             for t in products:
                 d={
                     "id":t['id'],
@@ -426,7 +415,7 @@ def searchItem(request,searchKeyword):
                     "price":t['price'],
                     "image":t['image']
                 }
-                data.update({t['id']:d})
+                data.append(d)
         except Exception as e:
             print(e)
             return JsonResponse({"success":False,"message":"Internal server Error!"})
