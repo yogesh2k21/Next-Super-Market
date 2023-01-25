@@ -1,7 +1,7 @@
-import React, { memo, useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import ReviewForm from "./ReviewForm";
 
-const Review = ({ prod_id, reviews, sitare,setReviewData,reviewCount,user }) => {
+const Review = ({ prod_id, reviews, sitare,setReviewData,user }) => {
   const [postStatus, setPostStatus] = useState(false);
   
   console.log("re rendering");
@@ -113,7 +113,7 @@ const Review = ({ prod_id, reviews, sitare,setReviewData,reviewCount,user }) => 
               </div>
 
               <p className="mt-0.5 text-xs text-gray-500">
-                Based on {reviewCount} reviews
+                Based on {reviews.length} reviews
               </p>
             </div>
           </div>

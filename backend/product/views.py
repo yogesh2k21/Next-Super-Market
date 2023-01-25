@@ -16,9 +16,8 @@ from .tasks import send_order_email_confirmation
 from django.db.models import Avg
 import razorpay
 from django.db.models import Q,F
-            # from django.db.models import F
 
-# Create your views here.
+
 
 # @permission_classes if i put permission_classes on a view then it will be only accesible by authenticated user
 # @authentication_classes([JWTAuthentication]) means this Authentication check must be passed by request
@@ -26,11 +25,13 @@ from django.db.models import Q,F
 @api_view(['GET'])
 # @permission_classes((IsAuthenticated,))
 # @authentication_classes([JWTAuthentication])
-def getItem(request,pk):
+def getItem(request,pk): 
     try:
         product=Product.objects.get(id=pk)
         serialized=ProductSerializer(product,many=False)
         return JsonResponse(serialized.data,safe=False,status=status.HTTP_200_OK)
+    except Product.DoesNotExist:
+        return JsonResponse(data={},status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         print(e)
         return JsonResponse({"success":False,"message":"Internal server Error!"})
@@ -66,14 +67,14 @@ def getReview(request,pk):
     try:
         try:
             reviews=Review.objects.filter(product__id=pk).values('id','title','message','rating','customer__user__first_name','customer__user__last_name','review_date').order_by('-id')[:25]
-            reviewCount=len(reviews)
+            # reviewCount=len(reviews)
             data={}
             review_list=list(reviews)
         except Exception as e:
             print(e)
             return JsonResponse({"success":False,"message":"Internal server Error!"})
 
-        data.update({"count":reviewCount,"reviews":review_list})
+        data.update({"reviews":review_list})
         return JsonResponse(data=data,safe=False,status=status.HTTP_200_OK)
     except Exception as e:
         print(e)

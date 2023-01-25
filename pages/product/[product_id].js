@@ -7,7 +7,6 @@ import Review from "../../components/Review";
 const Product = ({
   product,
   review,
-  reviewCount,
   increaseQuantity,
   Globalcart,
   user,
@@ -23,7 +22,7 @@ const Product = ({
 
   useEffect(() => {
     console.log("i am useEffect of product page");
-    if(Globalcart.some(item => item._id === product.id)) {
+    if (Globalcart.some(item => item._id === product.id)) {
       setcartButtonState(true);
     }
   }, [router.query]); //router.query is used to run this useEffect when url changes or page loads
@@ -256,7 +255,7 @@ const Product = ({
           </div>
         </div>
       </section>
-      <Review user={user} prod_id={product.id} reviews={reviewData} setReviewData={setReviewData} reviewCount={reviewCount} sitare={rating} />
+      <Review user={user} prod_id={product.id} reviews={reviewData} setReviewData={setReviewData} sitare={rating} />
     </>
   );
 };
@@ -266,17 +265,26 @@ export async function getServerSideProps(context) {
   let data = await fetch(
     `${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/${product_id}`
   );
+  
+  //if status code == 404 means product in not found
+  if (data.status === 404) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/",
+      },
+      props: {},
+    };
+  }
   let product = await data.json();
 
   let reviews = await fetch(
     `${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/getReview/${product_id}`
-  ); 
+  );
   let review = await reviews.json();
-  const reviewCount=review['count'];
-  // delete review['count']
-  review=review['reviews']
+  review = review['reviews']
   return {
-    props: { product,review,reviewCount }, // will be passed to the page component as props
+    props: { product, review }, // will be passed to the page component as props
   };
 }
 
