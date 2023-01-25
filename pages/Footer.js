@@ -113,7 +113,7 @@ const Footer = () => {
         </div>
 
         <div className="text-center text-gray-700 p-4">
-          © 2022 Copyright |
+          © 2023 Copyright |
           <Link className="text-gray-800 ml-2" href="/"> Next Super Market</Link>
         </div>
       </footer>

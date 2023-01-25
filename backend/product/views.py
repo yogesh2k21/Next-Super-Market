@@ -424,3 +424,23 @@ def searchItem(request,searchKeyword):
     except Exception as e:
         print(e)
         return JsonResponse({"success":False,"message":"Internal server Error!"})
+    
+@api_view(['GET'])
+@permission_classes((IsAuthenticated,))
+@authentication_classes([JWTAuthentication])
+def getMyreviews(request):
+    try:
+        customer=Customer.objects.get(user=request.user)
+        try:
+            
+            reviews=Review.objects.filter(customer=customer).values('id','title','message','rating','review_date','product__image','product')
+            for r in reviews:
+                r['product__image']='/media/'+r['product__image']
+            data=list(reviews)
+        except Exception as e:
+            print(e)
+            return JsonResponse({"success":False,"message":"Internal server Error!"})
+        return JsonResponse(data=data,safe=False,status=status.HTTP_200_OK)
+    except Exception as e:
+        print(e)
+        return JsonResponse({"success":False,"message":"Internal server Error!"})
