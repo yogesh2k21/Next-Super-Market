@@ -12,7 +12,7 @@ const MyOrders = ({user, setOrders, orders}) => {
     }
     const getData=async()=>{
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/getMyOrders/`,
+        `${process.env.backend}/product/getMyOrders/`,
         {
           method: "GET",
           headers: {

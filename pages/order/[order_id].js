@@ -10,9 +10,8 @@ const Order = ({ user, context }) => {
   const order_id = router.query.order_id;
   // console.log(order_id);
   const getData=async ()  => {
-    // console.log('myorder get data fuction');
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/getOrder/${order_id}/`,
+        `${process.env.backend}/product/getOrder/${order_id}/`,
         {
           method: "GET",
           headers: {
@@ -33,27 +32,11 @@ const Order = ({ user, context }) => {
       router.push("/");
     }
     console.log("hey i am [order_id].js useEffect")
-
-    // const response = await fetch(
-    //   `${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/getOrder/${order_id}/`,
-    //   {
-    //     method: "GET",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       Authorization: "Bearer " + localStorage.getItem("token"),
-    //     },
-    //   }
-    // ); //request end
-    // const res = await response.json();
-    // console.log(res);
-    // setOrder(JSON.parse(JSON.stringify(res.data)));
-    // setTotal(res.amount);
-    // console.log(order);
     getData()
   }, [router.query]);
   const getMail = async () => {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/getOrderInvoiceMail/${order_id}/`,
+      `${process.env.backend}/product/getOrderInvoiceMail/${order_id}/`,
       {
         method: "GET",
         headers: {

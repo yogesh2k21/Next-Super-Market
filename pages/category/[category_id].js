@@ -17,7 +17,7 @@ const [products, setproducts] = useState(props.product);
                       <div className="group relative">
                         <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
                           <Image
-                            src={`${process.env.NEXT_PUBLIC_MY_BACK_HOST}${product.image}`}
+                            src={`${process.env.backend}${product.image}`}
                             width={350}
                             height={450}
                             alt={product.description}
@@ -55,7 +55,7 @@ const [products, setproducts] = useState(props.product);
 
 export async function getServerSideProps(context) {
     const { category_id } = context.query;
-    let products = await fetch(`${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/getProductCategoryWise/${category_id}`); //fetching products
+    let products = await fetch(`${process.env.backend}/product/getProductCategoryWise/${category_id}`); //fetching products
     let product = await products.json();
     return {
         props: { product }, // will be passed to the page component as props

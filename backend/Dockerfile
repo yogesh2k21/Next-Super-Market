@@ -1,9 +1,23 @@
-FROM python
+# using python image slim version
+FROM python:3.9-slim-bullseye
 
-ADD . .
+# making directory 
+RUN mkdir -p /app
 
+# marking it as working dir
+WORKDIR /app
+
+# copy requiremnt.txt from project dir to working dir
+COPY requirements.txt ./
+
+# installing project python dependencies
 RUN pip install -r requirements.txt
 
-EXPOSE 8000
+# copy whole project files in working dir
+COPY . .
 
-CMD python manage.py runserver 0:8000
+# exposing container port
+EXPOSE $PORT
+
+# final command to start this backend container service on localhost port 8000
+CMD python manage.py runserver 0.0.0.0:8000

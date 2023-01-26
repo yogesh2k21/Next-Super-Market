@@ -35,7 +35,7 @@ const Explore = ({ category }) => {
 };
 
 export async function getServerSideProps(context) {
-  let data = await fetch(`${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/category`);
+  let data = await fetch(`${process.env.backend}/product/category`);
   let category = await data.json();
   return {
     props: { category }, // will be passed to the page component as props

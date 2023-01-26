@@ -26,7 +26,7 @@ const Cart = ({
     console.log("hey i am Cart.js useEffect");
     const getData = async () => {
       const data = await fetch(
-        `${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/getCart/`,
+        `${process.env.backend}/product/getCart/`,
         {
           method: "GET",
           headers: {
@@ -50,7 +50,7 @@ const Cart = ({
 
   const removeFromCart = async (product_id, product_name) => {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/deleteFromCart/` +
+      `${process.env.backend}/product/deleteFromCart/` +
         product_id,
       {
         method: "GET",
@@ -147,7 +147,7 @@ const Cart = ({
                       <div className="w-20">
                         <Image
                           className="h-24 rounded-lg"
-                          src={`${process.env.NEXT_PUBLIC_MY_BACK_HOST}${item.product_image}`}
+                          src={`${process.env.backend}${item.product_image}`}
                           height={100}
                           width={100}
                           alt={item.product_name}

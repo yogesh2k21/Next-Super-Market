@@ -34,7 +34,7 @@ const Signup = () => {
     }
 
     e.preventDefault();
-    const response = await fetch(`${process.env.NEXT_PUBLIC_MY_BACK_HOST}/signup/`, {
+    const response = await fetch(`${process.env.backend}/signup/`, {
       method: "POST", // *POST is use bcoz here we are login the user
       headers: {
         "Content-Type": "application/json",

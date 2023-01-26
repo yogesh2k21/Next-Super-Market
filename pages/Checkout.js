@@ -54,7 +54,7 @@ const Checkout = ({ Globalcart, Total }) => {
     }
     e.preventDefault();
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/getAddressMakeOrder/`,
+      `${process.env.backend}/product/getAddressMakeOrder/`,
       {
         method: "POST", // *POST is use bcoz here we are login the user
         headers: {
@@ -91,7 +91,7 @@ const Checkout = ({ Globalcart, Total }) => {
         //   razorpay_signature: response.razorpay_signature,
         // });
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/finalOrderPaymentRequest/`,
+          `${process.env.backend}/product/finalOrderPaymentRequest/`,
           {
             method: "POST", // *POST is use bcoz here we are login the user
             headers: {
@@ -180,7 +180,7 @@ const Checkout = ({ Globalcart, Total }) => {
                               width={150}
                               height={150}
                                 className="flex-shrink-0 object-cover w-16 h-16 rounded-lg"
-                                src={`${process.env.NEXT_PUBLIC_MY_BACK_HOST}${Globalcart[item].product_image}`}
+                                src={`${process.env.backend}${Globalcart[item].product_image}`}
                                 alt=""
                               />
 

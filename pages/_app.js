@@ -68,7 +68,7 @@ function MyApp({ Component, pageProps }) {
   };
 
   const increaseQuantity = async (_id, product_name, product_price, product_qty, product_category, product_subtotal, product_image) => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/addToCart/` + _id, {
+    const response = await fetch(`${process.env.backend}/product/addToCart/` + _id, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -95,7 +95,7 @@ function MyApp({ Component, pageProps }) {
   };
 
   const decreaseQuantity = async (product_id, product) => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/removeFromCart/` + product_id, {
+    const response = await fetch(`${process.env.backend}/product/removeFromCart/` + product_id, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -129,7 +129,7 @@ function MyApp({ Component, pageProps }) {
   };
 
   const clearCart = async () => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/ClearCart/`, {
+    const response = await fetch(`${process.env.backend}/product/ClearCart/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -154,7 +154,7 @@ function MyApp({ Component, pageProps }) {
   };
 
   const getSearchData = async () => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/searchItem/${searchKeyword}`, {
+    const response = await fetch(`${process.env.backend}/product/searchItem/${searchKeyword}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json"

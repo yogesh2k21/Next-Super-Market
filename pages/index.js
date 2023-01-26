@@ -4,8 +4,10 @@ import Link from "next/link";
 import { useState } from "react";
 import Banner from "../components/Banner";
 import Statistic from "./Statistic";
+
 const Home = (props) => {
 const [products, setproducts] = useState(props.product);
+
 return (
 <div className="">
 
@@ -27,7 +29,7 @@ return (
               <div className="group relative">
                 <div
                   className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
-                  <Image src={`${process.env.NEXT_PUBLIC_MY_BACK_HOST}${product.image}`} width={350} height={450} alt={product.description} />
+                  <Image src={`${process.env.backend}${product.image}`} width={350} height={450} alt={product.description} />
                 </div>
                 <div className="mt-4 flex justify-between">
                   <div>
@@ -59,9 +61,9 @@ return (
 };
 
 export async function getServerSideProps(context) {
-let products = await fetch(`${process.env.NEXT_PUBLIC_MY_BACK_HOST}`); //fetching products
+let products = await fetch(`${process.env.backend}`); //fetching products
 let product = await products.json();
-let banners = await fetch(`${process.env.NEXT_PUBLIC_MY_BACK_HOST}/banner`); //fetching banners
+let banners = await fetch(`${process.env.backend}/banner`); //fetching banners
 let banner = await banners.json();
 return {
 props: { product, banner }, // will be passed to the page component as props

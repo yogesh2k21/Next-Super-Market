@@ -22,7 +22,7 @@ const Login = ({setGlobalcart}) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
       
-      const response = await fetch(`${process.env.NEXT_PUBLIC_MY_BACK_HOST}/login`, {
+      const response = await fetch(`${process.env.backend}/login`, {
         method: "POST", // *POST is use bcoz here we are login the user
         headers: {
           "Content-Type": "application/json",
@@ -40,7 +40,7 @@ const Login = ({setGlobalcart}) => {
     if (json.access) {
       toast.success('Successfully logged in')
       localStorage.setItem("token", json.access);
-      const data = await fetch(`${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/getCart/`, {
+      const data = await fetch(`${process.env.backend}/product/getCart/`, {
       method: "GET",
       headers: {
       "Content-Type": "application/json",

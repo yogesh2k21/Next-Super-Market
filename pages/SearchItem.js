@@ -26,7 +26,7 @@ const SearchItem = ({getSearchData}) => {
               <div className="group relative">
                 <div
                   className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
-                  <Image src={`${process.env.NEXT_PUBLIC_MY_BACK_HOST}/media/${product.image}`} width={350} height={450} />
+                  <Image src={`${process.env.backend}/media/${product.image}`} width={350} height={450} />
                 </div>
                 <div className="mt-4 flex justify-between">
                   <div>

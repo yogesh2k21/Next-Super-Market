@@ -62,7 +62,7 @@ const Product = ({
   const CheckServiceAvailability = async () => {
     setpinSpinner(true);
     let data = await fetch(
-      `${process.env.NEXT_PUBLIC_MY_BACK_HOST}/checkPin/${Pin}/`
+      `${process.env.backend}/checkPin/${Pin}/`
     );
     let res = await data.json();
     setService(res.Available);
@@ -78,7 +78,7 @@ const Product = ({
             <Image
               alt="ecommerce"
               className="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded"
-              src={`${process.env.NEXT_PUBLIC_MY_BACK_HOST}` + product.image}
+              src={`${process.env.backend}` + product.image}
               width={400}
               height={420}
             />
@@ -263,7 +263,7 @@ const Product = ({
 export async function getServerSideProps(context) {
   const { product_id } = context.query;
   let data = await fetch(
-    `${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/${product_id}`
+    `${process.env.backend}/product/${product_id}`
   );
   
   //if status code == 404 means product in not found
@@ -279,7 +279,7 @@ export async function getServerSideProps(context) {
   let product = await data.json();
 
   let reviews = await fetch(
-    `${process.env.NEXT_PUBLIC_MY_BACK_HOST}/product/getReview/${product_id}`
+    `${process.env.backend}/product/getReview/${product_id}`
   );
   let review = await reviews.json();
   review = review['reviews']

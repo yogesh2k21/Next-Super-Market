@@ -15,7 +15,7 @@ const Forgot = () => {
       toast.error('Enter Email...')
     }else{
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_MY_BACK_HOST}/account/changePassword`, {
+      const response = await fetch(`${process.env.backend}/account/changePassword`, {
         method: "POST", // *POST is use bcoz here we are login the user
         headers: {
           "Content-Type": "application/json",
